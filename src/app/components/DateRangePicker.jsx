@@ -49,7 +49,7 @@ export const DateRangePicker = ({ selected, onSelect }) => {
           {selected?.from ? (
             selected.to ? (
               <>
-                {df(selected.from, "PP")}- {df(selected.to, "PP")}
+                {df(selected.from, "PP")} - {df(selected.to, "PP")}
               </>
             ) : (
               df(selected.from, "PP")
