@@ -1,37 +1,35 @@
 "use client";
-import React from "react";
 
+import { useState } from "react";
 import Select from "react-select";
+import { isSaturday, nextSaturday } from "date-fns";
 
-import {
-  RxHome,
-  AiOutlineDollarCircle,
-  GoPeople,
-} from "../assets/icons/vander";
+import { RxHome, GoPeople, AiOutlineCalendar } from "../assets/icons/vander";
+import { DateRangePicker } from "./DateRangePicker";
 
 export default function SearchForm() {
   let Houses = [
     { value: "villa", label: "Villa" },
     { value: "apartment", label: " Apartment" },
   ];
-  let minPrice = [
-    { value: "1", label: "500" },
-    { value: "2", label: "1000" },
-    { value: "3", label: "2000" },
-    { value: "4", label: "3000" },
-    { value: "5", label: "4000" },
-    { value: "5", label: "5000" },
-    { value: "5", label: "6000" },
-  ];
-  let maxPrice = [
-    { value: "1", label: "500" },
-    { value: "2", label: "1000" },
-    { value: "3", label: "2000" },
-    { value: "4", label: "3000" },
-    { value: "5", label: "4000" },
-    { value: "5", label: "5000" },
-    { value: "5", label: "6000" },
-  ];
+  // let minPrice = [
+  //   { value: "1", label: "500" },
+  //   { value: "2", label: "1000" },
+  //   { value: "3", label: "2000" },
+  //   { value: "4", label: "3000" },
+  //   { value: "5", label: "4000" },
+  //   { value: "5", label: "5000" },
+  //   { value: "5", label: "6000" },
+  // ];
+  // let maxPrice = [
+  //   { value: "1", label: "500" },
+  //   { value: "2", label: "1000" },
+  //   { value: "3", label: "2000" },
+  //   { value: "4", label: "3000" },
+  //   { value: "5", label: "4000" },
+  //   { value: "5", label: "5000" },
+  //   { value: "5", label: "6000" },
+  // ];
   let Guests = [
     { value: "1", label: "1" },
     { value: "2", label: "2" },
@@ -54,6 +52,14 @@ export default function SearchForm() {
     { value: "19", label: "19" },
     { value: "20", label: "20" },
   ];
+
+  const [dateRange, setDateRange] = useState({
+    from: isSaturday(new Date()) ? new Date() : nextSaturday(new Date()),
+    to: isSaturday(new Date())
+      ? nextSaturday(new Date())
+      : nextSaturday(nextSaturday(new Date())),
+  });
+
   return (
     <form action="#">
       <div className="registration-form text-dark text-start">
@@ -74,7 +80,23 @@ export default function SearchForm() {
             </div>
           </div>
 
-          <div>
+          <div className="col-span-2">
+            <label
+              htmlFor="buy-min-price"
+              className="form-label text-slate-900 dark:text-white font-medium"
+            >
+              Dates
+            </label>
+            <div className="filter-search-form relative filter-border mt-2">
+              <AiOutlineCalendar className="icons" />
+              <DateRangePicker
+                selected={dateRange}
+                onSelect={(value) => setDateRange(value)}
+              />
+            </div>
+          </div>
+
+          {/* <div>
             <label
               htmlFor="buy-min-price"
               className="form-label text-slate-900 dark:text-white font-medium"
@@ -104,7 +126,8 @@ export default function SearchForm() {
                 options={maxPrice}
               />
             </div>
-          </div>
+          </div> */}
+
           <div>
             <label
               htmlFor="buy-guests"

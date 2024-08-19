@@ -2,7 +2,6 @@ import SmallHeading from "./SmallHeading";
 import { TiTick } from "react-icons/ti";
 
 export default function Amenities({ amenities }) {
-  console.log(amenities);
   return (
     <div className="lg:w-2/3 lg:mt-0 mt-4">
       <SmallHeading heading="Amenities" />

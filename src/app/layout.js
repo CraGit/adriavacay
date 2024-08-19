@@ -21,7 +21,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" dir="LTR">
-      <body className={`${league_Spartan.className} dark:bg-slate-900`}>
+      <body className={`${league_Spartan.className}`}>
         <Navbar navClass="navbar-white" />
         {children}
         <Footer />

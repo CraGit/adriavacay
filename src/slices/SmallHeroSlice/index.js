@@ -6,7 +6,6 @@ import SmallHero from "@/app/components/SmallHero";
  * @param {SmallHeroSliceProps}
  */
 const SmallHeroSlice = ({ slice }) => {
-  console.log(slice);
   return (
     <section
       data-slice-type={slice.slice_type}

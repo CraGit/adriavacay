@@ -101,8 +101,6 @@ export default async function Page({ params }) {
   if (page.data.private_sub_boards) amenities.push("Private Sub Boards");
   if (page.data.beach_access) amenities.push("Beach Access");
 
-  console.log(amenities);
-
   return (
     <>
       <section className="relative md:pb-24 pb-16 mt-20">

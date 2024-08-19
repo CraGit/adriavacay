@@ -16,13 +16,13 @@
   }
 }
 
-.css-13cymwt-control{
+.css-13cymwt-control {
   border-color: transparent !important;
   border-style: none !important;
   --tw-bg-opacity: 1;
   background-color: rgb(249 250 251 / var(--tw-bg-opacity)) !important;
 }
-:is(.dark .css-13cymwt-control){
+:is(.dark .css-13cymwt-control) {
   --tw-bg-opacity: 1;
   background-color: rgb(30 41 59 / var(--tw-bg-opacity)) !important;
 }
@@ -33,16 +33,16 @@
   background-color: rgb(249 250 251 / var(--tw-bg-opacity)) !important;
 }
 
-:is(.dark .css-t3ipsp-control){
+:is(.dark .css-t3ipsp-control) {
   --tw-bg-opacity: 1;
   background-color: rgb(30 41 59 / var(--tw-bg-opacity)) !important;
 }
 
-.css-1u9des2-indicatorSeparator{
+.css-1u9des2-indicatorSeparator {
   display: none !important;
 }
 
-.css-1fdsijx-ValueContainer{
+.css-1fdsijx-ValueContainer {
   padding: 0px !important;
 }
 
@@ -54,27 +54,28 @@
 .css-13cymwt-control:hover,
 .css-13cymwt-control:focus,
 .css-t3ipsp-control:hover,
-.css-t3ipsp-control:focus{
+.css-t3ipsp-control:focus {
   border-color: transparent !important;
   border-style: none !important;
   --tw-shadow: 0 0 #0000 !important;
   --tw-shadow-colored: 0 0 #0000 !important;
-  -webkit-box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
-          box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
+  -webkit-box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
 }
 
-
-.css-1dimb5e-singleValue{
+.css-1dimb5e-singleValue {
   --tw-text-opacity: 1;
   color: rgb(22 28 45 / var(--tw-text-opacity)) !important;
 }
 
-:is(.dark .css-1dimb5e-singleValue){
+:is(.dark .css-1dimb5e-singleValue) {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
 }
 
-.css-1nmdiq5-menu{
+.css-1nmdiq5-menu {
   z-index: 999;
   border-radius: 5px;
   border-style: none !important;
@@ -82,24 +83,26 @@
   background-color: rgb(255 255 255 / var(--tw-bg-opacity)) !important;
   --tw-shadow: 0 0 3px rgb(60 72 88 / 0.15);
   --tw-shadow-colored: 0 0 3px var(--tw-shadow-color);
-  -webkit-box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-          box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  -webkit-box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
   --tw-text-opacity: 1;
   color: rgb(22 28 45 / var(--tw-text-opacity)) !important;
 }
 
 .css-1nmdiq5-menu .css-1n6sfyn-MenuList {
- position: relative !important;
- z-index: 999 !important;
- max-height: 240px !important;
- scroll: auto !important;
+  position: relative !important;
+  z-index: 999 !important;
+  max-height: 240px !important;
+  scroll: auto !important;
 }
 
 .css-1nmdiq5-menu .css-1n6sfyn-MenuList::-webkit-scrollbar {
   display: none;
 }
 
-:is(.dark .css-1nmdiq5-menu){
+:is(.dark .css-1nmdiq5-menu) {
   --tw-bg-opacity: 1;
   background-color: rgb(15 23 42 / var(--tw-bg-opacity)) !important;
   --tw-shadow-color: #1f2937;
@@ -109,20 +112,22 @@
 }
 
 .css-13cymwt-control:after,
-.css-13cymwt-control:before{
+.css-13cymwt-control:before {
   --tw-shadow: 0 0 #0000;
   --tw-shadow-colored: 0 0 #0000;
-  -webkit-box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
-          box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
+  -webkit-box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
 }
-.pagination-active .active{
+.pagination-active .active {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(22 163 74 / var(--tw-bg-opacity)) !important;
   --tw-text-opacity: 1 !important;
   color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
 }
 
-.carousel .slider-wrapper.axis-horizontal .slider{
+.carousel .slider-wrapper.axis-horizontal .slider {
   height: 100vh;
 }
 /* body {

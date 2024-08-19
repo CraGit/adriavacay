@@ -13,7 +13,6 @@ export default function Hero({
   buttonText,
   buttonLink,
 }) {
-  console.log(backgroundImage);
   return (
     <>
       <section className="relative table w-full py-36 md:py-44 lg:py-56">
