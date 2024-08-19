@@ -1,0 +1,84 @@
+{
+  "id": "hero_slice",
+  "type": "SharedSlice",
+  "name": "HeroSlice",
+  "description": "HeroSlice",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "image": {
+          "type": "Image",
+          "config": {
+            "label": "Image",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "subtitle": {
+          "type": "Text",
+          "config": {
+            "label": "Subtitle",
+            "placeholder": ""
+          }
+        },
+        "button_text": {
+          "type": "Text",
+          "config": {
+            "label": "Button Text",
+            "placeholder": ""
+          }
+        },
+        "button_link": {
+          "type": "Link",
+          "config": {
+            "label": "Button Link",
+            "placeholder": "",
+            "select": null
+          }
+        },
+        "heading_start": {
+          "type": "Text",
+          "config": {
+            "label": "Heading start",
+            "placeholder": ""
+          }
+        },
+        "heading_animated_1": {
+          "type": "Text",
+          "config": {
+            "label": "Heading animated 1",
+            "placeholder": ""
+          }
+        },
+        "heading_animated_2": {
+          "type": "Text",
+          "config": {
+            "label": "Heading animated 2",
+            "placeholder": ""
+          }
+        },
+        "heading_animated_3": {
+          "type": "Text",
+          "config": {
+            "label": "Heading animated 3",
+            "placeholder": ""
+          }
+        },
+        "heading_end": {
+          "type": "Text",
+          "config": {
+            "label": "Heading end",
+            "placeholder": ""
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

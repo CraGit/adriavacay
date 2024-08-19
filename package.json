@@ -1,0 +1,45 @@
+{
+  "name": "adriavacay",
+  "version": "2.0.0",
+  "description": "adriavacay",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "slicemachine": "start-slicemachine"
+  },
+  "dependencies": {
+    "@iconscout/react-unicons": "^2.0.2",
+    "@iconscout/unicons": "^4.0.8",
+    "@prismicio/client": "^7.5.0",
+    "@prismicio/next": "^1.6.0",
+    "@prismicio/react": "^2.8.0",
+    "autoprefixer": "10.4.14",
+    "eslint": "8.44.0",
+    "eslint-config-next": "^14.2.4",
+    "next": "^14.2.4",
+    "postcss": "8.4.25",
+    "react": "^18.3.1",
+    "react-18-image-lightbox": "^5.1.4",
+    "react-countup": "^6.5.0",
+    "react-dom": "^18.3.1",
+    "react-feather": "^2.0.10",
+    "react-icons": "^4.12.0",
+    "react-modal-video": "^2.0.1",
+    "react-photo-album": "^3.0.1",
+    "react-responsive-carousel": "^3.2.23",
+    "react-scroll": "^1.9.0",
+    "react-select": "^5.8.0",
+    "react-type-animation": "^3.2.0",
+    "sass": "^1.69.7",
+    "tiny-slider-react": "^0.5.7",
+    "yet-another-react-lightbox": "^3.21.3"
+  },
+  "devDependencies": {
+    "@slicemachine/adapter-next": "^0.3.42",
+    "slice-machine-ui": "^2.2.1",
+    "tailwindcss": "^3.4.1"
+  }
+}

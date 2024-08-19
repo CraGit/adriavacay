@@ -1,0 +1,880 @@
+{
+  "format": "page",
+  "id": "accommodation_single",
+  "label": "Accommodation Single",
+  "repeatable": true,
+  "status": true,
+  "json": {
+    "Main": {
+      "heading": {
+        "type": "Text",
+        "config": {
+          "label": "Heading",
+          "placeholder": ""
+        }
+      },
+      "uid": {
+        "config": {
+          "label": "UID"
+        },
+        "type": "UID"
+      },
+      "ical": {
+        "type": "Text",
+        "config": {
+          "label": "iCal",
+          "placeholder": ""
+        }
+      },
+      "gallery": {
+        "type": "Group",
+        "config": {
+          "label": "Gallery",
+          "repeat": true,
+          "fields": {
+            "image": {
+              "type": "Image",
+              "config": {
+                "label": "Image",
+                "constraint": {},
+                "thumbnails": []
+              }
+            }
+          }
+        }
+      },
+      "max_guests": {
+        "type": "Number",
+        "config": {
+          "label": "Max. Guests",
+          "placeholder": ""
+        }
+      },
+      "sqm": {
+        "type": "Text",
+        "config": {
+          "label": "m2",
+          "placeholder": ""
+        }
+      },
+      "bedrooms": {
+        "type": "Text",
+        "config": {
+          "label": "Bedrooms",
+          "placeholder": ""
+        }
+      },
+      "bathrooms": {
+        "type": "Text",
+        "config": {
+          "label": "Bathrooms",
+          "placeholder": ""
+        }
+      },
+      "content": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Content",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "pricing": {
+        "type": "Group",
+        "config": {
+          "label": "Pricing",
+          "repeat": true,
+          "fields": {
+            "date_start": {
+              "type": "Date",
+              "config": {
+                "label": "Date Start",
+                "placeholder": ""
+              }
+            },
+            "date_end": {
+              "type": "Date",
+              "config": {
+                "label": "Date End",
+                "placeholder": ""
+              }
+            },
+            "price": {
+              "type": "Number",
+              "config": {
+                "label": "Price",
+                "placeholder": ""
+              }
+            },
+            "changeover_day": {
+              "type": "Select",
+              "config": {
+                "label": "Changeover Day",
+                "placeholder": "",
+                "options": ["Flexible", "Saturday", "Sunday"],
+                "default_value": "Flexible"
+              }
+            },
+            "minimum_stay": {
+              "type": "Number",
+              "config": {
+                "label": "Minimum Stay",
+                "placeholder": ""
+              }
+            }
+          }
+        }
+      },
+      "security_deposit": {
+        "type": "Number",
+        "config": {
+          "label": "Security Deposit",
+          "placeholder": ""
+        }
+      },
+      "location": {
+        "type": "GeoPoint",
+        "config": {
+          "label": "Location"
+        }
+      },
+      "isFeatured": {
+        "type": "Boolean",
+        "config": {
+          "label": "Is Featured?",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "discounts": {
+        "type": "Group",
+        "config": {
+          "label": "Discounts",
+          "repeat": true,
+          "fields": {
+            "date_start": {
+              "type": "Date",
+              "config": {
+                "label": "Date Start",
+                "placeholder": ""
+              }
+            },
+            "date_end": {
+              "type": "Date",
+              "config": {
+                "label": "Date End",
+                "placeholder": ""
+              }
+            },
+            "percentage": {
+              "type": "Number",
+              "config": {
+                "label": "Percentage",
+                "placeholder": "Enter just value (example: for 10% discount, enter 10)"
+              }
+            }
+          }
+        }
+      },
+      "distances": {
+        "type": "Group",
+        "config": {
+          "label": "Distances",
+          "repeat": true,
+          "fields": {
+            "place": {
+              "type": "Text",
+              "config": {
+                "label": "Place",
+                "placeholder": ""
+              }
+            },
+            "distance": {
+              "type": "Text",
+              "config": {
+                "label": "Distance",
+                "placeholder": ""
+              }
+            }
+          }
+        }
+      },
+      "reviews": {
+        "type": "Group",
+        "config": {
+          "label": "Reviews",
+          "repeat": true,
+          "fields": {
+            "guest": {
+              "type": "Text",
+              "config": {
+                "label": "Guest",
+                "placeholder": ""
+              }
+            },
+            "guest_from": {
+              "type": "Text",
+              "config": {
+                "label": "Guest From",
+                "placeholder": ""
+              }
+            },
+            "review": {
+              "type": "Text",
+              "config": {
+                "label": "Review",
+                "placeholder": ""
+              }
+            },
+            "stars": {
+              "type": "Select",
+              "config": {
+                "label": "Stars",
+                "placeholder": "",
+                "options": ["5", "4", "3", "2", "1"],
+                "default_value": "5"
+              }
+            }
+          }
+        }
+      },
+      "infinity_pool": {
+        "type": "Boolean",
+        "config": {
+          "label": "Infinity Pool",
+          "placeholder_false": "false",
+          "placeholder_true": "true",
+          "default_value": false
+        }
+      },
+      "heated_pool": {
+        "type": "Boolean",
+        "config": {
+          "label": "Heated Pool",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "salt_pool": {
+        "type": "Boolean",
+        "config": {
+          "label": "Salt Pool",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "swimming_pool": {
+        "type": "Boolean",
+        "config": {
+          "label": "Swimming Pool",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "indoor_pool": {
+        "type": "Boolean",
+        "config": {
+          "label": "Indoor Pool",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "sauna": {
+        "type": "Boolean",
+        "config": {
+          "label": "Sauna",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "jacuzzi": {
+        "type": "Boolean",
+        "config": {
+          "label": "Jacuzzi",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "outdoor_shower": {
+        "type": "Boolean",
+        "config": {
+          "label": "Outdoor Shower",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "sun_deck_chairs": {
+        "type": "Boolean",
+        "config": {
+          "label": "Sun Deck Chairs",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "lounge_chairs": {
+        "type": "Boolean",
+        "config": {
+          "label": "Lounge Chairs",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "parasol": {
+        "type": "Boolean",
+        "config": {
+          "label": "Parasol",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "bbq_wood": {
+        "type": "Boolean",
+        "config": {
+          "label": "BBQ - Wood",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "bbq_gas": {
+        "type": "Boolean",
+        "config": {
+          "label": "BBQ - Gas",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "outdoor_dining_area": {
+        "type": "Boolean",
+        "config": {
+          "label": "Outdoor Dining Area",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "patio": {
+        "type": "Boolean",
+        "config": {
+          "label": "Patio",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "summer_kitchen": {
+        "type": "Boolean",
+        "config": {
+          "label": "Summer Kitchen",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "balcony": {
+        "type": "Boolean",
+        "config": {
+          "label": "Balcony",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "garden": {
+        "type": "Boolean",
+        "config": {
+          "label": "Garden",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "organic_garden": {
+        "type": "Boolean",
+        "config": {
+          "label": "Organic Garden",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "playground": {
+        "type": "Boolean",
+        "config": {
+          "label": "Playground",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "trampoline": {
+        "type": "Boolean",
+        "config": {
+          "label": "Trampoline",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "bocce_court": {
+        "type": "Boolean",
+        "config": {
+          "label": "Bocce court",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "table_tennis": {
+        "type": "Boolean",
+        "config": {
+          "label": "Table Tennis",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "pool_table": {
+        "type": "Boolean",
+        "config": {
+          "label": "Pool Table",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "tennis_court": {
+        "type": "Boolean",
+        "config": {
+          "label": "Tennis Court",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "fitness_equipment": {
+        "type": "Boolean",
+        "config": {
+          "label": "Fitness Equipment",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "bicycles": {
+        "type": "Boolean",
+        "config": {
+          "label": "Bicycles",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "game_consoles": {
+        "type": "Boolean",
+        "config": {
+          "label": "Game Consoles",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "bluetooth_speakers": {
+        "type": "Boolean",
+        "config": {
+          "label": "Bluetooth Speakers",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "satellite_cable": {
+        "type": "Boolean",
+        "config": {
+          "label": "Satellite Cable",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "smart_tv": {
+        "type": "Boolean",
+        "config": {
+          "label": "Smart TV",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "streaming_service": {
+        "type": "Boolean",
+        "config": {
+          "label": "Streaming Service",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "free_wifi": {
+        "type": "Boolean",
+        "config": {
+          "label": "Free WiFi",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "fully_airconditioned": {
+        "type": "Boolean",
+        "config": {
+          "label": "Fully air-conditioned",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "partly_airconditioned": {
+        "type": "Boolean",
+        "config": {
+          "label": "Partly air-conditioned",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "heating": {
+        "type": "Boolean",
+        "config": {
+          "label": "Heating",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "safe": {
+        "type": "Boolean",
+        "config": {
+          "label": "Safe",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "game_room": {
+        "type": "Boolean",
+        "config": {
+          "label": "Game Room",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "fitness_room": {
+        "type": "Boolean",
+        "config": {
+          "label": "Fitness Room",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "dishes_and_utensils": {
+        "type": "Boolean",
+        "config": {
+          "label": "Dishes & Utensils",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "dishwasher": {
+        "type": "Boolean",
+        "config": {
+          "label": "Dishwasher",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "microwave": {
+        "type": "Boolean",
+        "config": {
+          "label": "Microwave",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "stove": {
+        "type": "Boolean",
+        "config": {
+          "label": "Stove",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "oven": {
+        "type": "Boolean",
+        "config": {
+          "label": "Oven",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "refrigerator": {
+        "type": "Boolean",
+        "config": {
+          "label": "Refrigerator",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "freezer": {
+        "type": "Boolean",
+        "config": {
+          "label": "Freezer",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "coffee_maker": {
+        "type": "Boolean",
+        "config": {
+          "label": "Coffee Maker",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "kettle": {
+        "type": "Boolean",
+        "config": {
+          "label": "Kettle",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "toaster": {
+        "type": "Boolean",
+        "config": {
+          "label": "Toaster",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "highchair": {
+        "type": "Boolean",
+        "config": {
+          "label": "Highchair",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "kingsize_bed": {
+        "type": "Boolean",
+        "config": {
+          "label": "King-Size Bed",
+          "placeholder_false": "false",
+          "placeholder_true": "true",
+          "default_value": false
+        }
+      },
+      "queensize_bed": {
+        "type": "Boolean",
+        "config": {
+          "label": "Queen-Size Bed",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "single_bed": {
+        "type": "Boolean",
+        "config": {
+          "label": "Single Bed",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "baby_bed": {
+        "type": "Boolean",
+        "config": {
+          "label": "Baby Bed",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "workplace": {
+        "type": "Boolean",
+        "config": {
+          "label": "Workplace",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "linens_provided": {
+        "type": "Boolean",
+        "config": {
+          "label": "Linens Provided",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "towels_provided": {
+        "type": "Boolean",
+        "config": {
+          "label": "Towels Provided",
+          "placeholder_false": "false",
+          "placeholder_true": "true",
+          "default_value": false
+        }
+      },
+      "pool_towels_provided": {
+        "type": "Boolean",
+        "config": {
+          "label": "Pool Towels Provided",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "shower": {
+        "type": "Boolean",
+        "config": {
+          "label": "Shower",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "bathtub": {
+        "type": "Boolean",
+        "config": {
+          "label": "Bathtub",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "washing_machine": {
+        "type": "Boolean",
+        "config": {
+          "label": "Washing Machine",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "dryer": {
+        "type": "Boolean",
+        "config": {
+          "label": "Dryer",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "iron_and_board": {
+        "type": "Boolean",
+        "config": {
+          "label": "Iron and Board",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "private_buoy_for_the_boat": {
+        "type": "Boolean",
+        "config": {
+          "label": "Private Buoy for the Boat",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "guestsprikaz": {
+        "type": "Text",
+        "config": {
+          "label": "GuestsPrikaz",
+          "placeholder": ""
+        }
+      },
+      "private_sub_boards": {
+        "type": "Boolean",
+        "config": {
+          "label": "Private Sub Boards",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "beach_access": {
+        "type": "Boolean",
+        "config": {
+          "label": "Beach Access",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "slices": {
+        "type": "Slices",
+        "fieldset": "Slice Zone",
+        "config": {
+          "choices": {}
+        }
+      }
+    },
+    "SEO & Metadata": {
+      "meta_title": {
+        "config": {
+          "label": "Meta Title",
+          "placeholder": "A title of the page used for social media and search engines"
+        },
+        "type": "Text"
+      },
+      "meta_description": {
+        "config": {
+          "label": "Meta Description",
+          "placeholder": "A brief summary of the page"
+        },
+        "type": "Text"
+      },
+      "meta_image": {
+        "config": {
+          "constraint": {
+            "height": 1260,
+            "width": 2400
+          },
+          "label": "Meta Image",
+          "thumbnails": []
+        },
+        "type": "Image"
+      }
+    }
+  }
+}
