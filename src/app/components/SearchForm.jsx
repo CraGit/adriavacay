@@ -6,7 +6,8 @@ import { isSaturday, nextSaturday } from "date-fns";
 
 import { RxHome, GoPeople, AiOutlineCalendar } from "../assets/icons/vander";
 import { DateRangePicker } from "./DateRangePicker";
-import { search } from "@/actions/search";
+import { useSearch } from "@/providers/search-provider";
+import { useRouter } from "next/navigation";
 
 export default function SearchForm() {
   let Houses = [
@@ -54,6 +55,9 @@ export default function SearchForm() {
     { value: 20, label: "20" },
   ];
 
+  const { updateQuery } = useSearch();
+  const router = useRouter();
+
   const [category, setCategory] = useState("villa");
   const [dateRange, setDateRange] = useState({
     from: isSaturday(new Date()) ? new Date() : nextSaturday(new Date()),
@@ -61,7 +65,17 @@ export default function SearchForm() {
       ? nextSaturday(new Date())
       : nextSaturday(nextSaturday(new Date())),
   });
+
   const [guests, setGuests] = useState(1);
+
+  const onSubmit = () => {
+    updateQuery({
+      category,
+      dateRange,
+      guests,
+    });
+    router.push("/accommodation");
+  };
 
   return (
     <div>
@@ -80,7 +94,9 @@ export default function SearchForm() {
                 value={
                   category ? Houses.find((x) => x.value === category) : category
                 }
-                onChange={(value) => setCategory(value)}
+                onChange={(option) =>
+                  setCategory(option ? option.value : option)
+                }
                 className="form-input filter-input-box bg-gray-50 dark:bg-slate-800 border-0"
                 options={Houses}
               />
@@ -98,9 +114,7 @@ export default function SearchForm() {
               <AiOutlineCalendar className="icons" />
               <DateRangePicker
                 selected={dateRange}
-                onSelect={(option) =>
-                  setCategory(option ? option.value : option)
-                }
+                onSelect={(range) => setDateRange(range)}
               />
             </div>
           </div>
@@ -158,7 +172,7 @@ export default function SearchForm() {
 
           <div className="lg:mt-6">
             <button
-              onClick={() => search(category, dateRange, guests)}
+              onClick={onSubmit}
               className="btn bg-green-600 hover:bg-green-700 border-green-600 hover:border-green-700 text-white searchbtn submit-btn w-full !h-[60px] lg:rounded-none rounded mt-2"
             >
               Search

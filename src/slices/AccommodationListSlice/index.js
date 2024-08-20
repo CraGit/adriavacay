@@ -3,16 +3,24 @@
  * @typedef {import("@prismicio/react").SliceComponentProps<AccommodationListSliceSlice>} AccommodationListSliceProps
  * @param {AccommodationListSliceProps}
  */
-import CardList from "@/app/components/CardList";
 import SectionHeading from "@/app/components/SectionHeading";
-import SmallHero from "@/app/components/SmallHero";
 import { createClient } from "@/prismicio";
 import Link from "next/link";
+import { occupiedDatesFromIcal } from "@/lib/utils";
+import { AccommodationSingle } from "@/app/accommodation/accommodation-single";
+
 const AccommodationListSlice = async ({ slice }) => {
   const client = createClient();
   const accommodations = await client.getAllByType("accommodation_single");
 
-  const sortedAccommodations = accommodations.sort((a, b) => {
+  const accommodationsWithCalendar = await Promise.all(
+    accommodations.map(async (a) => ({
+      ...a,
+      occupiedDates: await occupiedDatesFromIcal(a.data.ical),
+    }))
+  );
+
+  const sortedAccommodations = accommodationsWithCalendar.sort((a, b) => {
     if (a.data.isFeatured && !b.data.isFeatured) {
       return -1;
     } else if (!a.data.isFeatured && b.data.isFeatured) {
@@ -32,10 +40,25 @@ const AccommodationListSlice = async ({ slice }) => {
         heading={slice.primary.heading}
         subheading={slice.primary.description}
       />
-      <CardList
+      {/* <CardList
         cardDetails={sortedAccommodations}
         limit={slice.primary.limit}
-      />
+      /> */}
+      <section className="relative lg:py-16 py-8">
+        <div className="container">
+          <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-[30px]">
+            <AccommodationSingle
+              accommodations={sortedAccommodations.slice(
+                0,
+                slice.primary.limit !== "No limit"
+                  ? parseInt(slice.primary.limit)
+                  : undefined
+              )}
+              showAll={slice.primary.limit !== "No limit"}
+            />
+          </div>
+        </div>
+      </section>
       {slice.primary.limit !== "No limit" ? (
         <div className="text-center mt-8">
           <li className="sm:inline ps-1 mb-0 hidden">

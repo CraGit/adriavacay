@@ -1,11 +1,31 @@
+"use client";
+
+import { useSearch } from "@/providers/search-provider";
 import Card from "./Card";
+import { hasOverlap } from "@/lib/utils";
 
 export default function CardGrid({ cardDetails, limit = "No limit" }) {
+  const { query } = useSearch();
+
+  /*const filterByCategory = cardDetails.filter(
+    (card) => card.data.category === query.category
+  );*/
+
+  const filterByPeople = cardDetails.filter(
+    (card) => card.data.max_guests >= query.guests
+  );
+
+  const filterByDate = filterByPeople.filter(
+    (card) => !hasOverlap(query.dateRange, card.occupiedDates)
+  );
+
+  console.log(filterByDate);
+
   return (
     <section className="relative lg:py-16 py-8">
       <div className="container">
         <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-[30px]">
-          {cardDetails
+          {filterByDate
             .slice(0, limit !== "No limit" ? parseInt(limit) : undefined)
             .map((item) => (
               <Card

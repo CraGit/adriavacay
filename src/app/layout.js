@@ -4,6 +4,7 @@ import "./assets/css/materialdesignicons.min.css";
 import { League_Spartan } from "next/font/google";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import SearchProvider from "@/providers/search-provider";
 
 const league_Spartan = League_Spartan({
   subsets: ["latin"],
@@ -22,9 +23,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" dir="LTR">
       <body className={`${league_Spartan.className}`}>
-        <Navbar navClass="navbar-white" />
-        {children}
-        <Footer />
+        <SearchProvider>
+          <Navbar navClass="navbar-white" />
+          {children}
+          <Footer />
+        </SearchProvider>
       </body>
     </html>
   );
