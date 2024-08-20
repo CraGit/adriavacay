@@ -15,6 +15,7 @@ export default function Card({
   sqm,
   bedrooms,
   baths,
+  price,
   lowestPrice,
   alt,
   guests,
@@ -83,7 +84,9 @@ export default function Card({
         <ul className="pt-6 flex justify-between items-center list-none">
           <li>
             <span className="text-slate-400">Price</span>
-            <p className="text-lg font-medium">from €{lowestPrice}</p>
+            <p className="text-lg font-medium">
+              {price ? `€${price}` : `from €${lowestPrice}`}
+            </p>
           </li>
 
           {/* <li>
