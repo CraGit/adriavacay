@@ -81,29 +81,7 @@ export default function SearchForm() {
     <div>
       <div className="registration-form text-dark text-start">
         <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 lg:gap-0 gap-6">
-          <div>
-            <label
-              htmlFor="buy-properties"
-              className="form-label text-slate-900 dark:text-white font-medium"
-            >
-              Select Categories:
-            </label>
-            <div className="filter-search-form relative filter-border mt-2">
-              <RxHome className=" icons" />
-              <Select
-                value={
-                  category ? Houses.find((x) => x.value === category) : category
-                }
-                onChange={(option) =>
-                  setCategory(option ? option.value : option)
-                }
-                className="form-input filter-input-box bg-gray-50 dark:bg-slate-800 border-0"
-                options={Houses}
-              />
-            </div>
-          </div>
-
-          <div>
+          <div className="col-span-2">
             <label
               htmlFor="buy-min-price"
               className="form-label text-slate-900 dark:text-white font-medium"
@@ -118,38 +96,6 @@ export default function SearchForm() {
               />
             </div>
           </div>
-
-          {/* <div>
-            <label
-              htmlFor="buy-min-price"
-              className="form-label text-slate-900 dark:text-white font-medium"
-            >
-              Min Price :
-            </label>
-            <div className="filter-search-form relative filter-border mt-2">
-              <AiOutlineDollarCircle className="icons" />
-              <Select
-                className="form-input filter-input-box bg-gray-50 dark:bg-slate-800 border-0"
-                options={minPrice}
-              />
-            </div>
-          </div>
-
-          <div>
-            <label
-              htmlFor="buy-max-price"
-              className="form-label text-slate-900 dark:text-white font-medium"
-            >
-              Max Price :
-            </label>
-            <div className="filter-search-form relative mt-2">
-              <AiOutlineDollarCircle className="icons" />
-              <Select
-                className="form-input filter-input-box bg-gray-50 dark:bg-slate-800 border-0"
-                options={maxPrice}
-              />
-            </div>
-          </div> */}
 
           <div>
             <label
