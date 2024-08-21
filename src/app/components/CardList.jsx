@@ -19,8 +19,6 @@ export default function CardGrid({ cardDetails, limit = "No limit" }) {
     (card) => !hasOverlap(query.dateRange, card.occupiedDates)
   );
 
-  console.log(filterByDate);
-
   return (
     <section className="relative lg:py-16 py-8">
       <div className="container">

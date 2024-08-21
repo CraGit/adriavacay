@@ -10,28 +10,6 @@ import { useSearch } from "@/providers/search-provider";
 import { useRouter } from "next/navigation";
 
 export default function SearchForm() {
-  let Houses = [
-    { value: "villa", label: "Villa" },
-    { value: "apartment", label: " Apartment" },
-  ];
-  // let minPrice = [
-  //   { value: "1", label: "500" },
-  //   { value: "2", label: "1000" },
-  //   { value: "3", label: "2000" },
-  //   { value: "4", label: "3000" },
-  //   { value: "5", label: "4000" },
-  //   { value: "5", label: "5000" },
-  //   { value: "5", label: "6000" },
-  // ];
-  // let maxPrice = [
-  //   { value: "1", label: "500" },
-  //   { value: "2", label: "1000" },
-  //   { value: "3", label: "2000" },
-  //   { value: "4", label: "3000" },
-  //   { value: "5", label: "4000" },
-  //   { value: "5", label: "5000" },
-  //   { value: "5", label: "6000" },
-  // ];
   let Guests = [
     { value: 1, label: "1" },
     { value: 2, label: "2" },

@@ -15,7 +15,8 @@ export default function Card({
   sqm,
   bedrooms,
   baths,
-  price,
+  basePrice,
+  discountedPrice,
   lowestPrice,
   alt,
   guests,
@@ -85,7 +86,14 @@ export default function Card({
           <li>
             <span className="text-slate-400">Price</span>
             <p className="text-lg font-medium">
-              {price ? `€${price}` : `from €${lowestPrice}`}
+              {basePrice && basePrice === discountedPrice && `€${basePrice}`}
+              {basePrice && basePrice !== discountedPrice && (
+                <>
+                  <span className="line-through text-sm">€{basePrice}</span>
+                  <span className="ml-2">€{discountedPrice}</span>
+                </>
+              )}
+              {lowestPrice && `from €${lowestPrice}`}
             </p>
           </li>
 

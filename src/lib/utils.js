@@ -5,7 +5,9 @@ import {
   differenceInCalendarDays,
   eachDayOfInterval,
   format,
+  isAfter,
   isBefore,
+  isEqual,
   isWithinInterval,
   max,
   min,
@@ -49,10 +51,8 @@ export const hasOverlap = (range, excludedDates) => {
   );
 };
 
-export const calculateTotalPrice = (priceRanges, fromDate, toDate) => {
-  let totalPrice = 0;
-
-  priceRanges.forEach((range) => {
+export const filterAvailablePriceRanges = (priceRanges, fromDate, toDate) => {
+  return priceRanges.filter((range) => {
     const overlapStart = max([
       parse(range.date_start, "yyyy-MM-dd", new Date()),
       fromDate,
@@ -62,10 +62,81 @@ export const calculateTotalPrice = (priceRanges, fromDate, toDate) => {
       toDate,
     ]);
 
-    if (!isBefore(overlapEnd, overlapStart)) {
-      const daysInRange =
-        differenceInCalendarDays(overlapEnd, overlapStart) + 1;
-      totalPrice += daysInRange * range.price;
+    return !isBefore(overlapEnd, overlapStart);
+  });
+};
+
+export const calculateTotalPrice = (priceRanges, fromDate, toDate) => {
+  const availablePriceRanges = filterAvailablePriceRanges(
+    priceRanges,
+    fromDate,
+    toDate
+  );
+  let totalPrice = 0;
+
+  availablePriceRanges.forEach((range) => {
+    const overlapStart = max([
+      parse(range.date_start, "yyyy-MM-dd", new Date()),
+      fromDate,
+    ]);
+    const overlapEnd = min([
+      parse(range.date_end, "yyyy-MM-dd", new Date()),
+      toDate,
+    ]);
+
+    const daysInRange = differenceInCalendarDays(overlapEnd, overlapStart) + 1;
+
+    totalPrice += daysInRange * range.price;
+  });
+
+  return totalPrice;
+};
+
+const getDiscountForDate = (date, discountRanges) => {
+  for (const discount of discountRanges) {
+    if (
+      !isBefore(date, parse(discount.date_start, "yyyy-MM-dd", new Date())) &&
+      !isAfter(date, parse(discount.date_end, "yyyy-MM-dd", new Date()))
+    ) {
+      return discount.percentage;
+    }
+  }
+
+  return 0;
+};
+
+export const calculateTotalPriceWithDiscount = (
+  priceRanges,
+  discountRanges,
+  fromDate,
+  toDate
+) => {
+  const availablePriceRanges = filterAvailablePriceRanges(
+    priceRanges,
+    fromDate,
+    toDate
+  );
+  let totalPrice = 0;
+
+  availablePriceRanges.forEach((range) => {
+    const overlapStart = max([
+      parse(range.date_start, "yyyy-MM-dd", new Date()),
+      fromDate,
+    ]);
+    const overlapEnd = min([
+      parse(range.date_end, "yyyy-MM-dd", new Date()),
+      toDate,
+    ]);
+
+    for (
+      let date = overlapStart;
+      isBefore(date, overlapEnd) || isEqual(date, overlapEnd);
+      date = addDays(date, 1)
+    ) {
+      const dailyPrice = range.price;
+      const discount = getDiscountForDate(date, discountRanges);
+      const discountedPrice = dailyPrice * (1 - discount / 100);
+      totalPrice += discountedPrice;
     }
   });
 
