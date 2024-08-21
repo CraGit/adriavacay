@@ -8,6 +8,7 @@ import {
   isAfter,
   isBefore,
   isEqual,
+  isSameDay,
   isWithinInterval,
   max,
   min,
@@ -141,4 +142,46 @@ export const calculateTotalPriceWithDiscount = (
   });
 
   return totalPrice;
+};
+
+export const isValidChangeoverDay = (date, changeoverDay) => {
+  const dayOfWeek = format(date, "EEEE"); // Get day of the week (e.g., "Saturday")
+  return changeoverDay === "Flexible" || dayOfWeek === changeoverDay;
+};
+
+export const filterByChangeoverDay = (priceRanges, fromDate, toDate) => {
+  let startRangeValid = false;
+  let endRangeValid = false;
+
+  priceRanges.forEach((range) => {
+    // Calculate the overlap between the price range and the user's date range
+    const overlapStart = max([
+      parse(range.date_start, "yyyy-MM-dd", new Date()),
+      fromDate,
+    ]);
+    const overlapEnd = min([
+      parse(range.date_end, "yyyy-MM-dd", new Date()),
+      toDate,
+    ]);
+
+    // Ensure there is a valid overlap
+    if (isBefore(overlapEnd, overlapStart)) return false;
+
+    // Check if the changeover day conditions are met
+    if (
+      isSameDay(overlapStart, fromDate) &&
+      isValidChangeoverDay(fromDate, range.changeover_day)
+    ) {
+      startRangeValid = true;
+    }
+
+    if (
+      isSameDay(overlapEnd, toDate) &&
+      isValidChangeoverDay(toDate, range.changeover_day)
+    ) {
+      endRangeValid = true;
+    }
+
+    return startRangeValid && endRangeValid;
+  });
 };

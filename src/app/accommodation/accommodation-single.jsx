@@ -4,6 +4,7 @@ import { useSearch } from "@/providers/search-provider";
 import {
   calculateTotalPrice,
   calculateTotalPriceWithDiscount,
+  filterByChangeoverDay,
   hasOverlap,
 } from "@/lib/utils";
 
@@ -25,7 +26,19 @@ export const AccommodationSingle = ({ accommodations, showAll }) => {
       return <p>No results found</p>;
     }
 
-    return filteredByDate.map((item) => {
+    const filteredByChangeOverDay = filteredByDate.filter((item) =>
+      filterByChangeoverDay(
+        item.data.pricing,
+        query.dateRange.from,
+        query.dateRange.to
+      )
+    );
+
+    if (filteredByChangeOverDay.length === 0) {
+      return <p>No results found</p>;
+    }
+
+    return filteredByChangeOverDay.map((item) => {
       const price = calculateTotalPrice(
         item.data.pricing,
         query.dateRange.from,
