@@ -4,7 +4,7 @@ import { useSearch } from "@/providers/search-provider";
 import {
   calculateTotalPrice,
   calculateTotalPriceWithDiscount,
-  filterByChangeoverDay,
+  filterByChangeoverDayAndMinimumStay,
   hasOverlap,
 } from "@/lib/utils";
 
