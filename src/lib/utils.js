@@ -149,9 +149,15 @@ export const isValidChangeoverDay = (date, changeoverDay) => {
   return changeoverDay === "Flexible" || dayOfWeek === changeoverDay;
 };
 
-export const filterByChangeoverDay = (priceRanges, fromDate, toDate) => {
+export const filterByChangeoverDayAndMinimumStay = (
+  priceRanges,
+  fromDate,
+  toDate
+) => {
   let startRangeValid = false;
   let endRangeValid = false;
+
+  const totalStay = differenceInCalendarDays(toDate, fromDate) + 1;
 
   priceRanges.forEach((range) => {
     // Calculate the overlap between the price range and the user's date range
@@ -180,6 +186,12 @@ export const filterByChangeoverDay = (priceRanges, fromDate, toDate) => {
       isValidChangeoverDay(toDate, range.changeover_day)
     ) {
       endRangeValid = true;
+    }
+
+    // Apply minimum stay only if the changeover day is "Flexible"
+    if (range.changeoverDay === "Flexible" && totalStay < range.minimum_stay) {
+      startRangeValid = false;
+      endRangeValid = false;
     }
 
     return startRangeValid && endRangeValid;

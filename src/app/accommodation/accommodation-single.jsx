@@ -27,7 +27,7 @@ export const AccommodationSingle = ({ accommodations, showAll }) => {
     }
 
     const filteredByChangeOverDay = filteredByDate.filter((item) =>
-      filterByChangeoverDay(
+      filterByChangeoverDayAndMinimumStay(
         item.data.pricing,
         query.dateRange.from,
         query.dateRange.to
