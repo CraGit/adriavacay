@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
+import Image from "next/image";
 export default function Navbar(props) {
   let { navClass, topnavClass } = props;
   let [isOpen, setIsOpen] = useState(true);
@@ -66,48 +66,46 @@ export default function Navbar(props) {
           {/* <!-- Logo container--> */}
           {navClass === "" || navClass === undefined ? (
             <Link className="logo" href="/">
-              {/* <Image
-                src="/images/logo-dark.png"
+              <Image
+                src="/images/logo.svg"
                 className="inline-block dark:hidden"
                 alt=""
-                width={98}
+                width={140}
                 height={24}
               />
               <Image
-                src="/images/logo-light.png"
+                src="/images/logo.svg"
                 className="hidden dark:inline-block"
                 alt=""
-                width={98}
+                width={140}
                 height={24}
-              /> */}
-              adriaVacay
+              />
             </Link>
           ) : (
             <Link className="logo" href="/">
-              {/* <span className="inline-block dark:hidden">
+              <span className="inline-block dark:hidden">
                 <Image
-                  src="/images/logo-dark.png"
+                  src="/images/logo.svg"
                   className="l-dark"
                   alt=""
-                  width={98}
+                  width={140}
                   height={24}
                 />
                 <Image
-                  src="/images/logo-light.png"
+                  src="/images/logo.svg"
                   className="l-light"
                   alt=""
-                  width={98}
+                  width={140}
                   height={24}
                 />
               </span>
               <Image
-                src="/images/logo-light.png"
+                src="/images/logo.svg"
                 className="hidden dark:inline-block"
                 alt=""
-                width={98}
+                width={140}
                 height={24}
-              /> */}
-              adriaVacay
+              />
             </Link>
           )}
           {/* <!-- End Logo container--> */}
