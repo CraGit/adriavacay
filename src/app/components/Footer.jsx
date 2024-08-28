@@ -171,7 +171,7 @@ export default function Footer() {
                     </ul>
                   </div> */}
 
-                  <div className="lg:col-span-8 md:col-span-8 ml-auto">
+                  <div className="lg:col-span-8 md:col-span-8 md:ml-auto">
                     <h5 className="tracking-[1px] text-gray-100 font-semibold">
                       Contact Details
                     </h5>
