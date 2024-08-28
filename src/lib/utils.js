@@ -28,20 +28,29 @@ export const df = (date, formatStr = "PP") =>
 export const occupiedDatesFromIcal = async (url) => {
   const dates = [];
 
-  const res = await fetch(url);
-  const text = await res.text();
+  try {
+    if (!url) return dates;
 
-  ical(text).forEach((e) => {
-    const startDate = addDays(e.startDate, 1);
-    const endDate = subDays(e.endDate, 1);
+    const res = await fetch(url);
 
-    const interval = eachDayOfInterval({
-      start: startDate,
-      end: endDate,
+    if (!res.ok) return dates;
+
+    const text = await res.text();
+
+    ical(text).forEach((e) => {
+      const startDate = addDays(e.startDate, 1);
+      const endDate = subDays(e.endDate, 1);
+
+      const interval = eachDayOfInterval({
+        start: startDate,
+        end: endDate,
+      });
+
+      dates.push(...interval);
     });
-
-    dates.push(...interval);
-  });
+  } catch (error) {
+    return dates;
+  }
 
   return dates;
 };
