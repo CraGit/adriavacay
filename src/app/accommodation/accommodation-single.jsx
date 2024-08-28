@@ -13,7 +13,13 @@ import Card from "../components/Card";
 export const AccommodationSingle = ({ accommodations, showAll }) => {
   const { query } = useSearch();
 
-  if (!showAll) {
+  if (
+    !showAll &&
+    query &&
+    query.guests &&
+    query.dateRange.from !== null &&
+    query.dateRange.to !== null
+  ) {
     const filteredByGuests = accommodations.filter(
       (item) => item.data.max_guests >= query.guests
     );
