@@ -40,10 +40,6 @@ const AccommodationListSlice = async ({ slice }) => {
         heading={slice.primary.heading}
         subheading={slice.primary.description}
       />
-      {/* <CardList
-        cardDetails={sortedAccommodations}
-        limit={slice.primary.limit}
-      /> */}
       <section className="relative lg:py-16 py-8">
         <div className="container">
           <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-[30px]">
