@@ -32,7 +32,7 @@ export const AccommodationSingle = ({ accommodations, showAll }) => {
       return <p>No results found</p>;
     }
 
-    const filteredByChangeOverDay = filteredByDate.filter((item) =>
+    const filteredByChangeoverDay = filteredByDate.filter((item) =>
       filterByChangeoverDayAndMinimumStay(
         item.data.pricing,
         query.dateRange.from,
@@ -40,11 +40,11 @@ export const AccommodationSingle = ({ accommodations, showAll }) => {
       )
     );
 
-    if (filteredByChangeOverDay.length === 0) {
+    if (filteredByChangeoverDay.length === 0) {
       return <p>No results found</p>;
     }
 
-    return filteredByChangeOverDay.map((item) => {
+    return filteredByChangeoverDay.map((item) => {
       const price = calculateTotalPrice(
         item.data.pricing,
         query.dateRange.from,

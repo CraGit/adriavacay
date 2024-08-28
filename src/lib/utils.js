@@ -94,7 +94,7 @@ export const calculateTotalPrice = (priceRanges, fromDate, toDate) => {
       toDate,
     ]);
 
-    const daysInRange = differenceInCalendarDays(overlapEnd, overlapStart) + 1;
+    const daysInRange = differenceInCalendarDays(overlapEnd, overlapStart);
 
     totalPrice += daysInRange * range.price;
   });
@@ -140,7 +140,7 @@ export const calculateTotalPriceWithDiscount = (
 
     for (
       let date = overlapStart;
-      isBefore(date, overlapEnd) || isEqual(date, overlapEnd);
+      isBefore(date, overlapEnd);
       date = addDays(date, 1)
     ) {
       const dailyPrice = range.price;
@@ -166,7 +166,7 @@ export const filterByChangeoverDayAndMinimumStay = (
   let startRangeValid = false;
   let endRangeValid = false;
 
-  const totalStay = differenceInCalendarDays(toDate, fromDate) + 1;
+  const totalStay = differenceInCalendarDays(toDate, fromDate);
 
   priceRanges.forEach((range) => {
     // Calculate the overlap between the price range and the user's date range
@@ -202,7 +202,7 @@ export const filterByChangeoverDayAndMinimumStay = (
       startRangeValid = false;
       endRangeValid = false;
     }
-
-    return startRangeValid && endRangeValid;
   });
+
+  return startRangeValid && endRangeValid;
 };
