@@ -38,12 +38,12 @@ export default function Footer() {
                     </div>
 
                     <div className="subcribe-form z-1">
-                      <button
-                        type="submit"
+                      <Link
+                        href="/contact"
                         className="btn bg-green-600 hover:bg-green-700 text-white rounded-full"
                       >
                         Contact
-                      </button>
+                      </Link>
                     </div>
                   </div>
 
@@ -68,23 +68,22 @@ export default function Footer() {
                       href="#"
                       className="text-[22px] focus:outline-none text-white font-semibold"
                     >
-                      {/* <Image
-                        src="/images/logo-light.png"
+                      <Image
+                        src="/images/logoslogan.svg"
                         alt=""
-                        width={98}
+                        width={240}
                         height={28}
-                      /> */}
-                      adriaVacay
+                      />
                     </Link>
-                    <p className="mt-6 text-gray-300">
+                    {/* <p className="mt-6 text-gray-300">
                       adriaVacay is a platform that connects travelers with
                       hosts. We provide a platform for hosts to accommodate
                       travelers with short-term lodging and tourism-related
                       activities.
-                    </p>
+                    </p> */}
                   </div>
 
-                  <div className="lg:col-span-2 md:col-span-4">
+                  {/* <div className="lg:col-span-2 md:col-span-4">
                     <h5 className="tracking-[1px] text-gray-100 font-semibold">
                       Company
                     </h5>
@@ -170,9 +169,9 @@ export default function Footer() {
                         </Link>
                       </li>
                     </ul>
-                  </div>
+                  </div> */}
 
-                  <div className="lg:col-span-3 md:col-span-4">
+                  <div className="lg:col-span-8 md:col-span-8 ml-auto">
                     <h5 className="tracking-[1px] text-gray-100 font-semibold">
                       Contact Details
                     </h5>
@@ -180,15 +179,11 @@ export default function Footer() {
                       <FiMapPin className="w-5 h-5 text-green-600 me-3"></FiMapPin>
                       <div className="">
                         <h6 className="text-gray-300 mb-2">
-                          adriaVacay, vl. Ana Bijuković
+                          AdriaVacay, vl. Josip Čorić
                         </h6>
-                        <Link
-                          href="#"
-                          data-type="iframe"
-                          className="text-green-600 hover:text-green-700 duration-500 ease-in-out lightbox"
-                        >
-                          Our location
-                        </Link>
+                        <p className="text-green-600 duration-500 ease-in-out lightbox">
+                          Naklice 29, 21252 Tugare
+                        </p>
                       </div>
                     </div>
 
@@ -196,10 +191,10 @@ export default function Footer() {
                       <FiMail className="w-5 h-5 text-green-600 me-3"></FiMail>
                       <div className="">
                         <Link
-                          href="mailto:email@email.hr"
+                          href="mailto:adriavacay@gmail.com"
                           className="text-slate-300 hover:text-slate-400 duration-500 ease-in-out"
                         >
-                          email@email.hr
+                          adriavacay@gmail.com
                         </Link>
                       </div>
                     </div>
@@ -208,10 +203,10 @@ export default function Footer() {
                       <FiPhone className="w-5 h-5 text-green-600 me-3"></FiPhone>
                       <div className="">
                         <Link
-                          href="tel:+385991234567"
+                          href="tel:+385976663532"
                           className="text-slate-300 hover:text-slate-400 duration-500 ease-in-out"
                         >
-                          +38599 123 4567
+                          +385976663532
                         </Link>
                       </div>
                     </div>

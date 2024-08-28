@@ -22,14 +22,16 @@ export default function Hero({
               <TextAnimation start={start} animated={animated} end={end} />
               <p className="text-white/70 text-xl max-w-xl">{description}</p>
 
-              <div className="mt-4">
-                <Link
-                  href={buttonLink}
-                  className="btn bg-green-600 hover:bg-green-700 text-white rounded-md mt-3"
-                >
-                  {buttonText}{" "}
-                </Link>
-              </div>
+              {buttonText && buttonLink && (
+                <div className="mt-4">
+                  <Link
+                    href={buttonLink}
+                    className="btn bg-green-600 hover:bg-green-700 text-white rounded-md mt-3"
+                  >
+                    {buttonText}{" "}
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -5,6 +5,7 @@ import { League_Spartan } from "next/font/google";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import SearchProvider from "@/providers/search-provider";
+import ContactBar from "./components/ContactBar";
 
 const league_Spartan = League_Spartan({
   subsets: ["latin"],
@@ -27,6 +28,7 @@ export default function RootLayout({ children }) {
           <Navbar navClass="navbar-white" />
           {children}
           <Footer />
+          <ContactBar />
         </SearchProvider>
       </body>
     </html>
