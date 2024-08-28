@@ -4,7 +4,6 @@ import { createContext, useContext, useState } from "react";
 
 const SearchContext = createContext({
   query: {
-    category: "villa",
     dateRange: { from: null, to: null },
     guests: 1,
   },
@@ -14,7 +13,6 @@ const SearchContext = createContext({
 
 const SearchProvider = ({ children }) => {
   const [query, setQuery] = useState({
-    category: "villa",
     dateRange: { from: null, to: null },
     guests: 1,
   });
@@ -25,7 +23,6 @@ const SearchProvider = ({ children }) => {
 
   const resetQuery = () => {
     setQuery({
-      category: "villa",
       dateRange: { from: null, to: null },
       guests: 1,
     });

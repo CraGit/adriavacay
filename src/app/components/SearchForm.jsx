@@ -33,22 +33,14 @@ export default function SearchForm() {
     { value: 20, label: "20" },
   ];
 
-  const { updateQuery } = useSearch();
+  const { query, updateQuery } = useSearch();
   const router = useRouter();
 
-  const [category, setCategory] = useState("villa");
-  const [dateRange, setDateRange] = useState({
-    from: isSaturday(new Date()) ? new Date() : nextSaturday(new Date()),
-    to: isSaturday(new Date())
-      ? nextSaturday(new Date())
-      : nextSaturday(nextSaturday(new Date())),
-  });
-
-  const [guests, setGuests] = useState(1);
+  const [dateRange, setDateRange] = useState(query.dateRange);
+  const [guests, setGuests] = useState(query.guests);
 
   const onSubmit = () => {
     updateQuery({
-      category,
       dateRange,
       guests,
     });
