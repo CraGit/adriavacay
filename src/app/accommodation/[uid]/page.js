@@ -116,9 +116,7 @@ export default async function Page({ params }) {
               <ul className="py-6 flex items-center list-none">
                 <li className="flex items-center lg:me-6 me-4">
                   <GoPeople className=" lg:text-3xl text-2xl me-2 text-green-600" />
-                  <span className="lg:text-xl">
-                    {page.data.max_guests} Guests
-                  </span>
+                  <span className="lg:text-xl">{page.guestsprikaz} Guests</span>
                 </li>
                 <li className="flex items-center lg:me-6 me-4">
                   <LiaCompressArrowsAltSolid className=" lg:text-3xl text-2xl me-2 text-green-600" />

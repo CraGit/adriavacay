@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 
 export const components = {
   accommodation_list_slice: dynamic(() => import("./AccommodationListSlice")),
+  contact_form_slice: dynamic(() => import("./ContactFormSlice")),
   destination_list_slice: dynamic(() => import("./DestinationListSlice")),
   hero_slice: dynamic(() => import("./HeroSlice")),
   small_hero_slice: dynamic(() => import("./SmallHeroSlice")),

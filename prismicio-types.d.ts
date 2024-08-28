@@ -5,6 +5,7 @@ import type * as prismic from "@prismicio/client";
 type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };
 
 type AccommodationDocumentDataSlicesSlice =
+  | HeroSliceSlice
   | SmallHeroSliceSlice
   | AccommodationListSliceSlice;
 
@@ -302,6 +303,17 @@ interface AccommodationSingleDocumentData {
    * - **Documentation**: https://prismic.io/docs/field#number
    */
   max_guests: prismic.NumberField;
+
+  /**
+   * GuestsPrikaz field in *Accommodation Single*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: accommodation_single.guestsprikaz
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  guestsprikaz: prismic.KeyTextField;
 
   /**
    * m2 field in *Accommodation Single*
@@ -1202,17 +1214,6 @@ interface AccommodationSingleDocumentData {
   private_buoy_for_the_boat: prismic.BooleanField;
 
   /**
-   * GuestsPrikaz field in *Accommodation Single*
-   *
-   * - **Field Type**: Text
-   * - **Placeholder**: *None*
-   * - **API ID Path**: accommodation_single.guestsprikaz
-   * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/field#key-text
-   */
-  guestsprikaz: prismic.KeyTextField;
-
-  /**
    * Private Sub Boards field in *Accommodation Single*
    *
    * - **Field Type**: Boolean
@@ -1338,7 +1339,9 @@ export type CancelationPolicyDocument<Lang extends string = string> =
     Lang
   >;
 
-type ContactDocumentDataSlicesSlice = SmallHeroSliceSlice;
+type ContactDocumentDataSlicesSlice =
+  | ContactFormSliceSlice
+  | SmallHeroSliceSlice;
 
 /**
  * Content for Contact documents
@@ -1782,6 +1785,91 @@ export type AccommodationListSliceSlice = prismic.SharedSlice<
 >;
 
 /**
+ * Primary content in *ContactFormSlice → Default → Primary*
+ */
+export interface ContactFormSliceSliceDefaultPrimary {
+  /**
+   * Heading field in *ContactFormSlice → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: contact_form_slice.default.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  heading: prismic.KeyTextField;
+
+  /**
+   * Company details field in *ContactFormSlice → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: contact_form_slice.default.primary.company_details
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  company_details: prismic.RichTextField;
+
+  /**
+   * Phone field in *ContactFormSlice → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: contact_form_slice.default.primary.phone
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  phone: prismic.KeyTextField;
+
+  /**
+   * Email field in *ContactFormSlice → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: contact_form_slice.default.primary.email
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  email: prismic.KeyTextField;
+
+  /**
+   * Address field in *ContactFormSlice → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: contact_form_slice.default.primary.address
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  address: prismic.KeyTextField;
+}
+
+/**
+ * Default variation for ContactFormSlice Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type ContactFormSliceSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<ContactFormSliceSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *ContactFormSlice*
+ */
+type ContactFormSliceSliceVariation = ContactFormSliceSliceDefault;
+
+/**
+ * ContactFormSlice Shared Slice
+ *
+ * - **API ID**: `contact_form_slice`
+ * - **Description**: ContactFormSlice
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type ContactFormSliceSlice = prismic.SharedSlice<
+  "contact_form_slice",
+  ContactFormSliceSliceVariation
+>;
+
+/**
  * Default variation for DestinationListSlice Slice
  *
  * - **API ID**: `default`
@@ -2034,6 +2122,10 @@ declare module "@prismicio/client" {
       AccommodationListSliceSliceDefaultPrimary,
       AccommodationListSliceSliceVariation,
       AccommodationListSliceSliceDefault,
+      ContactFormSliceSlice,
+      ContactFormSliceSliceDefaultPrimary,
+      ContactFormSliceSliceVariation,
+      ContactFormSliceSliceDefault,
       DestinationListSliceSlice,
       DestinationListSliceSliceVariation,
       DestinationListSliceSliceDefault,

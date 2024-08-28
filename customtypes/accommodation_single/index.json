@@ -50,6 +50,13 @@
           "placeholder": ""
         }
       },
+      "guestsprikaz": {
+        "type": "Text",
+        "config": {
+          "label": "GuestsPrikaz",
+          "placeholder": ""
+        }
+      },
       "sqm": {
         "type": "Text",
         "config": {
@@ -814,13 +821,6 @@
           "default_value": false,
           "placeholder_true": "true",
           "placeholder_false": "false"
-        }
-      },
-      "guestsprikaz": {
-        "type": "Text",
-        "config": {
-          "label": "GuestsPrikaz",
-          "placeholder": ""
         }
       },
       "private_sub_boards": {

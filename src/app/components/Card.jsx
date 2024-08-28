@@ -19,7 +19,7 @@ export default function Card({
   discountedPrice,
   lowestPrice,
   alt,
-  guests,
+  guestsprikaz,
 }) {
   return (
     <div className="group rounded-xl bg-white dark:bg-slate-900 shadow hover:shadow-xl dark:hover:shadow-xl dark:shadow-gray-700 dark:hover:shadow-gray-700 overflow-hidden ease-in-out duration-500">
@@ -61,7 +61,7 @@ export default function Card({
         <ul className="py-6 border-y border-slate-100 dark:border-gray-800 flex items-center list-none">
           <li className="flex items-center me-4">
             <GoPeople width={20} className="me-2 text-green-600" />
-            <span>{guests}</span>
+            <span>{guestsprikaz}</span>
           </li>
           <li className="flex items-center me-4">
             <LiaCompressArrowsAltSolid

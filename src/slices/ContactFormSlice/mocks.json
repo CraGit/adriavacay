@@ -1,0 +1,40 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"heading": {
+				"__TYPE__": "FieldContent",
+				"value": "finger",
+				"type": "Text"
+			},
+			"company_details": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Eu mollit ex consectetur ea. Labore in aliqua Lorem cupidatat. Laborum excepteur aute pariatur."
+						}
+					}
+				]
+			},
+			"phone": {
+				"__TYPE__": "FieldContent",
+				"value": "floor",
+				"type": "Text"
+			},
+			"email": {
+				"__TYPE__": "FieldContent",
+				"value": "egg",
+				"type": "Text"
+			},
+			"address": {
+				"__TYPE__": "FieldContent",
+				"value": "sport",
+				"type": "Text"
+			}
+		},
+		"items": []
+	}
+]
