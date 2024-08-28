@@ -37,6 +37,7 @@
     "react-scroll": "^1.9.0",
     "react-select": "^5.8.0",
     "react-type-animation": "^3.2.0",
+    "react-use": "^17.5.1",
     "sass": "^1.69.7",
     "tailwind-merge": "^2.5.2",
     "tiny-slider-react": "^0.5.7",
