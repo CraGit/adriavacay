@@ -1,3 +1,5 @@
+"use client";
+
 import { addDays, compareAsc } from "date-fns";
 import { useState } from "react";
 
@@ -6,10 +8,13 @@ import { df } from "@/lib/utils";
 import { DayPicker } from "./DayPicker";
 import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
 import { enGB } from "date-fns/locale";
+import { useMedia } from "react-use";
 
 export const DateRangePicker = ({ selected, onSelect }) => {
   const [selectedRange, setSelectedRange] = useState();
   const [count, setCount] = useState(0);
+
+  const isMobile = useMedia("(max-width: 767px)");
 
   const handleSelect = (selectedDay) => {
     let range;
@@ -66,7 +71,7 @@ export const DateRangePicker = ({ selected, onSelect }) => {
           onDayClick={handleSelect}
           disabled={{ before: new Date() }}
           showOutsideDays={false}
-          numberOfMonths={2}
+          numberOfMonths={isMobile ? 1 : 2} // Show 2 months on desktop and 1 on mobile
           className="p-3"
         />
       </PopoverContent>
