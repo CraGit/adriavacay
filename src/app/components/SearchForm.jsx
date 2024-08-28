@@ -94,7 +94,7 @@ export default function SearchForm() {
             </div>
           </div>
 
-          <div className="lg:mt-6">
+          <div className="mt-6 flex justify-end">
             <button
               onClick={onSubmit}
               className="btn bg-green-600 hover:bg-green-700 border-green-600 hover:border-green-700 text-white searchbtn submit-btn w-full !h-[60px] lg:rounded-none rounded mt-2"
