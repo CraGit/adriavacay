@@ -6,6 +6,7 @@ import {
   calculateTotalPrice,
   calculateTotalPriceWithDiscount,
   cn,
+  currency,
   df,
 } from "@/lib/utils";
 import { useSearch } from "@/providers/search-provider";
@@ -59,7 +60,9 @@ export default function PriceDisplay({ prices, discounts, className }) {
           {basePrice === priceWithDiscount && (
             <li className="flex justify-between items-center mt-2">
               <span className="text-slate-400 text-sm">Total</span>
-              <span className="font-medium text-sm">€ {priceWithDiscount}</span>
+              <span className="font-medium text-sm">
+                {currency(priceWithDiscount)}
+              </span>
             </li>
           )}
 
@@ -67,18 +70,20 @@ export default function PriceDisplay({ prices, discounts, className }) {
             <>
               <li className="flex justify-between items-center mt-2">
                 <span className="text-slate-400 text-sm">Base price</span>
-                <span className="font-medium text-sm">€ {basePrice}</span>
+                <span className="font-medium text-sm">
+                  {currency(basePrice)}
+                </span>
               </li>
               <li className="flex justify-between items-center mt-2">
                 <span className="text-slate-400 text-sm">Discount</span>
                 <span className="font-medium text-sm">
-                  € {basePrice - priceWithDiscount}
+                  {currency(basePrice - priceWithDiscount)}
                 </span>
               </li>
               <li className="flex justify-between items-center mt-2">
                 <span className="text-slate-400 text-sm">Total</span>
                 <span className="font-medium text-sm">
-                  € {priceWithDiscount}
+                  {currency(priceWithDiscount)}
                 </span>
               </li>
             </>

@@ -25,6 +25,15 @@ export function cn(...inputs) {
 export const df = (date, formatStr = "PP") =>
   format(date, formatStr, { locale: enGB });
 
+export const currency = (amount) => {
+  return new Intl.NumberFormat("en-GB", {
+    style: "currency",
+    currency: "EUR",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(amount);
+};
+
 export const occupiedDatesFromIcal = async (url) => {
   const dates = [];
 
@@ -99,7 +108,7 @@ export const calculateTotalPrice = (priceRanges, fromDate, toDate) => {
     totalPrice += daysInRange * range.price;
   });
 
-  return totalPrice;
+  return Math.floor(totalPrice);
 };
 
 const getDiscountForDate = (date, discountRanges) => {
@@ -150,7 +159,7 @@ export const calculateTotalPriceWithDiscount = (
     }
   });
 
-  return totalPrice;
+  return Math.floor(totalPrice);
 };
 
 export const isValidChangeoverDay = (date, changeoverDay) => {
