@@ -16,13 +16,13 @@ export default function BookingForm({ className }) {
   const [message, setMessage] = useState("");
 
   return (
-    <div className={cn("rounded-md p-6 shadow", className)}>
-      <h3 className="mb-6 text-2xl leading-normal font-medium">Booking Form</h3>
+    <div className={cn("rounded-md px-4 py-2 shadow", className)}>
+      {/* <h3 className="mb-2 text-lg leading-normal font-medium">Booking Form</h3> */}
 
       <form>
         <div className="grid">
-          <div className="lg:col-span-6 mb-5">
-            <label className="font-medium">Dates</label>
+          <div className="lg:col-span-6 mb-1">
+            <label className="font-medium text-sm">Dates</label>
             <DateRangePicker
               selected={query.dateRange}
               onSelect={(range) => updateQuery({ dateRange: range })}
@@ -30,47 +30,47 @@ export default function BookingForm({ className }) {
             />
           </div>
 
-          <div className="lg:col-span-6 mb-5">
-            <label className="font-medium">Number of guests</label>
+          <div className="lg:col-span-1 mb-1 pr-2">
+            <label className="font-medium text-sm">Guests</label>
             <input
               type="text"
-              className="form-input mt-2"
+              className="form-input mt-1"
               value={query.guests}
               onChange={(e) => updateQuery({ guests: e.target.value })}
             />
           </div>
 
-          <div className="lg:col-span-6 mb-5">
-            <label className="font-medium">Name:</label>
+          <div className="lg:col-span-5 mb-1">
+            <label className="font-medium text-sm">Name:</label>
             <input
               type="text"
-              className="form-input mt-2"
+              className="form-input mt-1"
               placeholder="Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
           </div>
 
-          <div className="lg:col-span-6 mb-5">
-            <label className="font-medium">Email:</label>
+          <div className="lg:col-span-6 mb-1">
+            <label className="font-medium text-sm">Email:</label>
             <input
               type="email"
-              className="form-input mt-2"
+              className="form-input mt-1"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
-          <div>
-            <label className="font-medium">Your Message</label>
+          {/* <div>
+            <label className="font-medium text-sm">Your Message</label>
             <textarea
               className="form-input mt-2 textarea w-full"
               placeholder="Message"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
             ></textarea>
-          </div>
+          </div> */}
         </div>
       </form>
     </div>
