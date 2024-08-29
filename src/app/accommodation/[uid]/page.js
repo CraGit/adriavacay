@@ -181,7 +181,7 @@ export default async function Page({ params }) {
                   </div>
                 </div> */}
 
-                <div className="flex mt-6">
+                {/* <div className="flex mt-6">
                   <div className="flex-grow">
                     <Link
                       href="#"
@@ -190,15 +190,7 @@ export default async function Page({ params }) {
                       Book Now
                     </Link>
                   </div>
-                  {/* <div className="p-1 w-1/2">
-                      <Link
-                        href="#"
-                        className="btn bg-green-600 hover:bg-green-700 text-white rounded-md w-full"
-                      >
-                        Offer Now
-                      </Link>
-                    </div> */}
-                </div>
+                </div> */}
 
                 <div className="mt-12 text-center">
                   <h3 className="mb-6 text-xl leading-normal font-medium text-black dark:text-white">

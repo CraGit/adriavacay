@@ -77,7 +77,9 @@ export const AccommodationSingle = ({ accommodations, showAll }) => {
     });
   } else {
     return accommodations.map((item) => {
-      const lowestPrice = Math.min(...item.data.pricing.map((p) => p.price));
+      const lowestPrice = Math.floor(
+        Math.min(...item.data.pricing.map((p) => p.price))
+      );
 
       return (
         <Card

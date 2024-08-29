@@ -7,6 +7,7 @@ import {
   LuBath,
   GoPeople,
 } from "../assets/icons/vander";
+import { currency } from "@/lib/utils";
 
 export default function Card({
   uid,
@@ -86,14 +87,18 @@ export default function Card({
           <li>
             <span className="text-slate-400">Price</span>
             <p className="text-lg font-medium">
-              {basePrice && basePrice === discountedPrice && `€${basePrice}`}
+              {basePrice &&
+                basePrice === discountedPrice &&
+                currency(basePrice)}
               {basePrice && basePrice !== discountedPrice && (
                 <>
-                  <span className="line-through text-sm">€{basePrice}</span>
-                  <span className="ml-2">€{discountedPrice}</span>
+                  <span className="line-through text-sm">
+                    {currency(basePrice)}
+                  </span>
+                  <span className="ml-2">{currency(discountedPrice)}</span>
                 </>
               )}
-              {lowestPrice && `from €${lowestPrice}`}
+              {lowestPrice && `from ${currency(lowestPrice)}`}
             </p>
           </li>
 
