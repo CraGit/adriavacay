@@ -34,6 +34,7 @@ export default async function Page({ params }) {
       alt: photo.image.alt,
       width: Number(photo.image.dimensions?.width),
       height: Number(photo.image.dimensions?.height),
+      description: photo.image.alt,
     };
   });
 

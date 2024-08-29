@@ -10,6 +10,8 @@ import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
 import SmallHeading from "./SmallHeading";
+import Captions from "yet-another-react-lightbox/plugins/captions";
+import "yet-another-react-lightbox/plugins/captions.css";
 
 export default function PhotoGallery({ photos, overtitle, heading }) {
   const [index, setIndex] = useState(-1);
@@ -37,7 +39,7 @@ export default function PhotoGallery({ photos, overtitle, heading }) {
         open={index >= 0}
         index={index}
         close={() => setIndex(-1)}
-        plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+        plugins={[Fullscreen, Slideshow, Thumbnails, Zoom, Captions]}
       />
     </div>
   );
