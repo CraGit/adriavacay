@@ -35,8 +35,6 @@ export default function PriceDisplay({ prices, discounts, className }) {
     query.dateRange.to
   );
 
-  console.log({ basePrice, priceWithDiscount });
-
   return (
     <div className={cn("rounded-md bg-slate-50 shadow", className)}>
       <div className="p-6">

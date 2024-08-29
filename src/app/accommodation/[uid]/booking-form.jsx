@@ -6,6 +6,7 @@ import { useState } from "react";
 import { DateRangePicker } from "@/app/components/DateRangePicker";
 import { useSearch } from "@/providers/search-provider";
 import { cn } from "@/lib/utils";
+import { submitBooking } from "@/actions/booking";
 
 export default function BookingForm({ className }) {
   const { query, updateQuery } = useSearch();
@@ -15,11 +16,13 @@ export default function BookingForm({ className }) {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
-  return (
-    <div className={cn("rounded-md px-4 py-2 shadow", className)}>
-      {/* <h3 className="mb-2 text-lg leading-normal font-medium">Booking Form</h3> */}
+  const onSubmit = submitBooking.bind(null, query.dateRange, query.guests);
 
-      <form>
+  return (
+    <form action={onSubmit}>
+      <div className={cn("rounded-md px-4 py-2 shadow", className)}>
+        {/* <h3 className="mb-2 text-lg leading-normal font-medium">Booking Form</h3> */}
+
         <div className="grid">
           <div className="lg:col-span-6 mb-1">
             <label className="font-medium text-sm">Dates</label>
@@ -43,6 +46,7 @@ export default function BookingForm({ className }) {
           <div className="lg:col-span-5 mb-1">
             <label className="font-medium text-sm">Name:</label>
             <input
+              name="name"
               type="text"
               className="form-input mt-1"
               placeholder="Name"
@@ -54,6 +58,7 @@ export default function BookingForm({ className }) {
           <div className="lg:col-span-6 mb-1">
             <label className="font-medium text-sm">Email:</label>
             <input
+              name="email"
               type="email"
               className="form-input mt-1"
               placeholder="Email"
@@ -72,7 +77,17 @@ export default function BookingForm({ className }) {
             ></textarea>
           </div> */}
         </div>
-      </form>
-    </div>
+      </div>
+      <div className="flex mt-6">
+        <div className="flex-grow">
+          <button
+            type="submit"
+            className="btn bg-green-600 hover:bg-green-700 text-white rounded-md w-full"
+          >
+            Book Now
+          </button>
+        </div>
+      </div>
+    </form>
   );
 }
