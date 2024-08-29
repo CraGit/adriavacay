@@ -16,6 +16,9 @@ import rtfComponents from "@/app/utilities/richText";
 import PhotoGallery from "@/app/components/Gallery";
 import Distances from "@/app/components/Distances";
 import Amenities from "@/app/components/Amenities";
+import { amenitiesMapping } from "@/data";
+import BookingForm from "./booking-form";
+import PriceDisplay from "./price-display";
 
 export default async function Page({ params }) {
   const client = createClient();
@@ -31,75 +34,10 @@ export default async function Page({ params }) {
       height: Number(photo.image.dimensions?.height),
     };
   });
-  const amenities = [];
-  if (page.data.infinity_pool) amenities.push("Infinity Pool");
-  if (page.data.heated_pool) amenities.push("Heated Pool");
-  if (page.data.salt_pool) amenities.push("Salt Pool");
-  if (page.data.swimming_pool) amenities.push("Swimming Pool");
-  if (page.data.indoor_pool) amenities.push("Indoor Pool");
-  if (page.data.sauna) amenities.push("Sauna");
-  if (page.data.jacuzzi) amenities.push("Jacuzzi");
-  if (page.data.outdoor_shower) amenities.push("Outdoor Shower");
-  if (page.data.sun_deck_chairs) amenities.push("Sun Deck Chairs");
-  if (page.data.lounge_chairs) amenities.push("Lounge Chairs");
-  if (page.data.parasol) amenities.push("Parasol");
-  if (page.data.bbq_wood) amenities.push("BBQ Wood");
-  if (page.data.bbq_gas) amenities.push("BBQ Gas");
-  if (page.data.outdoor_dining_area) amenities.push("Outdoor Dining Area");
-  if (page.data.patio) amenities.push("Patio");
-  if (page.data.summer_kitchen) amenities.push("Summer Kitchen");
-  if (page.data.garden) amenities.push("Garden");
-  if (page.data.balcony) amenities.push("Balcony");
-  if (page.data.organic_garden) amenities.push("Organic Garden");
-  if (page.data.playground) amenities.push("Playground");
-  if (page.data.trampoline) amenities.push("Trampoline");
-  if (page.data.bocce_court) amenities.push("Bocce Court");
-  if (page.data.table_tennis) amenities.push("Table Tennis");
-  if (page.data.pool_table) amenities.push("Pool Table");
-  if (page.data.tennis_court) amenities.push("Tennis Court");
-  if (page.data.fitness_equipment) amenities.push("Fitness Equipment");
-  if (page.data.bicycles) amenities.push("Bicycles");
-  if (page.data.game_consoles) amenities.push("Game Consoles");
-  if (page.data.bluetooth_speakers) amenities.push("Bluetooth Speakers");
-  if (page.data.satellite_cable) amenities.push("Satellite Cable");
-  if (page.data.smart_tv) amenities.push("Smart TV");
-  if (page.data.streaming_service) amenities.push("Streaming Service");
-  if (page.data.free_wifi) amenities.push("WiFi");
-  if (page.data.fully_airconditioned) amenities.push("Fully Air Conditioning");
-  if (page.data.partly_airconditioned)
-    amenities.push("Partly Air Conditioning");
-  if (page.data.heating) amenities.push("Heating");
-  if (page.data.safe) amenities.push("Safe");
-  if (page.data.game_room) amenities.push("Game Room");
-  if (page.data.fitness_room) amenities.push("Fitness Room");
-  if (page.data.dishes_and_utensils) amenities.push("Dishes and Utensils");
-  if (page.data.dishwasher) amenities.push("Dishwasher");
-  if (page.data.microwave) amenities.push("Microvawe");
-  if (page.data.stove) amenities.push("Stove");
-  if (page.data.oven) amenities.push("Oven");
-  if (page.data.refrigerator) amenities.push("Refrigerator");
-  if (page.data.freezer) amenities.push("Freezer");
-  if (page.data.coffee_maker) amenities.push("Coffee Maker");
-  if (page.data.kettle) amenities.push("Kettle");
-  if (page.data.toaster) amenities.push("Toaster");
-  if (page.data.highchair) amenities.push("Highchair");
-  if (page.data.kingsize_bed) amenities.push("King Size Bed");
-  if (page.data.queensize_bed) amenities.push("Queen Size Bed");
-  if (page.data.single_bed) amenities.push("Single Bed");
-  if (page.data.baby_bed) amenities.push("Baby Bed");
-  if (page.data.workplace) amenities.push("Workplace");
-  if (page.data.linens_provided) amenities.push("Linens Provided");
-  if (page.data.towels_provided) amenities.push("Towels Provided");
-  if (page.data.pool_towels_provided) amenities.push("Pool Towels Provided");
-  if (page.data.shower) amenities.push("Shower");
-  if (page.data.bathtub) amenities.push("Bathtub");
-  if (page.data.washing_machine) amenities.push("Washing Machine");
-  if (page.data.dryer) amenities.push("Dryer");
-  if (page.data.iron_and_board) amenities.push("Iron and Board");
-  if (page.data.private_buoy_for_the_boat)
-    amenities.push("Private Buoy for the Boat");
-  if (page.data.private_sub_boards) amenities.push("Private Sub Boards");
-  if (page.data.beach_access) amenities.push("Beach Access");
+
+  const amenities = amenitiesMapping
+    .filter((item) => page.data[item.key])
+    .map((item) => item.label);
 
   return (
     <>
@@ -180,7 +118,12 @@ export default async function Page({ params }) {
 
             <div className="lg:w-1/3 md:w-1/2 md:p-4 px-3 mt-8 md:mt-0">
               <div className="sticky top-20">
-                <div className="rounded-md bg-slate-50 dark:bg-slate-800 shadow dark:shadow-gray-700">
+                <PriceDisplay
+                  prices={page.data.pricing}
+                  discounts={page.data.discounts}
+                />
+                <BookingForm className="mt-6" />
+                {/* <div className="mt-12 rounded-md bg-slate-50 dark:bg-slate-800 shadow dark:shadow-gray-700">
                   <div className="p-6">
                     <h5 className="text-2xl font-medium">Price:</h5>
 
@@ -222,7 +165,19 @@ export default async function Page({ params }) {
                         Book Now
                       </Link>
                     </div>
-                    {/* <div className="p-1 w-1/2">
+                  </div>
+                </div> */}
+
+                <div className="flex mt-6">
+                  <div className="flex-grow">
+                    <Link
+                      href="#"
+                      className="btn bg-green-600 hover:bg-green-700 text-white rounded-md w-full"
+                    >
+                      Book Now
+                    </Link>
+                  </div>
+                  {/* <div className="p-1 w-1/2">
                       <Link
                         href="#"
                         className="btn bg-green-600 hover:bg-green-700 text-white rounded-md w-full"
@@ -230,7 +185,6 @@ export default async function Page({ params }) {
                         Offer Now
                       </Link>
                     </div> */}
-                  </div>
                 </div>
 
                 <div className="mt-12 text-center">
