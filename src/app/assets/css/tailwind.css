@@ -2665,20 +2665,20 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
             margin-inline-end: 10px;
   }
   #topnav .navigation-menu.nav-light > li > a{
-    color: rgb(255 255 255 / 0.5);
+    color: rgb(172 139 21 / 0.5);
 
   }
   #topnav .navigation-menu.nav-light > li.active > a{
     --tw-text-opacity: 1 !important;
-    color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
+    color: rgb(172 139 21 / var(--tw-text-opacity)) !important;
   }
   #topnav .navigation-menu.nav-light > li:hover > .menu-arrow{
     --tw-border-opacity: 1 !important;
-    border-color: rgb(255 255 255 / var(--tw-border-opacity)) !important;
+    border-color: rgb(172 139 21/ var(--tw-border-opacity)) !important;
   }
   #topnav .navigation-menu.nav-light > li:hover > a{
     --tw-text-opacity: 1 !important;
-    color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
+    color: rgb(172 139 21 / var(--tw-text-opacity)) !important;
   }
   #topnav .navigation-menu.nav-light .has-submenu .menu-arrow{
     border-color: rgb(255 255 255 / 0.5);
