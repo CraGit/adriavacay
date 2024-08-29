@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Select from "react-select";
-import { isSaturday, nextSaturday } from "date-fns";
 
 import { RxHome, GoPeople, AiOutlineCalendar } from "../assets/icons/vander";
 import { DateRangePicker } from "./DateRangePicker";
@@ -63,6 +62,7 @@ export default function SearchForm() {
               <DateRangePicker
                 selected={dateRange}
                 onSelect={(range) => setDateRange(range)}
+                className="filter-input-box bg-gray-50 dark:bg-slate-800 border-0"
               />
             </div>
           </div>
