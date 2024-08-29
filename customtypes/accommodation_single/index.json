@@ -50,7 +50,7 @@
           "placeholder": ""
         }
       },
-      "guestsprikaz": {
+      "guestsPrikaz": {
         "type": "Text",
         "config": {
           "label": "GuestsPrikaz",

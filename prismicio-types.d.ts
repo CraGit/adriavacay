@@ -309,11 +309,11 @@ interface AccommodationSingleDocumentData {
    *
    * - **Field Type**: Text
    * - **Placeholder**: *None*
-   * - **API ID Path**: accommodation_single.guestsprikaz
+   * - **API ID Path**: accommodation_single.guestsPrikaz
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/field#key-text
    */
-  guestsprikaz: prismic.KeyTextField;
+  guestsPrikaz: prismic.KeyTextField;
 
   /**
    * m2 field in *Accommodation Single*

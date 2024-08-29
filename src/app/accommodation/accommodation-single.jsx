@@ -71,6 +71,7 @@ export const AccommodationSingle = ({ accommodations, showAll }) => {
           sqm={item.data.sqm}
           title={item.data.heading}
           guests={item.data.max_guests}
+          guestsPrikaz={item.data.guestsPrikaz}
         />
       ) : null; // Ne prikazujemo smještaj ako nema cijene za odabrane datume
     });
@@ -90,6 +91,7 @@ export const AccommodationSingle = ({ accommodations, showAll }) => {
           sqm={item.data.sqm}
           title={item.data.heading}
           guests={item.data.max_guests}
+          guestsPrikaz={item.data.guestsPrikaz}
         />
       );
     });

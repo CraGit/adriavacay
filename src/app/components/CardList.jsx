@@ -18,6 +18,7 @@ export default function CardGrid({ cardDetails, limit = "No limit" }) {
   const filterByDate = filterByPeople.filter(
     (card) => !hasOverlap(query.dateRange, card.occupiedDates)
   );
+  console.log(filterByDate);
 
   return (
     <section className="relative lg:py-16 py-8">
@@ -36,6 +37,7 @@ export default function CardGrid({ cardDetails, limit = "No limit" }) {
                 alt={item.data.gallery[0].image.alt}
                 sqm={item.data.sqm}
                 title={item.data.heading}
+                guestsPrikaz={item.data.guestsPrikaz}
                 guests={item.data.max_guests}
               />
             ))}
