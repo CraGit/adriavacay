@@ -384,17 +384,6 @@ interface AccommodationSingleDocumentData {
   security_deposit: prismic.NumberField;
 
   /**
-   * Location field in *Accommodation Single*
-   *
-   * - **Field Type**: GeoPoint
-   * - **Placeholder**: *None*
-   * - **API ID Path**: accommodation_single.location
-   * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/field#geopoint
-   */
-  location: prismic.GeoPointField;
-
-  /**
    * Google Map Embed field in *Accommodation Single*
    *
    * - **Field Type**: Text

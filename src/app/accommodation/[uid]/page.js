@@ -25,6 +25,8 @@ export default async function Page({ params }) {
   const page = await client
     .getByUID("accommodation_single", params.uid)
     .catch(() => notFound());
+  const cancelationPolicy = await client.getSingle("cancelation_policy");
+  const paymentDetails = await client.getSingle("payment_details");
 
   const photos = page.data.gallery.map((photo) => {
     return {
@@ -116,6 +118,14 @@ export default async function Page({ params }) {
 
               {/* GALLERY */}
               <PhotoGallery photos={photos} heading="Gallery" />
+              <PrismicRichText
+                field={paymentDetails.data.content}
+                components={rtfComponents}
+              />
+              <PrismicRichText
+                field={cancelationPolicy.data.content}
+                components={rtfComponents}
+              />
             </div>
 
             <div className="lg:w-1/3 md:w-1/2 md:p-4 px-3 mt-8 md:mt-0">

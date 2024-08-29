@@ -140,12 +140,6 @@
           "placeholder": ""
         }
       },
-      "location": {
-        "type": "GeoPoint",
-        "config": {
-          "label": "Location"
-        }
-      },
       "google_map_embed": {
         "type": "Text",
         "config": {
