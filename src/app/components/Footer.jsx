@@ -206,9 +206,17 @@ export default function Footer() {
                           href="tel:+385976663532"
                           className="text-slate-300 hover:text-slate-400 duration-500 ease-in-out"
                         >
-                          +385976663532
+                          +385 97 666 35 32
                         </Link>
                       </div>
+                    </div>
+                    <div className="flex mt-12">
+                      <Link
+                        href="/terms-and-conditions"
+                        className="text-slate-100 font-semibold hover:text-slate-400 duration-500 ease-in-out"
+                      >
+                        Terms and Conditions
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -221,8 +229,8 @@ export default function Footer() {
           <div className="container text-center">
             <div className="grid md:grid-cols-2 items-center gap-6">
               <div className="md:text-start text-center">
-                <p className="mb-0 text-gray-300">
-                  ©{new Date().getFullYear()} Web by{" "}
+                <p className="mb-0 text-gray-500">
+                  Web by{" "}
                   <Link
                     href="https://killerclick.com/"
                     target="_blank"
@@ -231,7 +239,15 @@ export default function Footer() {
                     Killer Click
                   </Link>
                   .
+                  <p className="mb-0 text-gray-300">
+                    Adriavacay &copy; {new Date().getFullYear()}
+                  </p>
                 </p>
+
+                {/* <Link href="/privacy-policy" className="text-gray-300">
+                    
+                  Privacy Policy
+                </Link> */}
               </div>
 
               <ul className="list-none md:text-end text-center">

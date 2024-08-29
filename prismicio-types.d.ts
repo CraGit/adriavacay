@@ -1707,6 +1707,104 @@ export type PaymentDetailsDocument<Lang extends string = string> =
     Lang
   >;
 
+type TermsAndConditionsDocumentDataSlicesSlice = never;
+
+/**
+ * Content for Terms and Conditions documents
+ */
+interface TermsAndConditionsDocumentData {
+  /**
+   * Heading field in *Terms and Conditions*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: terms_and_conditions.heading
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  heading: prismic.KeyTextField;
+
+  /**
+   * Image field in *Terms and Conditions*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: terms_and_conditions.image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image: prismic.ImageField<never>;
+
+  /**
+   * Content field in *Terms and Conditions*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: terms_and_conditions.content
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  content: prismic.RichTextField;
+
+  /**
+   * Slice Zone field in *Terms and Conditions*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: terms_and_conditions.slices[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#slices
+   */
+  slices: prismic.SliceZone<TermsAndConditionsDocumentDataSlicesSlice> /**
+   * Meta Title field in *Terms and Conditions*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A title of the page used for social media and search engines
+   * - **API ID Path**: terms_and_conditions.meta_title
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */;
+  meta_title: prismic.KeyTextField;
+
+  /**
+   * Meta Description field in *Terms and Conditions*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A brief summary of the page
+   * - **API ID Path**: terms_and_conditions.meta_description
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  meta_description: prismic.KeyTextField;
+
+  /**
+   * Meta Image field in *Terms and Conditions*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: terms_and_conditions.meta_image
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  meta_image: prismic.ImageField<never>;
+}
+
+/**
+ * Terms and Conditions document from Prismic
+ *
+ * - **API ID**: `terms_and_conditions`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type TermsAndConditionsDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithoutUID<
+    Simplify<TermsAndConditionsDocumentData>,
+    "terms_and_conditions",
+    Lang
+  >;
+
 export type AllDocumentTypes =
   | AccommodationDocument
   | AccommodationSingleDocument
@@ -1715,7 +1813,8 @@ export type AllDocumentTypes =
   | DestinationDocument
   | DestinationsDocument
   | HomepageDocument
-  | PaymentDetailsDocument;
+  | PaymentDetailsDocument
+  | TermsAndConditionsDocument;
 
 /**
  * Primary content in *AccommodationListSlice → Default → Primary*
@@ -2117,6 +2216,9 @@ declare module "@prismicio/client" {
       HomepageDocumentDataSlicesSlice,
       PaymentDetailsDocument,
       PaymentDetailsDocumentData,
+      TermsAndConditionsDocument,
+      TermsAndConditionsDocumentData,
+      TermsAndConditionsDocumentDataSlicesSlice,
       AllDocumentTypes,
       AccommodationListSliceSlice,
       AccommodationListSliceSliceDefaultPrimary,

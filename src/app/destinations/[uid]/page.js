@@ -1,13 +1,11 @@
 import { notFound } from "next/navigation";
-import { SliceZone } from "@prismicio/react";
 
 import { createClient } from "@/prismicio";
-import { components } from "@/slices";
+
 import SmallHero from "@/app/components/SmallHero";
 
 import { PrismicRichText } from "@prismicio/react";
 import rtfComponents from "@/app/utilities/richText";
-import PhotoGallery from "@/app/components/Gallery";
 
 export default async function Page({ params }) {
   const client = createClient();
