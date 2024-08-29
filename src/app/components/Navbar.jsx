@@ -139,14 +139,14 @@ export default function Navbar(props) {
                 <User className="h-4 w-4 stroke-[3]"></User>
               </Link>
             </li> */}
-            <li className="sm:inline ps-1 mb-0 hidden">
+            {/* <li className="sm:inline ps-1 mb-0 hidden">
               <Link
                 href="/contact"
                 className="btn bg-green-600 hover:bg-green-700 border-green-600 dark:border-green-600 text-white rounded-full"
               >
                 Contact
               </Link>
-            </li>
+            </li> */}
           </ul>
           {/* <!--Login button End--> */}
 
@@ -182,6 +182,11 @@ export default function Navbar(props) {
               <li className={menu === "/destinations" ? "active" : ""}>
                 <Link href="/destinations" className="sub-menu-item">
                   Destinations
+                </Link>
+              </li>
+              <li className={menu === "/contact" ? "active" : ""}>
+                <Link href="/contact" className="sub-menu-item">
+                  Contact
                 </Link>
               </li>
             </ul>
