@@ -252,22 +252,22 @@ export default function Footer() {
 
               <ul className="list-none md:text-end text-center">
                 <li className="inline ms-1">
-                  <Link
+                  <a
                     href="https://www.facebook.com"
                     target="_blank"
                     className="btn btn-icon btn-sm text-gray-400 hover:text-white border border-gray-800 dark:border-gray-700 rounded-md hover:border-green-600 dark:hover:border-green-600 hover:bg-green-600 dark:hover:bg-green-600"
                   >
                     <FiFacebook className="h-4 w-4"></FiFacebook>
-                  </Link>
+                  </a>
                 </li>
                 <li className="inline ms-1">
-                  <Link
-                    href="https://www.instagram.com/"
+                  <a
+                    href="https://www.instagram.com/adriavacay"
                     target="_blank"
                     className="btn btn-icon btn-sm text-gray-400 hover:text-white border border-gray-800 dark:border-gray-700 rounded-md hover:border-green-600 dark:hover:border-green-600 hover:bg-green-600 dark:hover:bg-green-600"
                   >
                     <FiInstagram className="h-4 w-4"></FiInstagram>
-                  </Link>
+                  </a>
                 </li>
               </ul>
             </div>
