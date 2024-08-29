@@ -395,6 +395,17 @@ interface AccommodationSingleDocumentData {
   location: prismic.GeoPointField;
 
   /**
+   * Google Map Embed field in *Accommodation Single*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: accommodation_single.google_map_embed
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  google_map_embed: prismic.KeyTextField;
+
+  /**
    * Is Featured? field in *Accommodation Single*
    *
    * - **Field Type**: Boolean

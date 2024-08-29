@@ -146,6 +146,13 @@
           "label": "Location"
         }
       },
+      "google_map_embed": {
+        "type": "Text",
+        "config": {
+          "label": "Google Map Embed",
+          "placeholder": ""
+        }
+      },
       "isFeatured": {
         "type": "Boolean",
         "config": {

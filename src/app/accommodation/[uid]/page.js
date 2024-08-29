@@ -107,7 +107,7 @@ export default async function Page({ params }) {
 
               <div className="w-full leading-[0] border-0 mt-6">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d23170.360407531967!2d16.89009298267886!3d43.45443700463057!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x134abff56a0e93b9%3A0xafb89b85d0dcc92d!2s%C5%A0estanovac!5e0!3m2!1sen!2shr!4v1718792713508!5m2!1sen!2shr"
+                  src={page.data.google_map_embed}
                   style={{ border: "0" }}
                   className="w-full h-[500px]"
                   allowFullScreen
