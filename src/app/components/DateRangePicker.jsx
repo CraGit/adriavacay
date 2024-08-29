@@ -14,7 +14,7 @@ export const DateRangePicker = ({ selected, onSelect }) => {
   const [selectedRange, setSelectedRange] = useState();
   const [count, setCount] = useState(0);
 
-  const isMobile = useMedia("(max-width: 767px)");
+  const isMobile = useMedia("(max-width: 767px)", true);
 
   const handleSelect = (selectedDay) => {
     let range;
