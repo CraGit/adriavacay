@@ -41,6 +41,7 @@ export default function BookingForm({ occupiedDates, className }) {
               className="form-input mt-1"
               value={query.guests}
               onChange={(e) => updateQuery({ guests: e.target.value })}
+              required
             />
           </div>
 
@@ -53,6 +54,7 @@ export default function BookingForm({ occupiedDates, className }) {
               placeholder="Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              required
             />
           </div>
 
@@ -65,6 +67,7 @@ export default function BookingForm({ occupiedDates, className }) {
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
 

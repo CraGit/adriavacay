@@ -1,13 +1,62 @@
 "use server";
 
+import { format } from "date-fns";
+import { z } from "zod";
+import mail from "@sendgrid/mail";
+import { redirect } from "next/navigation";
+
+const bookingSchema = z.object({
+  name: z.string().min(3),
+  email: z.string().email(),
+  guests: z.number().int().positive(),
+  dateFrom: z.string().min(1).date(),
+  dateTo: z.string().min(1).date(),
+});
+
+mail.setApiKey(process.env.SENDGRID_API_KEY || "");
+
 export async function submitBooking(dateRange, guests, formData) {
-  const rawFormData = {
+  const validatedFields = bookingSchema.safeParse({
     name: formData.get("name"),
     email: formData.get("email"),
-    dateFrom: dateRange.from,
-    dateTo: dateRange.to,
+    dateFrom: format(dateRange.from, "yyyy-MM-dd"),
+    dateTo: format(dateRange.to, "yyyy-MM-dd"),
     guests,
+  });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+
+  const message = `
+    Name: ${validatedFields.data.name}\r\n
+    Email: ${validatedFields.data.email}\r\n
+    Guests: ${validatedFields.data.guests}\r\n
+    Date from: ${validatedFields.data.dateFrom}\r\n
+    Date to: ${validatedFields.data.dateTo}
+  `;
+
+  const data = {
+    //to: "adriavacaycom@gmail.com",
+    to: "skruzic@gmail.com",
+    from: "adriavacaycom@gmail.com",
+    replyTo: {
+      email: validatedFields.data.email,
+      name: validatedFields.data.name,
+    },
+    subject: "AdriaVacay - upit s web stranice",
+    text: message,
+    html: message.replace(/\r\n/g, "<br>"),
   };
 
-  console.log(rawFormData);
+  try {
+    await mail.send(data);
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to send email");
+  }
+
+  redirect("/message-sent");
 }
