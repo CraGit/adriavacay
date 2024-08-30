@@ -39,8 +39,7 @@ export async function submitBooking(dateRange, guests, formData) {
   `;
 
   const data = {
-    //to: "adriavacaycom@gmail.com",
-    to: "skruzic@gmail.com",
+    to: "adriavacay@gmail.com",
     from: "adriavacaycom@gmail.com",
     replyTo: {
       email: validatedFields.data.email,
