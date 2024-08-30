@@ -238,7 +238,7 @@ export default function Footer() {
                   >
                     Killer Click
                   </Link>
-                  .
+                  .{"  "}{" "}
                   <span className="mb-0 text-gray-300">
                     Adriavacay &copy; {new Date().getFullYear()}
                   </span>
