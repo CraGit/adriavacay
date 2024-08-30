@@ -19,6 +19,7 @@ import Amenities from "@/app/components/Amenities";
 import { amenitiesMapping } from "@/data";
 import BookingForm from "./booking-form";
 import PriceDisplay from "./price-display";
+import { occupiedDatesFromIcal } from "@/lib/utils";
 
 export default async function Page({ params }) {
   const client = createClient();
@@ -27,6 +28,7 @@ export default async function Page({ params }) {
     .catch(() => notFound());
   const cancelationPolicy = await client.getSingle("cancelation_policy");
   const paymentDetails = await client.getSingle("payment_details");
+  const occupiedDates = await occupiedDatesFromIcal(page.data.ical);
 
   const photos = page.data.gallery.map((photo) => {
     return {
@@ -135,7 +137,7 @@ export default async function Page({ params }) {
                   prices={page.data.pricing}
                   discounts={page.data.discounts}
                 />
-                <BookingForm className="mt-6" />
+                <BookingForm occupiedDates={occupiedDates} className="mt-6" />
                 {/* <div className="mt-12 rounded-md bg-slate-50 dark:bg-slate-800 shadow dark:shadow-gray-700">
                   <div className="p-6">
                     <h5 className="text-2xl font-medium">Price:</h5>

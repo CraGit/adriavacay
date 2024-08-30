@@ -8,7 +8,7 @@ import { useSearch } from "@/providers/search-provider";
 import { cn } from "@/lib/utils";
 import { submitBooking } from "@/actions/booking";
 
-export default function BookingForm({ className }) {
+export default function BookingForm({ occupiedDates, className }) {
   const { query, updateQuery } = useSearch();
   const router = useRouter();
 
@@ -30,6 +30,7 @@ export default function BookingForm({ className }) {
               selected={query.dateRange}
               onSelect={(range) => updateQuery({ dateRange: range })}
               className="mt-2"
+              disabledDates={occupiedDates}
             />
           </div>
 

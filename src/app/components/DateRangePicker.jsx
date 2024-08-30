@@ -10,7 +10,12 @@ import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
 import { enGB } from "date-fns/locale";
 import { useMedia } from "react-use";
 
-export const DateRangePicker = ({ selected, onSelect, className = "" }) => {
+export const DateRangePicker = ({
+  selected,
+  onSelect,
+  className = "",
+  disabledDates = [],
+}) => {
   const [selectedRange, setSelectedRange] = useState();
   const [count, setCount] = useState(0);
 
@@ -66,10 +71,11 @@ export const DateRangePicker = ({ selected, onSelect, className = "" }) => {
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0 bg-white">
         <DayPicker
+          fixedWeeks
           locale={enGB}
           mode="range"
           onDayClick={handleSelect}
-          disabled={{ before: new Date() }}
+          disabled={[{ before: new Date() }, ...disabledDates]}
           showOutsideDays={false}
           numberOfMonths={isMobile ? 1 : 2} // Show 2 months on desktop and 1 on mobile
           className="p-3"
