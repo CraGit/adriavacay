@@ -41,8 +41,8 @@ export async function submitBooking(uid, dateRange, guests, formData) {
   `;
 
   const data = {
-    to: "adriavacay@gmail.com",
-    from: "adriavacaycom@gmail.com",
+    to: process.env.MAIL_TO,
+    from: process.env.MAIL_FROM,
     replyTo: {
       email: validatedFields.data.email,
       name: validatedFields.data.name,
