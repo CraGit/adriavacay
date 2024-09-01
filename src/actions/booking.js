@@ -1,19 +1,11 @@
 "use server";
 
 import { format } from "date-fns";
-import { z } from "zod";
 import mail from "@sendgrid/mail";
 import { notFound, redirect } from "next/navigation";
 
 import { createClient } from "@/prismicio";
-
-const bookingSchema = z.object({
-  name: z.string().min(3),
-  email: z.string().email(),
-  guests: z.number().int().positive(),
-  dateFrom: z.string().min(1).date(),
-  dateTo: z.string().min(1).date(),
-});
+import { bookingSchema } from "@/data/schemas";
 
 mail.setApiKey(process.env.SENDGRID_API_KEY || "");
 

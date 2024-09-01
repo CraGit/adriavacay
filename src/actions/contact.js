@@ -2,14 +2,8 @@
 
 import mail from "@sendgrid/mail";
 import { redirect } from "next/navigation";
-import { z } from "zod";
 
-const contactSchema = z.object({
-  name: z.string().min(2),
-  email: z.string().email(),
-  subject: z.string().min(2),
-  message: z.string().min(10),
-});
+import { contactSchema } from "@/data/schemas";
 
 mail.setApiKey(process.env.SENDGRID_API_KEY || "");
 
