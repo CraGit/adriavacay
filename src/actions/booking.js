@@ -3,7 +3,9 @@
 import { format } from "date-fns";
 import { z } from "zod";
 import mail from "@sendgrid/mail";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+
+import { createClient } from "@/prismicio";
 
 const bookingSchema = z.object({
   name: z.string().min(3),
@@ -15,7 +17,7 @@ const bookingSchema = z.object({
 
 mail.setApiKey(process.env.SENDGRID_API_KEY || "");
 
-export async function submitBooking(dateRange, guests, formData) {
+export async function submitBooking(uid, dateRange, guests, formData) {
   const validatedFields = bookingSchema.safeParse({
     name: formData.get("name"),
     email: formData.get("email"),
@@ -30,12 +32,18 @@ export async function submitBooking(dateRange, guests, formData) {
     };
   }
 
+  const client = createClient();
+  const page = await client
+    .getByUID("accommodation_single", uid)
+    .catch(() => notFound());
+
   const message = `
     Name: ${validatedFields.data.name}\r\n
     Email: ${validatedFields.data.email}\r\n
     Guests: ${validatedFields.data.guests}\r\n
     Date from: ${validatedFields.data.dateFrom}\r\n
-    Date to: ${validatedFields.data.dateTo}
+    Date to: ${validatedFields.data.dateTo}\r\n
+    Villa: ${page.data.heading}
   `;
 
   const data = {

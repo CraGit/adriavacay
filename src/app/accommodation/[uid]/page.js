@@ -137,7 +137,11 @@ export default async function Page({ params }) {
                   prices={page.data.pricing}
                   discounts={page.data.discounts}
                 />
-                <BookingForm occupiedDates={occupiedDates} className="mt-6" />
+                <BookingForm
+                  uid={params.uid}
+                  occupiedDates={occupiedDates}
+                  className="mt-6"
+                />
                 {/* <div className="mt-12 rounded-md bg-slate-50 dark:bg-slate-800 shadow dark:shadow-gray-700">
                   <div className="p-6">
                     <h5 className="text-2xl font-medium">Price:</h5>

@@ -8,7 +8,7 @@ import { useSearch } from "@/providers/search-provider";
 import { cn } from "@/lib/utils";
 import { submitBooking } from "@/actions/booking";
 
-export default function BookingForm({ occupiedDates, className }) {
+export default function BookingForm({ uid, occupiedDates, className }) {
   const { query, updateQuery } = useSearch();
   const router = useRouter();
 
@@ -16,7 +16,7 @@ export default function BookingForm({ occupiedDates, className }) {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
-  const onSubmit = submitBooking.bind(null, query.dateRange, query.guests);
+  const onSubmit = submitBooking.bind(null, uid, query.dateRange, query.guests);
 
   return (
     <form action={onSubmit}>
