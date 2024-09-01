@@ -29,7 +29,8 @@ export async function submit(formData) {
   `;
 
   const data = {
-    to: "adriavacay@gmail.com",
+    //to: "adriavacay@gmail.com",
+    to: "skruzic@gmail.com",
     from: "adriavacaycom@gmail.com",
     replyTo: {
       email: validatedFields.data.email,

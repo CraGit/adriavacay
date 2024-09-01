@@ -10,16 +10,34 @@ import { submitBooking } from "@/actions/booking";
 
 export default function BookingForm({ uid, occupiedDates, className }) {
   const { query, updateQuery } = useSearch();
-  const router = useRouter();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
-  const onSubmit = submitBooking.bind(null, uid, query.dateRange, query.guests);
+  //const onSubmit = submitBooking.bind(null, uid, query.dateRange, query.guests);
+
+  const [errors, setErrors] = useState({});
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const result = await submitBooking(
+      uid,
+      query.dateRange,
+      query.guests,
+      formData
+    );
+
+    if (result?.errors) {
+      setErrors(result.errors);
+    }
+  };
+
+  console.log(errors);
 
   return (
-    <form action={onSubmit}>
+    <form onSubmit={handleSubmit}>
       <div className={cn("rounded-md px-4 py-2 shadow", className)}>
         {/* <h3 className="mb-2 text-lg leading-normal font-medium">Booking Form</h3> */}
 
@@ -29,20 +47,35 @@ export default function BookingForm({ uid, occupiedDates, className }) {
             <DateRangePicker
               selected={query.dateRange}
               onSelect={(range) => updateQuery({ dateRange: range })}
-              className="mt-2"
+              className={cn(
+                "mt-2",
+                (errors.dateFrom || errors.dateTo) && "border-red-600"
+              )}
               disabledDates={occupiedDates}
             />
+            {errors.dateFrom && (
+              <span className="text-xs">{errors.dateFrom[0]}</span>
+            )}
+            {errors.dateFrom && errors.dateTo && <br />}
+            {errors.dateTo && (
+              <span className="text-xs">{errors.dateTo[0]}</span>
+            )}
           </div>
 
-          <div className="lg:col-span-1 mb-1 pr-2">
+          <div className="lg:col-span-1 mb-1">
             <label className="font-medium text-sm">Guests</label>
             <input
               type="text"
-              className="form-input mt-1"
+              className={cn(
+                "form-input mt-1",
+                errors.guests && "border-red-600"
+              )}
               value={query.guests}
               onChange={(e) => updateQuery({ guests: e.target.value })}
-              required
             />
+            {errors.guests && (
+              <span className="text-xs">{errors.guests[0]}</span>
+            )}
           </div>
 
           <div className="lg:col-span-5 mb-1">
@@ -50,12 +83,12 @@ export default function BookingForm({ uid, occupiedDates, className }) {
             <input
               name="name"
               type="text"
-              className="form-input mt-1"
+              className={cn("form-input mt-1", errors.name && "border-red-600")}
               placeholder="Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              required
             />
+            {errors.name && <span className="text-xs">{errors.name[0]}</span>}
           </div>
 
           <div className="lg:col-span-6 mb-1">
@@ -63,12 +96,15 @@ export default function BookingForm({ uid, occupiedDates, className }) {
             <input
               name="email"
               type="email"
-              className="form-input mt-1"
+              className={cn(
+                "form-input mt-1",
+                errors.email && "border-red-600"
+              )}
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
             />
+            {errors.email && <span className="text-xs">{errors.email[0]}</span>}
           </div>
 
           {/* <div>

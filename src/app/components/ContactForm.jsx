@@ -1,9 +1,13 @@
+"use client";
+
 import Link from "next/link";
 import { PrismicRichText } from "@prismicio/react";
 
 import { submit } from "@/actions/contact";
 
 import { FiHexagon, FiMail, FiMapPin, FiPhone } from "../assets/icons/vander";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 export default function ContactForm({
   heading,
@@ -12,6 +16,18 @@ export default function ContactForm({
   email,
   address,
 }) {
+  const [errors, setErrors] = useState({});
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const result = await submit(formData);
+
+    if (result?.errors) {
+      setErrors(result.errors);
+    }
+  };
+
   return (
     <section className="relative lg:py-24 py-16">
       <div className="container">
@@ -23,7 +39,7 @@ export default function ContactForm({
                   {heading}
                 </h3>
 
-                <form action={submit}>
+                <form onSubmit={handleSubmit}>
                   <div className="grid lg:grid-cols-12 lg:gap-6">
                     <div className="lg:col-span-6 mb-5">
                       <label htmlFor="name" className="font-medium">
@@ -32,9 +48,15 @@ export default function ContactForm({
                       <input
                         name="name"
                         type="text"
-                        className="form-input mt-2"
+                        className={cn(
+                          "form-input mt-2",
+                          errors.name && "border-red-600"
+                        )}
                         placeholder="Name :"
                       />
+                      {errors.name && (
+                        <span className="text-xs">{errors.name[0]}</span>
+                      )}
                     </div>
 
                     <div className="lg:col-span-6 mb-5">
@@ -44,9 +66,15 @@ export default function ContactForm({
                       <input
                         name="email"
                         type="email"
-                        className="form-input mt-2"
+                        className={cn(
+                          "form-input mt-2",
+                          errors.email && "border-red-600"
+                        )}
                         placeholder="Email :"
                       />
+                      {errors.email && (
+                        <span className="text-xs">{errors.email[0]}</span>
+                      )}
                     </div>
                   </div>
 
@@ -57,9 +85,15 @@ export default function ContactForm({
                       </label>
                       <input
                         name="subject"
-                        className="form-input mt-2"
+                        className={cn(
+                          "form-input mt-2",
+                          errors.subject && "border-red-600"
+                        )}
                         placeholder="Subject :"
                       />
+                      {errors.subject && (
+                        <span className="text-xs">{errors.subject[0]}</span>
+                      )}
                     </div>
 
                     <div className="mb-5">
@@ -68,9 +102,15 @@ export default function ContactForm({
                       </label>
                       <textarea
                         name="message"
-                        className="form-input mt-2 textarea"
+                        className={cn(
+                          "form-input mt-2 textarea",
+                          errors.message && "border-red-600"
+                        )}
                         placeholder="Message :"
                       ></textarea>
+                      {errors.message && (
+                        <span className="text-xs">{errors.message[0]}</span>
+                      )}
                     </div>
                   </div>
                   <button
