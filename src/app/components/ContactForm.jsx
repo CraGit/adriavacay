@@ -1,7 +1,7 @@
-import React from "react";
-
 import Link from "next/link";
 import { PrismicRichText } from "@prismicio/react";
+
+import { submit } from "@/actions/contact";
 
 import { FiHexagon, FiMail, FiMapPin, FiPhone } from "../assets/icons/vander";
 
@@ -23,7 +23,7 @@ export default function ContactForm({
                   {heading}
                 </h3>
 
-                <form>
+                <form action={submit}>
                   <div className="grid lg:grid-cols-12 lg:gap-6">
                     <div className="lg:col-span-6 mb-5">
                       <label htmlFor="name" className="font-medium">
@@ -31,7 +31,6 @@ export default function ContactForm({
                       </label>
                       <input
                         name="name"
-                        id="name"
                         type="text"
                         className="form-input mt-2"
                         placeholder="Name :"
@@ -44,7 +43,6 @@ export default function ContactForm({
                       </label>
                       <input
                         name="email"
-                        id="email"
                         type="email"
                         className="form-input mt-2"
                         placeholder="Email :"
@@ -59,7 +57,6 @@ export default function ContactForm({
                       </label>
                       <input
                         name="subject"
-                        id="subject"
                         className="form-input mt-2"
                         placeholder="Subject :"
                       />
@@ -70,8 +67,7 @@ export default function ContactForm({
                         Your Message:
                       </label>
                       <textarea
-                        name="comments"
-                        id="comments"
+                        name="message"
                         className="form-input mt-2 textarea"
                         placeholder="Message :"
                       ></textarea>

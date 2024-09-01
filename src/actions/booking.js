@@ -53,7 +53,7 @@ export async function submitBooking(uid, dateRange, guests, formData) {
       email: validatedFields.data.email,
       name: validatedFields.data.name,
     },
-    subject: "AdriaVacay - upit s web stranice",
+    subject: "AdriaVacay - upit za rezervacija vile",
     text: message,
     html: message.replace(/\r\n/g, "<br>"),
   };
