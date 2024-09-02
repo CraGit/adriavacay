@@ -1,14 +1,13 @@
 "use client";
 
-import { useSearch } from "@/providers/search-provider";
+import Card from "@/components/Card";
 import {
   calculateTotalPrice,
   calculateTotalPriceWithDiscount,
   filterByChangeoverDayAndMinimumStay,
   hasOverlap,
 } from "@/lib/utils";
-
-import Card from "../components/Card";
+import { useSearch } from "@/providers/search-provider";
 
 export const AccommodationSingle = ({ accommodations, showAll }) => {
   const { query } = useSearch();

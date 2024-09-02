@@ -2,10 +2,10 @@ import { notFound } from "next/navigation";
 
 import { createClient } from "@/prismicio";
 
-import SmallHero from "@/app/components/SmallHero";
+import SmallHero from "@/components/SmallHero";
 
 import { PrismicRichText } from "@prismicio/react";
-import rtfComponents from "@/app/utilities/richText";
+import rtfComponents from "@/lib/richText";
 
 export default async function Page({ params }) {
   const client = createClient();

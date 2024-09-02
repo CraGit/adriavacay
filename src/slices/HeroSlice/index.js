@@ -1,4 +1,4 @@
-import Hero from "@/app/components/Hero";
+import Hero from "@/components/Hero";
 
 /**
  * @typedef {import("@prismicio/client").Content.HeroSliceSlice} HeroSliceSlice

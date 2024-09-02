@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 
-import { FiPhone } from "../assets/icons/vander";
+import { FiPhone } from "../../assets/icons/vander";
 
 export default function GetInTuch() {
   return (

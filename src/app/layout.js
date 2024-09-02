@@ -1,11 +1,11 @@
 import "./globals.css";
-import "./assets/css/tailwind.css";
-import "./assets/css/materialdesignicons.min.css";
+import "@/assets/css/tailwind.css";
+import "@/assets/css/materialdesignicons.min.css";
 import { League_Spartan } from "next/font/google";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import SearchProvider from "@/providers/search-provider";
-import ContactBar from "./components/ContactBar";
+import ContactBar from "@/components/ContactBar";
 
 const league_Spartan = League_Spartan({
   subsets: ["latin"],

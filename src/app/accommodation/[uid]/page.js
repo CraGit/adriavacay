@@ -1,25 +1,26 @@
+import { PrismicRichText, SliceZone } from "@prismicio/react";
+import Link from "next/link";
 import { notFound } from "next/navigation";
-import { SliceZone } from "@prismicio/react";
-import PropertyImage from "@/app/components/PropertyImage";
-import { createClient } from "@/prismicio";
-import { components } from "@/slices";
+
 import {
-  LiaCompressArrowsAltSolid,
-  LuBedDouble,
-  LuBath,
   FiPhone,
   GoPeople,
-} from "../../assets/icons/vander";
-import Link from "next/link";
-import { PrismicRichText } from "@prismicio/react";
-import rtfComponents from "@/app/utilities/richText";
-import PhotoGallery from "@/app/components/Gallery";
-import Distances from "@/app/components/Distances";
-import Amenities from "@/app/components/Amenities";
+  LiaCompressArrowsAltSolid,
+  LuBath,
+  LuBedDouble,
+} from "@/assets/icons/vander";
+import Amenities from "@/components/Amenities";
+import Distances from "@/components/Distances";
+import PhotoGallery from "@/components/Gallery";
+import PropertyImage from "@/components/PropertyImage";
 import { amenitiesMapping } from "@/data";
+import rtfComponents from "@/lib/richText";
+import { occupiedDatesFromIcal } from "@/lib/utils";
+import { createClient } from "@/prismicio";
+import { components } from "@/slices";
+
 import BookingForm from "./booking-form";
 import PriceDisplay from "./price-display";
-import { occupiedDatesFromIcal } from "@/lib/utils";
 
 export default async function Page({ params }) {
   const client = createClient();

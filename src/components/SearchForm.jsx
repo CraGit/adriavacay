@@ -1,12 +1,13 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Select from "react-select";
 
-import { RxHome, GoPeople, AiOutlineCalendar } from "../assets/icons/vander";
-import { DateRangePicker } from "./DateRangePicker";
+import { AiOutlineCalendar, GoPeople } from "@/assets/icons/vander";
 import { useSearch } from "@/providers/search-provider";
-import { useRouter } from "next/navigation";
+
+import { DateRangePicker } from "./DateRangePicker";
 
 export default function SearchForm() {
   let Guests = [

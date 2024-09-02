@@ -1,11 +1,11 @@
+import BlogList from "@/components/BlogList";
+import { createClient } from "@/prismicio";
+
 /**
  * @typedef {import("@prismicio/client").Content.DestinationListSliceSlice} DestinationListSliceSlice
  * @typedef {import("@prismicio/react").SliceComponentProps<DestinationListSliceSlice>} DestinationListSliceProps
  * @param {DestinationListSliceProps}
  */
-import BlogList from "@/app/components/BlogList";
-import SectionHeading from "@/app/components/SectionHeading";
-import { createClient } from "@/prismicio";
 const DestinationListSlice = async ({ slice }) => {
   const client = createClient();
 

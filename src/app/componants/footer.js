@@ -14,7 +14,7 @@ import {
   FiChevronRight,
   RiBehanceFill,
   FiShoppingCart,
-} from "../assets/icons/vander";
+} from "../../assets/icons/vander";
 
 export default function Footer() {
   return (

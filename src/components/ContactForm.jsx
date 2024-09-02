@@ -1,12 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import { PrismicRichText } from "@prismicio/react";
+import Link from "next/link";
+import { useState } from "react";
 
 import { submit } from "@/actions/contact";
-
-import { FiHexagon, FiMail, FiMapPin, FiPhone } from "../assets/icons/vander";
-import { useState } from "react";
+import { FiHexagon, FiMail, FiMapPin, FiPhone } from "@/assets/icons/vander";
 import { cn } from "@/lib/utils";
 
 export default function ContactForm({

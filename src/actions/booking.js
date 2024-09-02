@@ -1,6 +1,5 @@
 "use server";
 
-import { format } from "date-fns";
 import mail from "@sendgrid/mail";
 import { notFound, redirect } from "next/navigation";
 
@@ -13,8 +12,6 @@ export async function submitBooking(uid, dateRange, guests, formData) {
   const validatedFields = bookingSchema.safeParse({
     name: formData.get("name"),
     email: formData.get("email"),
-    //dateFrom: format(dateRange.from, "yyyy-MM-dd"),
-    //dateTo: format(dateRange.to, "yyyy-MM-dd"),
     dateFrom: dateRange.from,
     dateTo: dateRange.to,
     guests,

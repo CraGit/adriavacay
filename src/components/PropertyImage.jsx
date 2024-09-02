@@ -1,11 +1,12 @@
 "use client";
-import React, { useState } from "react";
-import Link from "next/link";
+
 import Image from "next/image";
-
-import { FiCamera } from "../assets/icons/vander";
-
+import Link from "next/link";
+import { useState } from "react";
 import Lightbox from "react-18-image-lightbox";
+
+import { FiCamera } from "@/assets/icons/vander";
+
 import "react-18-image-lightbox/style.css";
 
 export default function PropertyImage({ photos }) {
@@ -156,6 +157,7 @@ export default function PropertyImage({ photos }) {
           onMoveNextRequest={() =>
             setActiveIndex((photoIndex + 1) % photos.length)
           }
+          imageCaption={photos[photoIndex].alt}
         />
       )}
     </div>

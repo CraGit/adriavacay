@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { FiCalendar, FiClock, FiArrowRight } from "../assets/icons/vander";
+import { FiArrowRight } from "@/assets/icons/vander";
 
 export default function BlogCard({ image, uid, title }) {
   return (

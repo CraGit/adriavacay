@@ -1,8 +1,10 @@
-"use client"; // This is a client component 👈🏽
-import React, { useState, useEffect } from "react";
+"use client";
+
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import Image from "next/image";
+import React, { useEffect, useState } from "react";
+
 export default function Navbar(props) {
   let { navClass, topnavClass } = props;
   let [isOpen, setIsOpen] = useState(true);

@@ -1,12 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import { DateRangePicker } from "@/app/components/DateRangePicker";
-import { useSearch } from "@/providers/search-provider";
-import { cn } from "@/lib/utils";
 import { submitBooking } from "@/actions/booking";
+import { DateRangePicker } from "@/components/DateRangePicker";
+import { cn } from "@/lib/utils";
+import { useSearch } from "@/providers/search-provider";
 
 export default function BookingForm({ uid, occupiedDates, className }) {
   const { query, updateQuery } = useSearch();

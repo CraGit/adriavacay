@@ -1,8 +1,9 @@
 "use client";
 
-import { useSearch } from "@/providers/search-provider";
-import Card from "./Card";
 import { hasOverlap } from "@/lib/utils";
+import { useSearch } from "@/providers/search-provider";
+
+import Card from "./Card";
 
 export default function CardGrid({ cardDetails, limit = "No limit" }) {
   const { query } = useSearch();

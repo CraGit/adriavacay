@@ -1,12 +1,12 @@
-import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+
 import {
-  LiaCompressArrowsAltSolid,
-  LuBedDouble,
-  LuBath,
   GoPeople,
-} from "../assets/icons/vander";
+  LiaCompressArrowsAltSolid,
+  LuBath,
+  LuBedDouble,
+} from "@/assets/icons/vander";
 import { currency } from "@/lib/utils";
 
 export default function Card({

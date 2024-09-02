@@ -1,4 +1,5 @@
 import Image from "next/image";
+
 export default function SmallHero({ heading, backgroundImage }) {
   return (
     <section className="relative table w-full py-32 lg:py-36">

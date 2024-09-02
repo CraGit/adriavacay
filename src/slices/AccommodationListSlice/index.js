@@ -1,14 +1,15 @@
+import Link from "next/link";
+
+import { AccommodationSingle } from "@/app/accommodation/accommodation-single";
+import SectionHeading from "@/components/SectionHeading";
+import { occupiedDatesFromIcal } from "@/lib/utils";
+import { createClient } from "@/prismicio";
+
 /**
  * @typedef {import("@prismicio/client").Content.AccommodationListSliceSlice} AccommodationListSliceSlice
  * @typedef {import("@prismicio/react").SliceComponentProps<AccommodationListSliceSlice>} AccommodationListSliceProps
  * @param {AccommodationListSliceProps}
  */
-import SectionHeading from "@/app/components/SectionHeading";
-import { createClient } from "@/prismicio";
-import Link from "next/link";
-import { occupiedDatesFromIcal } from "@/lib/utils";
-import { AccommodationSingle } from "@/app/accommodation/accommodation-single";
-
 const AccommodationListSlice = async ({ slice }) => {
   const client = createClient();
   const accommodations = await client.getAllByType("accommodation_single");

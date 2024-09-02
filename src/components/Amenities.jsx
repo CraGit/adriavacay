@@ -1,5 +1,6 @@
-import SmallHeading from "./SmallHeading";
 import { TiTick } from "react-icons/ti";
+
+import SmallHeading from "./SmallHeading";
 
 export default function Amenities({ amenities }) {
   return (

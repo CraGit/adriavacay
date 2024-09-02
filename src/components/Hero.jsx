@@ -1,8 +1,8 @@
-import React from "react";
-import Link from "next/link";
-import TextAnimation from "./TextAnimation";
 import Image from "next/image";
+import Link from "next/link";
+
 import SearchForm from "./SearchForm";
+import TextAnimation from "./TextAnimation";
 
 export default function Hero({
   start,

@@ -1,20 +1,14 @@
-import React from "react";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+
 import {
-  FiMapPin,
-  FiMail,
-  FiPhone,
-  FiDribbble,
-  FiLinkedin,
-  FiFacebook,
-  FiTwitter,
-  FiInstagram,
   BsPencil,
-  FiChevronRight,
-  RiBehanceFill,
-  FiShoppingCart,
-} from "../assets/icons/vander";
+  FiFacebook,
+  FiInstagram,
+  FiMail,
+  FiMapPin,
+  FiPhone,
+} from "@/assets/icons/vander";
 
 export default function Footer() {
   return (

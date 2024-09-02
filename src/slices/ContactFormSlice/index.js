@@ -1,4 +1,4 @@
-import ContactForm from "@/app/components/ContactForm";
+import ContactForm from "@/components/ContactForm";
 
 /**
  * @typedef {import("@prismicio/client").Content.ContactFormSliceSlice} ContactFormSliceSlice

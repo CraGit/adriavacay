@@ -1,14 +1,14 @@
 "use client";
 
 import { addDays, compareAsc } from "date-fns";
+import { enGB } from "date-fns/locale";
 import { useState } from "react";
+import { useMedia } from "react-use";
 
 import { cn, df } from "@/lib/utils";
 
 import { DayPicker } from "./DayPicker";
 import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
-import { enGB } from "date-fns/locale";
-import { useMedia } from "react-use";
 
 export const DateRangePicker = ({
   selected,
