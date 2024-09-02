@@ -34,8 +34,6 @@ export default function BookingForm({ uid, occupiedDates, className }) {
     }
   };
 
-  console.log(errors);
-
   return (
     <form onSubmit={handleSubmit}>
       <div className={cn("rounded-md px-4 py-2 shadow", className)}>
