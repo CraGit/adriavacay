@@ -40,7 +40,7 @@ export const occupiedDatesFromIcal = async (url) => {
   try {
     if (!url) return dates;
 
-    const res = await fetch(url);
+    const res = await fetch(url, { cache: "no-store" });
 
     if (!res.ok) return dates;
 
