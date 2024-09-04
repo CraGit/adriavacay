@@ -27,7 +27,7 @@ export default function PartialDiv({ children, className }) {
         onClick={togglePart}
         className="text-primary-1 text-green-600 underline decoration-dotted mt-2"
       >
-        {partHidden ? "Read more" : "Hide"}
+        {partHidden ? "Show more" : "Hide"}
       </button>
     </>
   );
