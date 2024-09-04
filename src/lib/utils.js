@@ -162,6 +162,13 @@ export const calculateTotalPriceWithDiscount = (
   return Math.floor(totalPrice);
 };
 
+export const isDateInRange = (date, range) => {
+  return isWithinInterval(date, {
+    start: range.date_start,
+    end: range.date_end,
+  });
+};
+
 export const isValidChangeoverDay = (date, changeoverDay) => {
   const dayOfWeek = format(date, "EEEE"); // Get day of the week (e.g., "Saturday")
   return changeoverDay === "Flexible" || dayOfWeek === changeoverDay;

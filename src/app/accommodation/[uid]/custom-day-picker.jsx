@@ -6,94 +6,107 @@ import { useSearch } from "@/providers/search-provider";
 import { useState } from "react";
 import { da, enGB } from "date-fns/locale";
 import { useMedia } from "react-use";
-import { cn, df } from "@/lib/utils";
-import {
-  differenceInDays,
-  eachDayOfInterval,
-  isAfter,
-  isBefore,
-  isSameDay,
-  isSaturday,
-  isSunday,
-  isWithinInterval,
-} from "date-fns";
+import { cn, df, isDateInRange, isValidChangeoverDay } from "@/lib/utils";
+import { differenceInCalendarDays, isBefore, isSameDay } from "date-fns";
 
 export default function CustomDayPicker({ unavailableDates, priceRanges }) {
+  //  console.log(priceRanges);
   const { query } = useSearch();
   const [selectedRange, setSelectedRange] = useState(query.dateRange);
 
   const isMobile = useMedia("(max-width: 767px)", true);
 
+  const getApplicablePriceRange = (date) => {
+    return priceRanges.find((range) => isDateInRange(date, range));
+  };
+
   const isDateUnavailable = (date) => {
-    return unavailableDates.some(
-      (unavailableDate) =>
-        isSameDay(date, unavailableDate) || isBefore(date, new Date())
-    );
+    return unavailableDates.some((d) => isSameDay(d, date));
   };
 
-  const getApplicablePricing = (date) => {
-    return priceRanges.find((pricing) =>
-      isWithinInterval(date, {
-        start: pricing.date_start,
-        end: pricing.date_end,
-      })
-    );
-  };
+  const handleDayClick = (date, modifiers) => {
+    const { from, to } = selectedRange;
 
-  const isValidCheckoutDate = (checkoutDate) => {
-    if (!selectedRange.from) return true;
+    if (!from) {
+      const startRange = getApplicablePriceRange(date);
+      if (
+        !startRange ||
+        !isValidChangeoverDay(date, startRange.changeover_day) ||
+        isDateUnavailable(date)
+      ) {
+        return;
+      }
 
-    const interval = { start: selectedRange.from, end: checkoutDate };
-    const daysInRange = eachDayOfInterval(interval);
+      setSelectedRange({ from: date, to: undefined });
+      return;
+    }
 
-    let currentPeriodStart = selectedRange.from;
-    for (let i = 0; i < daysInRange.length; i++) {
-      const currentDay = daysInRange[i];
-      const pricing = getApplicablePricing(currentDay);
+    if (from && !to) {
+      const endRange = getApplicablePriceRange(date);
+      if (
+        !endRange ||
+        !isValidChangeoverDay(date, endRange.changeover_day) ||
+        isDateUnavailable(date)
+      ) {
+        return;
+      }
 
-      if (!pricing) return false;
+      const totalDays = differenceInCalendarDays(date, from) + 1;
+
+      const startRange = getApplicablePriceRange(from);
 
       if (
-        i === daysInRange.length - 1 ||
-        !isWithinInterval(daysInRange[i + 1], {
-          start: pricing.date_start,
-          end: pricing.date_end,
-        })
+        startRange.changeover_day === "Flexible" &&
+        startRange.minimum_stay &&
+        totalDays < startRange.minimum_stay
       ) {
-        if (pricing.changeover_day !== "Flexible") {
-          if (pricing.changeover_day === "Saturday" && !isSaturday(currentDay))
-            return false;
-
-          if (pricing.changeover_day === "Sunday" && !isSunday(currentDay))
-            return false;
-        }
-
-        if (pricing.minimum_stay) {
-          const stayLength =
-            differenceInDays(currentDay, currentPeriodStart) + 1;
-
-          if (stayLength < pricing.minimum_stay) return false;
-        }
-
-        currentPeriodStart = daysInRange[i + 1];
+        return;
       }
-    }
 
-    return true;
+      if (
+        endRange.changeover_day === "Flexible" &&
+        endRange.minimum_stay &&
+        totalDays < endRange.minimum_stay
+      ) {
+        return;
+      }
+
+      setSelectedRange({ from, to: date });
+    } else {
+      setSelectedRange({ from: date, to: undefined });
+    }
   };
 
-  const handleDayClick = (day, modifiers) => {
-    if (modifiers.disabled) return;
+  const modifiers = {
+    available: (date) => {
+      if (isDateUnavailable(date)) return false;
 
-    console.log(isValidCheckoutDate(day));
-    if (!selectedRange.from) {
-      setSelectedRange({ from: day, to: undefined });
-    } else if (!selectedRange.to && isValidCheckoutDate(day)) {
-      console.log({ valid: isValidCheckoutDate(day) });
-      setSelectedRange({ ...selectedRange, to: day });
-    } else {
-      setSelectedRange({ from: day, to: undefined });
-    }
+      const range = getApplicablePriceRange(date);
+
+      if (!range) return false;
+
+      if (!selectedRange.from) {
+        return isValidChangeoverDay(date, range.changeover_day);
+      }
+
+      const startRange = getApplicablePriceRange(selectedRange.from);
+      const totalDays = differenceInCalendarDays(date, selectedRange.from) + 1;
+
+      const isValidEndDate =
+        isDateInRange(date, range) &&
+        isValidChangeoverDay(date, range.changeover_day) &&
+        (!startRange.minimum_stay || totalDays >= startRange.minimum_stay) &&
+        (!range.minimum_stay || totalDays >= range.minimum_stay);
+
+      return isValidEndDate;
+    },
+    unavailable: (date) =>
+      isBefore(date, new Date()) || !modifiers.available(date),
+  };
+
+  const modifiersClassNames = {
+    available: "text-green-500",
+    unavailable: "text-red-500",
   };
 
   return (
@@ -121,17 +134,9 @@ export default function CustomDayPicker({ unavailableDates, priceRanges }) {
           className="p-3"
           numberOfMonths={isMobile ? 1 : 2} // Show 2 months on desktop and 1 on mobile
           selected={selectedRange}
-          disabled={isDateUnavailable}
           onDayClick={handleDayClick}
-          modifiers={{
-            highlighted: selectedRange.from
-              ? (date) => isValidCheckoutDate(date)
-              : undefined,
-          }}
-          modifiersClassNames={{
-            highlighted: "line-through",
-            disabled: "text-green-500",
-          }}
+          modifiers={modifiers}
+          modifiersClassNames={modifiersClassNames}
         />
       </PopoverContent>
     </Popover>
