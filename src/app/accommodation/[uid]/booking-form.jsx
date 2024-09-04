@@ -6,8 +6,14 @@ import { submitBooking } from "@/actions/booking";
 import { DateRangePicker } from "@/components/DateRangePicker";
 import { cn } from "@/lib/utils";
 import { useSearch } from "@/providers/search-provider";
+import CustomDayPicker from "./custom-day-picker";
 
-export default function BookingForm({ uid, occupiedDates, className }) {
+export default function BookingForm({
+  uid,
+  occupiedDates,
+  priceRanges,
+  className,
+}) {
   const { query, updateQuery } = useSearch();
 
   const [name, setName] = useState("");
@@ -50,6 +56,10 @@ export default function BookingForm({ uid, occupiedDates, className }) {
               )}
               disabledDates={occupiedDates}
             />
+            {/* <CustomDayPicker
+              unavailableDates={occupiedDates}
+              priceRanges={priceRanges}
+            /> */}
             {errors.dateFrom && (
               <span className="text-xs">{errors.dateFrom[0]}</span>
             )}

@@ -144,6 +144,7 @@ export default async function Page({ params }) {
                 <BookingForm
                   uid={params.uid}
                   occupiedDates={occupiedDates}
+                  priceRanges={page.data.pricing}
                   className="mt-6"
                 />
                 {/* <div className="mt-12 rounded-md bg-slate-50 dark:bg-slate-800 shadow dark:shadow-gray-700">
