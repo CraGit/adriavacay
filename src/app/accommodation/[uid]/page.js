@@ -21,6 +21,7 @@ import { components } from "@/slices";
 
 import BookingForm from "./booking-form";
 import PriceDisplay from "./price-display";
+import PartialDiv from "@/components/PartialDiv";
 
 export default async function Page({ params }) {
   const client = createClient();
@@ -102,10 +103,12 @@ export default async function Page({ params }) {
                 occasionally circumstances occur in which toil and pain can
                 procure him some great pleasure.
               </p> */}
-              <PrismicRichText
-                field={page.data.content}
-                components={rtfComponents}
-              />
+              <PartialDiv>
+                <PrismicRichText
+                  field={page.data.content}
+                  components={rtfComponents}
+                />
+              </PartialDiv>
               {/* DISTANCES */}
               <Distances distances={page.data.distances} />
               {/* AMENITIES */}
