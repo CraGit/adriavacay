@@ -11,6 +11,7 @@ import CustomDayPicker from "./custom-day-picker";
 export default function BookingForm({
   uid,
   occupiedDates,
+  //occupiedRanges,
   priceRanges,
   className,
 }) {
@@ -57,8 +58,8 @@ export default function BookingForm({
               disabledDates={occupiedDates}
             />
             {/* <CustomDayPicker
-              unavailableDates={occupiedDates}
               priceRanges={priceRanges}
+              unavailableRanges={occupiedRanges}
             /> */}
             {errors.dateFrom && (
               <span className="text-xs">{errors.dateFrom[0]}</span>

@@ -64,6 +64,31 @@ export const occupiedDatesFromIcal = async (url) => {
   return dates;
 };
 
+export const occupiedRangesFromIcal = async (url) => {
+  const dates = [];
+
+  try {
+    if (!url) return dates;
+
+    const res = await fetch(url, { cache: "no-store" });
+
+    if (!res.ok) return dates;
+
+    const text = await res.text();
+
+    ical(text).forEach((e) => {
+      const startDate = addDays(e.startDate, 1);
+      const endDate = subDays(e.endDate, 1);
+
+      dates.push({ startDate, endDate });
+    });
+  } catch (error) {
+    return dates;
+  }
+
+  return dates;
+};
+
 export const hasOverlap = (range, excludedDates) => {
   return excludedDates.some((d) =>
     isWithinInterval(d, { start: range[0], end: range[1] })

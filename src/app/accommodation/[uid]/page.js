@@ -15,13 +15,13 @@ import PhotoGallery from "@/components/Gallery";
 import PropertyImage from "@/components/PropertyImage";
 import { amenitiesMapping } from "@/data";
 import rtfComponents from "@/lib/richText";
-import { occupiedDatesFromIcal } from "@/lib/utils";
+import { occupiedDatesFromIcal, occupiedRangesFromIcal } from "@/lib/utils";
 import { createClient } from "@/prismicio";
 import { components } from "@/slices";
 
+import PartialDiv from "@/components/PartialDiv";
 import BookingForm from "./booking-form";
 import PriceDisplay from "./price-display";
-import PartialDiv from "@/components/PartialDiv";
 
 export default async function Page({ params }) {
   const client = createClient();
@@ -31,6 +31,7 @@ export default async function Page({ params }) {
   const cancelationPolicy = await client.getSingle("cancelation_policy");
   const paymentDetails = await client.getSingle("payment_details");
   const occupiedDates = await occupiedDatesFromIcal(page.data.ical);
+  //const occupiedRanges = await occupiedRangesFromIcal(page.data.ical);
 
   const photos = page.data.gallery.map((photo) => {
     return {
@@ -144,6 +145,7 @@ export default async function Page({ params }) {
                 <BookingForm
                   uid={params.uid}
                   occupiedDates={occupiedDates}
+                  //occupiedRanges={occupiedRanges}
                   priceRanges={page.data.pricing}
                   className="mt-6"
                 />

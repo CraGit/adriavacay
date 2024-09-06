@@ -1,112 +1,90 @@
 "use client";
 
+import { isAfter, isBefore, startOfToday } from "date-fns";
+import { enGB } from "date-fns/locale";
+import { useState } from "react";
+import { useMedia } from "react-use";
+
 import { DayPicker } from "@/components/DayPicker";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/Popover";
-import { useSearch } from "@/providers/search-provider";
-import { useState } from "react";
-import { da, enGB } from "date-fns/locale";
-import { useMedia } from "react-use";
-import { cn, df, isDateInRange, isValidChangeoverDay } from "@/lib/utils";
-import { differenceInCalendarDays, isBefore, isSameDay } from "date-fns";
+import {
+  hasValidEndDates,
+  isDateAvailable,
+  isDateInOccupiedRanges,
+  isEndDateValid,
+  isInvalidSelection,
+} from "@/lib/cal-utils";
+import { df } from "@/lib/utils";
 
-export default function CustomDayPicker({ unavailableDates, priceRanges }) {
-  //  console.log(priceRanges);
-  const { query } = useSearch();
-  const [selectedRange, setSelectedRange] = useState(query.dateRange);
+export default function CustomDayPicker({ priceRanges, unavailableRanges }) {
+  const [selectedRange, setSelectedRange] = useState({ from: null, to: null });
+  const today = startOfToday();
 
   const isMobile = useMedia("(max-width: 767px)", true);
 
-  const getApplicablePriceRange = (date) => {
-    return priceRanges.find((range) => isDateInRange(date, range));
-  };
-
-  const isDateUnavailable = (date) => {
-    return unavailableDates.some((d) => isSameDay(d, date));
-  };
-
-  const handleDayClick = (date, modifiers) => {
+  const handleDayClick = (date) => {
     const { from, to } = selectedRange;
 
-    if (!from) {
-      const startRange = getApplicablePriceRange(date);
-      if (
-        !startRange ||
-        !isValidChangeoverDay(date, startRange.changeover_day) ||
-        isDateUnavailable(date)
-      ) {
-        return;
-      }
+    if (isBefore(date, today)) return;
 
-      setSelectedRange({ from: date, to: undefined });
+    if (!from) {
+      if (
+        isDateAvailable(date, priceRanges, unavailableRanges) &&
+        hasValidEndDates(date, priceRanges, unavailableRanges) &&
+        isAfter(date, today)
+      ) {
+        setSelectedRange({ from: date, to: null });
+      }
       return;
     }
 
     if (from && !to) {
-      const endRange = getApplicablePriceRange(date);
-      if (
-        !endRange ||
-        !isValidChangeoverDay(date, endRange.changeover_day) ||
-        isDateUnavailable(date)
-      ) {
-        return;
+      if (isEndDateValid(from, date, priceRanges, unavailableRanges)) {
+        setSelectedRange({ from, to: date });
       }
-
-      const totalDays = differenceInCalendarDays(date, from) + 1;
-
-      const startRange = getApplicablePriceRange(from);
-
-      if (
-        startRange.changeover_day === "Flexible" &&
-        startRange.minimum_stay &&
-        totalDays < startRange.minimum_stay
-      ) {
-        return;
-      }
-
-      if (
-        endRange.changeover_day === "Flexible" &&
-        endRange.minimum_stay &&
-        totalDays < endRange.minimum_stay
-      ) {
-        return;
-      }
-
-      setSelectedRange({ from, to: date });
     } else {
-      setSelectedRange({ from: date, to: undefined });
+      setSelectedRange({ from: date, to: null });
     }
   };
 
   const modifiers = {
     available: (date) => {
-      if (isDateUnavailable(date)) return false;
-
-      const range = getApplicablePriceRange(date);
-
-      if (!range) return false;
-
-      if (!selectedRange.from) {
-        return isValidChangeoverDay(date, range.changeover_day);
+      if (!selectedRange.from || (selectedRange.from && selectedRange.to)) {
+        return (
+          !isBefore(date, today) &&
+          isDateAvailable(date, priceRanges, unavailableRanges) &&
+          hasValidEndDates(date, priceRanges, unavailableRanges)
+        );
       }
 
-      const startRange = getApplicablePriceRange(selectedRange.from);
-      const totalDays = differenceInCalendarDays(date, selectedRange.from) + 1;
-
-      const isValidEndDate =
-        isDateInRange(date, range) &&
-        isValidChangeoverDay(date, range.changeover_day) &&
-        (!startRange.minimum_stay || totalDays >= startRange.minimum_stay) &&
-        (!range.minimum_stay || totalDays >= range.minimum_stay);
-
-      return isValidEndDate;
+      return isEndDateValid(
+        selectedRange.from,
+        date,
+        priceRanges,
+        unavailableRanges
+      );
     },
     unavailable: (date) =>
-      isBefore(date, new Date()) || !modifiers.available(date),
+      !isBefore(date, today) && isDateInOccupiedRanges(date, unavailableRanges),
+    invalidSelection: (date) =>
+      isInvalidSelection(date, selectedRange, priceRanges, unavailableRanges),
+    past: (date) => isBefore(date, today),
   };
 
-  const modifiersClassNames = {
-    available: "text-green-500",
-    unavailable: "text-red-500",
+  const modifiersStyles = {
+    available: { color: "green" },
+    unavailable: {
+      color: "red",
+      textDecoration: "line-through",
+    },
+    invalidSelection: {
+      color: "orange",
+      textDecoration: "dotted underline",
+    },
+    past: {
+      color: "gray",
+      textDecoration: "none",
+    },
   };
 
   return (
@@ -128,15 +106,19 @@ export default function CustomDayPicker({ unavailableDates, priceRanges }) {
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0 bg-white">
         <DayPicker
-          fixedWeeks
           locale={enGB}
           mode="range"
-          className="p-3"
+          fixedWeeks
           numberOfMonths={isMobile ? 1 : 2} // Show 2 months on desktop and 1 on mobile
+          className="p-3"
+          excludeDisabled
           selected={selectedRange}
           onDayClick={handleDayClick}
           modifiers={modifiers}
-          modifiersClassNames={modifiersClassNames}
+          modifiersStyles={modifiersStyles}
+          disabled={(date) =>
+            isBefore(date, today) || !modifiers.available(date)
+          }
         />
       </PopoverContent>
     </Popover>
