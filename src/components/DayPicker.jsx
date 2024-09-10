@@ -10,7 +10,7 @@ export const DayPicker = (props) => (
       caption_label: "text-xl px-1",
       day: "w-10 h-10 align-middle text-center border-0 px-0",
       day_button:
-        "rounded-full w-10 h-10 transition-colors hover:bg-sky-100 focus:outline-none focus-visible:ring focus-visible:ring-sky-300 focus-visible:ring-opacity-50 active:bg-sky-600 active:text-white",
+        "rounded-full w-10 h-10 transition-colors hover:bg-green-700 hover:text-white focus:outline-none focus-visible:ring focus-visible:ring-sky-300 focus-visible:ring-opacity-50 active:bg-sky-600 active:text-white",
       disabled:
         "opacity-25 hover:bg-white active:bg-white active:text-gray-800",
       hidden: "opacity-25",
@@ -18,11 +18,11 @@ export const DayPicker = (props) => (
       month_grid: "border-collapse border-spacing-0",
       months: "flex gap-4 relative px-4",
       outside: "enabled:opacity-50",
-      range_end: "rounded-l-none rounded-r-full",
-      range_middle: "rounded-none",
-      range_start: "rounded-r-none rounded-l-full",
+      range_end: "rounded-l-none rounded-r-full !font-bold",
+      range_middle: "rounded-none !font-bold",
+      range_start: "rounded-r-none rounded-l-full !font-bold",
       root: "text-gray-800",
-      selected: "text-white bg-sky-500 hover:bg-sky-500",
+      selected: "text-white bg-green-600 hover:bg-green-700",
       today: "font-bold",
       weekday: "w-10 h-10 uppercase align-middle text-center",
     }}

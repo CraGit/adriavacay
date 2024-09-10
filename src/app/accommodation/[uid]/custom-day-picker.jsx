@@ -10,40 +10,50 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/Popover";
 import {
   hasValidEndDates,
   isDateAvailable,
-  isDateInOccupiedRanges,
   isEndDateValid,
-  isInvalidSelection,
 } from "@/lib/cal-utils";
-import { df } from "@/lib/utils";
+import { cn, df } from "@/lib/utils";
 
-export default function CustomDayPicker({ priceRanges, unavailableRanges }) {
-  const [selectedRange, setSelectedRange] = useState({ from: null, to: null });
+export default function CustomDayPicker({
+  priceRanges,
+  unavailableRanges,
+  className,
+  selected,
+  onSelect,
+}) {
+  const [selectedRange, setSelectedRange] = useState(selected);
   const today = startOfToday();
 
   const isMobile = useMedia("(max-width: 767px)", true);
 
-  const handleDayClick = (date) => {
+  const handleDayClick = (date, modifiers) => {
     const { from, to } = selectedRange;
 
-    if (isBefore(date, today)) return;
+    if (from && !to && modifiers.selected) {
+      setSelectedRange({ from: null, to: null });
+      onSelect({ from: null, to: null });
+      return;
+    }
 
-    if (!from) {
+    if (!from || (from && to)) {
       if (
         isDateAvailable(date, priceRanges, unavailableRanges) &&
         hasValidEndDates(date, priceRanges, unavailableRanges) &&
         isAfter(date, today)
       ) {
         setSelectedRange({ from: date, to: null });
+        onSelect({ from: date, to: null });
       }
-      return;
-    }
-
-    if (from && !to) {
+    } else if (from && !to) {
       if (isEndDateValid(from, date, priceRanges, unavailableRanges)) {
         setSelectedRange({ from, to: date });
+        onSelect({ from, to: date });
+      } else {
+        alert("Invalid date selected");
       }
     } else {
       setSelectedRange({ from: date, to: null });
+      onSelect({ from: date, to: null });
     }
   };
 
@@ -57,47 +67,33 @@ export default function CustomDayPicker({ priceRanges, unavailableRanges }) {
         );
       }
 
-      return isEndDateValid(
-        selectedRange.from,
-        date,
-        priceRanges,
-        unavailableRanges
+      return (
+        isAfter(date, selectedRange.from) &&
+        isEndDateValid(selectedRange.from, date, priceRanges, unavailableRanges)
       );
     },
-    unavailable: (date) =>
+    /*unavailable: (date) =>
       !isBefore(date, today) && isDateInOccupiedRanges(date, unavailableRanges),
     invalidSelection: (date) =>
       isInvalidSelection(date, selectedRange, priceRanges, unavailableRanges),
-    past: (date) => isBefore(date, today),
+    past: (date) => isBefore(date, today),*/
   };
 
-  const modifiersStyles = {
-    available: { color: "green" },
-    unavailable: {
-      color: "red",
-      textDecoration: "line-through",
-    },
-    invalidSelection: {
-      color: "orange",
-      textDecoration: "dotted underline",
-    },
-    past: {
-      color: "gray",
-      textDecoration: "none",
-    },
+  const modifiersClassNames = {
+    available: "text-green-600 font-bold",
   };
 
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <div className="form-input">
+        <div className={cn("form-input", className)}>
           {selectedRange?.from ? (
             selectedRange.to ? (
               <>
-                {df(selectedRange.from, "PP")} - {df(selectedRange.to, "PP")}
+                {df(selected.from, "PP")} - {df(selected.to, "PP")}
               </>
             ) : (
-              df(selectedRange.from, "PP")
+              df(selected.from, "PP")
             )
           ) : (
             <span>Pick a date</span>
@@ -115,10 +111,9 @@ export default function CustomDayPicker({ priceRanges, unavailableRanges }) {
           selected={selectedRange}
           onDayClick={handleDayClick}
           modifiers={modifiers}
-          modifiersStyles={modifiersStyles}
-          disabled={(date) =>
-            isBefore(date, today) || !modifiers.available(date)
-          }
+          modifiersClassNames={modifiersClassNames}
+          disabled={(date) => isBefore(date, today)}
+          onSelect={(range) => console.log("ONSELECT")}
         />
       </PopoverContent>
     </Popover>

@@ -47,7 +47,6 @@ export const isEndDateValid = (
   unavailableRanges
 ) => {
   const totalNights = differenceInCalendarDays(endDate, startDate);
-  //const range = getApplicablePriceRange(startDate, priceRanges);
   const range = getApplicablePriceRange(endDate, priceRanges);
 
   if (!range) return false;
