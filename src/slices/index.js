@@ -7,5 +7,6 @@ export const components = {
   contact_form_slice: dynamic(() => import("./ContactFormSlice")),
   destination_list_slice: dynamic(() => import("./DestinationListSlice")),
   hero_slice: dynamic(() => import("./HeroSlice")),
+  selected_destinations: dynamic(() => import("./SelectedDestinations")),
   small_hero_slice: dynamic(() => import("./SmallHeroSlice")),
 };

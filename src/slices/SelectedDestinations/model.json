@@ -1,0 +1,45 @@
+{
+  "id": "selected_destinations",
+  "type": "SharedSlice",
+  "name": "SelectedDestinations",
+  "description": "SelectedDestinations",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": ""
+          }
+        },
+        "selected_destinations": {
+          "type": "Group",
+          "config": {
+            "label": "Selected Destinations",
+            "repeat": true,
+            "fields": {
+              "destination": {
+                "type": "Link",
+                "config": {
+                  "label": "Destination",
+                  "select": "document",
+                  "customtypes": [
+                    "destination"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

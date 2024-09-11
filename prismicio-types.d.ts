@@ -252,7 +252,7 @@ export interface AccommodationSingleDocumentDataReviewsItem {
   stars: prismic.SelectField<"5" | "4" | "3" | "2" | "1", "filled">;
 }
 
-type AccommodationSingleDocumentDataSlicesSlice = never;
+type AccommodationSingleDocumentDataSlicesSlice = SelectedDestinationsSlice;
 
 /**
  * Content for Accommodation Single documents
@@ -2124,6 +2124,78 @@ export type HeroSliceSlice = prismic.SharedSlice<
 >;
 
 /**
+ * Item in *SelectedDestinations → Default → Primary → Selected Destinations*
+ */
+export interface SelectedDestinationsSliceDefaultPrimarySelectedDestinationsItem {
+  /**
+   * Destination field in *SelectedDestinations → Default → Primary → Selected Destinations*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: selected_destinations.default.primary.selected_destinations[].destination
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  destination: prismic.ContentRelationshipField<"destination">;
+}
+
+/**
+ * Primary content in *SelectedDestinations → Default → Primary*
+ */
+export interface SelectedDestinationsSliceDefaultPrimary {
+  /**
+   * Heading field in *SelectedDestinations → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: selected_destinations.default.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  heading: prismic.KeyTextField;
+
+  /**
+   * Selected Destinations field in *SelectedDestinations → Default → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: selected_destinations.default.primary.selected_destinations[]
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  selected_destinations: prismic.GroupField<
+    Simplify<SelectedDestinationsSliceDefaultPrimarySelectedDestinationsItem>
+  >;
+}
+
+/**
+ * Default variation for SelectedDestinations Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type SelectedDestinationsSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<SelectedDestinationsSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *SelectedDestinations*
+ */
+type SelectedDestinationsSliceVariation = SelectedDestinationsSliceDefault;
+
+/**
+ * SelectedDestinations Shared Slice
+ *
+ * - **API ID**: `selected_destinations`
+ * - **Description**: SelectedDestinations
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type SelectedDestinationsSlice = prismic.SharedSlice<
+  "selected_destinations",
+  SelectedDestinationsSliceVariation
+>;
+
+/**
  * Primary content in *SmallHeroSlice → Default → Primary*
  */
 export interface SmallHeroSliceSliceDefaultPrimary {
@@ -2235,6 +2307,11 @@ declare module "@prismicio/client" {
       HeroSliceSliceDefaultPrimary,
       HeroSliceSliceVariation,
       HeroSliceSliceDefault,
+      SelectedDestinationsSlice,
+      SelectedDestinationsSliceDefaultPrimarySelectedDestinationsItem,
+      SelectedDestinationsSliceDefaultPrimary,
+      SelectedDestinationsSliceVariation,
+      SelectedDestinationsSliceDefault,
       SmallHeroSliceSlice,
       SmallHeroSliceSliceDefaultPrimary,
       SmallHeroSliceSliceVariation,

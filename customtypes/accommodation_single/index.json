@@ -846,7 +846,11 @@
         "type": "Slices",
         "fieldset": "Slice Zone",
         "config": {
-          "choices": {}
+          "choices": {
+            "selected_destinations": {
+              "type": "SharedSlice"
+            }
+          }
         }
       }
     },
