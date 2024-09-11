@@ -30,12 +30,25 @@ const routes = [
     path: "/accommodation/:uid",
   },
   {
+    type: "about_us",
+    path: "/about-us",
+  },
+
+  {
     type: "destinations",
     path: "/destinations",
   },
   {
     type: "destination",
     path: "/destinations/:uid",
+  },
+  {
+    type: "blog",
+    path: "/blog",
+  },
+  {
+    type: "blog_single",
+    path: "/blog/:uid",
   },
   {
     type: "contact",

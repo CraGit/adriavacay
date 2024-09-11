@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 
 import { createClient } from "@/prismicio";
-
 import SmallHero from "@/components/SmallHero";
 
 import { PrismicRichText } from "@prismicio/react";
@@ -11,7 +10,7 @@ import PhotoGallery from "@/components/Gallery";
 export default async function Page({ params }) {
   const client = createClient();
   const page = await client
-    .getByUID("destination", params.uid)
+    .getByUID("blog_single", params.uid)
     .catch(() => notFound());
 
   const photos = page.data.gallery.map((photo) => {
@@ -23,6 +22,7 @@ export default async function Page({ params }) {
       description: photo.image.alt,
     };
   });
+
   return (
     <>
       <SmallHero
@@ -36,9 +36,6 @@ export default async function Page({ params }) {
           <PhotoGallery photos={photos} heading="Gallery" />
         )}
       </div>
-      {/* {page.data.gallery.length > 0 &&  */}
-
-      {/* } */}
     </>
   );
 }
@@ -46,7 +43,7 @@ export default async function Page({ params }) {
 export async function generateMetadata({ params }) {
   const client = createClient();
   const page = await client
-    .getByUID("destination", params.uid)
+    .getByUID("blog_single", params.uid)
     .catch(() => notFound());
 
   return {
@@ -57,7 +54,7 @@ export async function generateMetadata({ params }) {
 
 export async function generateStaticParams() {
   const client = createClient();
-  const pages = await client.getAllByType("destination");
+  const pages = await client.getAllByType("blog_single");
 
   return pages.map((page) => {
     return { uid: page.uid };

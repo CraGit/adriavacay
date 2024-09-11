@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { FiArrowRight } from "@/assets/icons/vander";
 
-export default function BlogCard({ image, uid, title }) {
+export default function BlogCard({ image, uid, title, url }) {
   return (
     <div
       key={uid}
@@ -39,7 +39,7 @@ export default function BlogCard({ image, uid, title }) {
           </div> */}
 
           <Link
-            href={`/destinations/${uid}`}
+            href={url}
             className="title text-xl font-medium hover:text-green-600 duration-500 ease-in-out"
           >
             {title}
@@ -47,7 +47,7 @@ export default function BlogCard({ image, uid, title }) {
 
           <div className="mt-3">
             <Link
-              href={`/destinations/${uid}`}
+              href={url}
               className="btn btn-link hover:text-green-600 after:bg-green-600 duration-500 ease-in-out inline-flex items-center"
             >
               <span>Read More</span>

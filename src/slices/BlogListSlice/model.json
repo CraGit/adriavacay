@@ -1,0 +1,18 @@
+{
+  "id": "blog_list_slice",
+  "type": "SharedSlice",
+  "name": "BlogListSlice",
+  "description": "BlogListSlice",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {},
+      "items": {}
+    }
+  ]
+}

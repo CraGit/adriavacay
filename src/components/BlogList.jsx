@@ -8,6 +8,7 @@ export default function BlogList({ blogs }) {
           {blogs.map((item) => (
             <BlogCard
               uid={item.uid}
+              url={item.url}
               title={item.data.heading}
               image={item.data.image.url}
               key={item.uid}

@@ -4,6 +4,82 @@ import type * as prismic from "@prismicio/client";
 
 type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };
 
+type AboutUsDocumentDataSlicesSlice = SmallHeroSliceSlice;
+
+/**
+ * Content for About Us documents
+ */
+interface AboutUsDocumentData {
+  /**
+   * Content field in *About Us*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: about_us.content
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  content: prismic.RichTextField;
+
+  /**
+   * Slice Zone field in *About Us*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: about_us.slices[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#slices
+   */
+  slices: prismic.SliceZone<AboutUsDocumentDataSlicesSlice> /**
+   * Meta Title field in *About Us*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A title of the page used for social media and search engines
+   * - **API ID Path**: about_us.meta_title
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */;
+  meta_title: prismic.KeyTextField;
+
+  /**
+   * Meta Description field in *About Us*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A brief summary of the page
+   * - **API ID Path**: about_us.meta_description
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  meta_description: prismic.KeyTextField;
+
+  /**
+   * Meta Image field in *About Us*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: about_us.meta_image
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  meta_image: prismic.ImageField<never>;
+}
+
+/**
+ * About Us document from Prismic
+ *
+ * - **API ID**: `about_us`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type AboutUsDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithoutUID<
+    Simplify<AboutUsDocumentData>,
+    "about_us",
+    Lang
+  >;
+
 type AccommodationDocumentDataSlicesSlice =
   | HeroSliceSlice
   | SmallHeroSliceSlice
@@ -1296,6 +1372,194 @@ export type AccommodationSingleDocument<Lang extends string = string> =
     Lang
   >;
 
+type BlogDocumentDataSlicesSlice =
+  | BlogListSliceSlice
+  | SmallHeroSliceSlice
+  | HeroSliceSlice;
+
+/**
+ * Content for Blog documents
+ */
+interface BlogDocumentData {
+  /**
+   * Slice Zone field in *Blog*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blog.slices[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#slices
+   */
+  slices: prismic.SliceZone<BlogDocumentDataSlicesSlice> /**
+   * Meta Title field in *Blog*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A title of the page used for social media and search engines
+   * - **API ID Path**: blog.meta_title
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */;
+  meta_title: prismic.KeyTextField;
+
+  /**
+   * Meta Description field in *Blog*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A brief summary of the page
+   * - **API ID Path**: blog.meta_description
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  meta_description: prismic.KeyTextField;
+
+  /**
+   * Meta Image field in *Blog*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blog.meta_image
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  meta_image: prismic.ImageField<never>;
+}
+
+/**
+ * Blog document from Prismic
+ *
+ * - **API ID**: `blog`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type BlogDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithoutUID<Simplify<BlogDocumentData>, "blog", Lang>;
+
+/**
+ * Item in *Blog Single → Gallery*
+ */
+export interface BlogSingleDocumentDataGalleryItem {
+  /**
+   * Image field in *Blog Single → Gallery*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blog_single.gallery[].image
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image: prismic.ImageField<never>;
+}
+
+type BlogSingleDocumentDataSlicesSlice = never;
+
+/**
+ * Content for Blog Single documents
+ */
+interface BlogSingleDocumentData {
+  /**
+   * Heading field in *Blog Single*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blog_single.heading
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  heading: prismic.KeyTextField;
+
+  /**
+   * Image field in *Blog Single*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blog_single.image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image: prismic.ImageField<never>;
+
+  /**
+   * Content field in *Blog Single*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blog_single.content
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  content: prismic.RichTextField;
+
+  /**
+   * Gallery field in *Blog Single*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blog_single.gallery[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  gallery: prismic.GroupField<Simplify<BlogSingleDocumentDataGalleryItem>>;
+
+  /**
+   * Slice Zone field in *Blog Single*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blog_single.slices[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#slices
+   */
+  slices: prismic.SliceZone<BlogSingleDocumentDataSlicesSlice> /**
+   * Meta Title field in *Blog Single*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A title of the page used for social media and search engines
+   * - **API ID Path**: blog_single.meta_title
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */;
+  meta_title: prismic.KeyTextField;
+
+  /**
+   * Meta Description field in *Blog Single*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A brief summary of the page
+   * - **API ID Path**: blog_single.meta_description
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  meta_description: prismic.KeyTextField;
+
+  /**
+   * Meta Image field in *Blog Single*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blog_single.meta_image
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  meta_image: prismic.ImageField<never>;
+}
+
+/**
+ * Blog Single document from Prismic
+ *
+ * - **API ID**: `blog_single`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type BlogSingleDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithUID<
+    Simplify<BlogSingleDocumentData>,
+    "blog_single",
+    Lang
+  >;
+
 /**
  * Content for Cancelation Policy documents
  */
@@ -1806,8 +2070,11 @@ export type TermsAndConditionsDocument<Lang extends string = string> =
   >;
 
 export type AllDocumentTypes =
+  | AboutUsDocument
   | AccommodationDocument
   | AccommodationSingleDocument
+  | BlogDocument
+  | BlogSingleDocument
   | CancelationPolicyDocument
   | ContactDocument
   | DestinationDocument
@@ -1881,6 +2148,36 @@ type AccommodationListSliceSliceVariation = AccommodationListSliceSliceDefault;
 export type AccommodationListSliceSlice = prismic.SharedSlice<
   "accommodation_list_slice",
   AccommodationListSliceSliceVariation
+>;
+
+/**
+ * Default variation for BlogListSlice Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type BlogListSliceSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Record<string, never>,
+  never
+>;
+
+/**
+ * Slice variation for *BlogListSlice*
+ */
+type BlogListSliceSliceVariation = BlogListSliceSliceDefault;
+
+/**
+ * BlogListSlice Shared Slice
+ *
+ * - **API ID**: `blog_list_slice`
+ * - **Description**: BlogListSlice
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type BlogListSliceSlice = prismic.SharedSlice<
+  "blog_list_slice",
+  BlogListSliceSliceVariation
 >;
 
 /**
@@ -2260,6 +2557,9 @@ declare module "@prismicio/client" {
 
   namespace Content {
     export type {
+      AboutUsDocument,
+      AboutUsDocumentData,
+      AboutUsDocumentDataSlicesSlice,
       AccommodationDocument,
       AccommodationDocumentData,
       AccommodationDocumentDataSlicesSlice,
@@ -2271,6 +2571,13 @@ declare module "@prismicio/client" {
       AccommodationSingleDocumentDataDistancesItem,
       AccommodationSingleDocumentDataReviewsItem,
       AccommodationSingleDocumentDataSlicesSlice,
+      BlogDocument,
+      BlogDocumentData,
+      BlogDocumentDataSlicesSlice,
+      BlogSingleDocument,
+      BlogSingleDocumentData,
+      BlogSingleDocumentDataGalleryItem,
+      BlogSingleDocumentDataSlicesSlice,
       CancelationPolicyDocument,
       CancelationPolicyDocumentData,
       ContactDocument,
@@ -2296,6 +2603,9 @@ declare module "@prismicio/client" {
       AccommodationListSliceSliceDefaultPrimary,
       AccommodationListSliceSliceVariation,
       AccommodationListSliceSliceDefault,
+      BlogListSliceSlice,
+      BlogListSliceSliceVariation,
+      BlogListSliceSliceDefault,
       ContactFormSliceSlice,
       ContactFormSliceSliceDefaultPrimary,
       ContactFormSliceSliceVariation,

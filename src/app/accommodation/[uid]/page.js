@@ -125,7 +125,9 @@ export default async function Page({ params }) {
               </div>
 
               {/* GALLERY */}
-              <PhotoGallery photos={photos} heading="Gallery" />
+              {photos && photos.length > 0 && (
+                <PhotoGallery photos={photos} heading="Gallery" />
+              )}
               <PrismicRichText
                 field={paymentDetails.data.content}
                 components={rtfComponents}
