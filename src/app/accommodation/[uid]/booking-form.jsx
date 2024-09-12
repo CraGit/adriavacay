@@ -48,7 +48,7 @@ export default function BookingForm({
         <div className="grid">
           <div className="lg:col-span-6 mb-1">
             <label className="font-medium text-sm">Dates</label>
-            <DateRangePicker
+            {/* <DateRangePicker
               selected={query.dateRange}
               onSelect={(range) => updateQuery({ dateRange: range })}
               className={cn(
@@ -56,17 +56,17 @@ export default function BookingForm({
                 (errors.dateFrom || errors.dateTo) && "border-red-600"
               )}
               disabledDates={occupiedDates}
-            />
-            {/* <CustomDayPicker
+            /> */}
+            <CustomDayPicker
               className={cn(
                 "mt-2",
-                (errors.dateFrom || errors.dateTo) && "border-red-600"
+                (errors.dateFrom || errors.dateTo) && "!border-red-600"
               )}
               priceRanges={priceRanges}
               unavailableRanges={occupiedRanges}
               selected={query.dateRange}
               onSelect={(range) => updateQuery({ dateRange: range })}
-            /> */}
+            />
             {errors.dateFrom && (
               <span className="text-xs">{errors.dateFrom[0]}</span>
             )}
@@ -82,7 +82,7 @@ export default function BookingForm({
               type="text"
               className={cn(
                 "form-input mt-1",
-                errors.guests && "border-red-600"
+                errors.guests && "!border-red-600"
               )}
               value={query.guests}
               onChange={(e) => updateQuery({ guests: e.target.value })}
@@ -97,7 +97,10 @@ export default function BookingForm({
             <input
               name="name"
               type="text"
-              className={cn("form-input mt-1", errors.name && "border-red-600")}
+              className={cn(
+                "form-input mt-1",
+                errors.name && "!border-red-600"
+              )}
               placeholder="Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -112,7 +115,7 @@ export default function BookingForm({
               type="email"
               className={cn(
                 "form-input mt-1",
-                errors.email && "border-red-600"
+                errors.email && "!border-red-600"
               )}
               placeholder="Email"
               value={email}
