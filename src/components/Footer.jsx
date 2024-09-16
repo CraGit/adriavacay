@@ -234,7 +234,7 @@ export default function Footer() {
                   </Link>
                   .{"  "}{" "}
                   <span className="mb-0 text-gray-300">
-                    Adriavacay &copy; {new Date().getFullYear()}
+                    AdriaVacay &copy; {new Date().getFullYear()}
                   </span>
                 </p>
 

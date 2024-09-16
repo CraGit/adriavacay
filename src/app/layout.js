@@ -15,7 +15,7 @@ const league_Spartan = League_Spartan({
 });
 
 export const metadata = {
-  title: "adriaVacay - your perfect vacation home",
+  title: "AdriaVacay -Tailored Stayes, Timeless Memories",
   description:
     "Choose us for your next vacation home. We offer the best vacation homes in Dalmatia.",
 };
