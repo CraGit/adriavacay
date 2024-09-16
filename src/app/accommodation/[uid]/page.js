@@ -138,7 +138,10 @@ export default async function Page({ params }) {
               />
             </div>
 
-            <div className="lg:w-1/3 md:w-1/2 md:p-4 px-3 mt-8 md:mt-0">
+            <div
+              className="lg:w-1/3 md:w-1/2 md:p-4 px-3 mt-8 md:mt-0"
+              id="booking-form"
+            >
               <div className="sticky top-20">
                 <PriceDisplay
                   prices={page.data.pricing}
