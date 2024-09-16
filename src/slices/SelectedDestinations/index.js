@@ -6,25 +6,32 @@
 import BlogList from "@/components/BlogList";
 import SmallHeading from "@/components/SmallHeading";
 import { createClient } from "@/prismicio";
-const SelectedDestinations = async ({ slice }) => {
-  // console.log(slice.primary.selected_destinations);
 
+const SelectedDestinations = async ({ slice }) => {
   const destinationsUids = slice.primary.selected_destinations.map(
-    (destination) => {
-      return destination.destination.uid;
-    }
+    (destination) => destination.destination.uid
   );
+
   const client = createClient();
-  const blogs = await client.getAllByUIDs("destination", destinationsUids);
+
+  // Fetch both destinations and blog posts by UIDs
+  const [destinations, blogs] = await Promise.all([
+    client.getAllByUIDs("destination", destinationsUids),
+    client.getAllByUIDs("blog_single", destinationsUids),
+  ]);
+
+  // Combine both destinations and blogs, if necessary
+  const combinedResults = [...destinations, ...blogs];
+
   return (
     <section
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
     >
-      <div className="text-center ">
+      <div className="text-center">
         <SmallHeading heading={slice.primary.heading} />
       </div>
-      <BlogList blogs={blogs} />
+      <BlogList blogs={combinedResults} />
     </section>
   );
 };

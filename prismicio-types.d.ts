@@ -2473,14 +2473,14 @@ export type HeroSliceSlice = prismic.SharedSlice<
  */
 export interface SelectedDestinationsSliceDefaultPrimarySelectedDestinationsItem {
   /**
-   * Destination field in *SelectedDestinations → Default → Primary → Selected Destinations*
+   * Destination or Blog field in *SelectedDestinations → Default → Primary → Selected Destinations*
    *
    * - **Field Type**: Content Relationship
    * - **Placeholder**: *None*
    * - **API ID Path**: selected_destinations.default.primary.selected_destinations[].destination
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  destination: prismic.ContentRelationshipField<"destination">;
+  destination: prismic.ContentRelationshipField<"destination" | "blog_single">;
 }
 
 /**

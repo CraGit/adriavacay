@@ -28,10 +28,11 @@
               "destination": {
                 "type": "Link",
                 "config": {
-                  "label": "Destination",
+                  "label": "Destination or Blog",
                   "select": "document",
                   "customtypes": [
-                    "destination"
+                    "destination",
+                    "blog_single"
                   ]
                 }
               }
