@@ -4,12 +4,49 @@ import type * as prismic from "@prismicio/client";
 
 type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };
 
-type AboutUsDocumentDataSlicesSlice = SmallHeroSliceSlice;
+/**
+ * Item in *About Us → Gallery*
+ */
+export interface AboutUsDocumentDataGalleryItem {
+  /**
+   * Image field in *About Us → Gallery*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: about_us.gallery[].image
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image: prismic.ImageField<never>;
+}
+
+type AboutUsDocumentDataSlicesSlice = never;
 
 /**
  * Content for About Us documents
  */
 interface AboutUsDocumentData {
+  /**
+   * Heading field in *About Us*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: about_us.heading
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  heading: prismic.KeyTextField;
+
+  /**
+   * Image field in *About Us*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: about_us.image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image: prismic.ImageField<never>;
+
   /**
    * Content field in *About Us*
    *
@@ -20,6 +57,17 @@ interface AboutUsDocumentData {
    * - **Documentation**: https://prismic.io/docs/field#rich-text-title
    */
   content: prismic.RichTextField;
+
+  /**
+   * Gallery field in *About Us*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: about_us.gallery[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  gallery: prismic.GroupField<Simplify<AboutUsDocumentDataGalleryItem>>;
 
   /**
    * Slice Zone field in *About Us*
@@ -2559,6 +2607,7 @@ declare module "@prismicio/client" {
     export type {
       AboutUsDocument,
       AboutUsDocumentData,
+      AboutUsDocumentDataGalleryItem,
       AboutUsDocumentDataSlicesSlice,
       AccommodationDocument,
       AccommodationDocumentData,

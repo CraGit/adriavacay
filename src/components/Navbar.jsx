@@ -186,11 +186,27 @@ export default function Navbar(props) {
                 </Link>
               </li>
               <li
+                className={menu === "/about-us" ? "active" : ""}
+                onClick={toggleMenu}
+              >
+                <Link href="/about-us" className="sub-menu-item">
+                  About Us
+                </Link>
+              </li>
+              <li
                 className={menu === "/destinations" ? "active" : ""}
                 onClick={toggleMenu}
               >
                 <Link href="/destinations" className="sub-menu-item">
                   Destinations
+                </Link>
+              </li>
+              <li
+                className={menu === "/blog" ? "active" : ""}
+                onClick={toggleMenu}
+              >
+                <Link href="/blog" className="sub-menu-item">
+                  Blog
                 </Link>
               </li>
               <li

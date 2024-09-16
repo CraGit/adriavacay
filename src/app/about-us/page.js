@@ -1,13 +1,38 @@
-import { SliceZone } from "@prismicio/react";
+import { PrismicRichText, SliceZone } from "@prismicio/react";
 
 import { createClient } from "@/prismicio";
 import { components } from "@/slices";
+import SmallHero from "@/components/SmallHero";
+import rtfComponents from "@/lib/richText";
+import PhotoGallery from "@/components/Gallery";
 
 export default async function Page() {
   const client = createClient();
   const page = await client.getSingle("about_us");
+  const photos = page.data.gallery.map((photo) => {
+    return {
+      src: photo.image.url,
+      alt: photo.image.alt,
+      width: Number(photo.image.dimensions?.width),
+      height: Number(photo.image.dimensions?.height),
+      description: photo.image.alt,
+    };
+  });
 
-  return <SliceZone slices={page.data.slices} components={components} />;
+  return (
+    <>
+      <SmallHero
+        heading={page.data.heading}
+        backgroundImage={page.data.image}
+      />
+      <div className="container">
+        <PrismicRichText field={page.data.content} components={rtfComponents} />
+        {photos && photos.length > 0 && (
+          <PhotoGallery photos={photos} heading="Gallery" />
+        )}
+      </div>
+    </>
+  );
 }
 
 export async function generateMetadata() {
