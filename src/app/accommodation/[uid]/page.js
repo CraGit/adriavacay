@@ -143,6 +143,7 @@ export default async function Page({ params }) {
                 <PriceDisplay
                   prices={page.data.pricing}
                   discounts={page.data.discounts}
+                  deposit={page.data.security_deposit}
                 />
                 <BookingForm
                   uid={params.uid}

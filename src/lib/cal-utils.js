@@ -4,6 +4,7 @@ import {
   eachDayOfInterval,
   format,
   isAfter,
+  isBefore,
   isWithinInterval,
 } from "date-fns";
 
@@ -22,17 +23,34 @@ export const isChangeoverDayValid = (date, changeoverDay) => {
 };
 
 export const getApplicablePriceRange = (date, priceRanges) => {
-  return priceRanges.find((range) =>
-    isWithinInterval(date, {
+  /*return priceRanges.find(
+    (range) =>
+      isWithinInterval(date, {
+        start: range.date_start,
+        // end: addDays(range.date_end, -1),
+        end: range.date_end,
+      }) && range.price
+  );*/
+  return priceRanges.find((range, index, ranges) => {
+    const previousRange = ranges[index - 1];
+
+    const inCurrentRange = isWithinInterval(date, {
       start: range.date_start,
-      end: addDays(range.date_end, -1),
-    })
-  );
+      end: range.date_end,
+    });
+
+    const isTransitionDay = previousRange
+      ? isAfter(date, previousRange.date_end) &&
+        isBefore(date, range.date_start)
+      : false;
+
+    return inCurrentRange || isTransitionDay;
+  });
 };
 
 export const isDateAvailable = (date, priceRanges, unavailableRanges) => {
   const range = getApplicablePriceRange(date, priceRanges);
-  if (!range) return false;
+  if (!range || !range.price) return false;
 
   return (
     !isDateInOccupiedRanges(date, unavailableRanges) &&

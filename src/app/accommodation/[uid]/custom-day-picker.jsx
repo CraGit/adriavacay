@@ -71,7 +71,6 @@ export default function CustomDayPicker({
     available: (date) => {
       if (!selected.from || (selected.from && selected.to)) {
         return (
-          !isBefore(date, today) &&
           isDateAvailable(date, priceRanges, unavailableRanges) &&
           hasValidEndDates(date, priceRanges, unavailableRanges)
         );
@@ -123,7 +122,8 @@ export default function CustomDayPicker({
           modifiersClassNames={modifiersClassNames}
           disabled={(date) =>
             isBefore(date, today) ||
-            isDateInOccupiedRanges(date, unavailableRanges)
+            isDateInOccupiedRanges(date, unavailableRanges) ||
+            !isDateAvailable(date, priceRanges, unavailableRanges)
           }
           components={{
             DayButton: (props) =>

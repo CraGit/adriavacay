@@ -11,7 +11,12 @@ import {
 } from "@/lib/utils";
 import { useSearch } from "@/providers/search-provider";
 
-export default function PriceDisplay({ prices, discounts, className }) {
+export default function PriceDisplay({
+  prices,
+  discounts,
+  deposit,
+  className,
+}) {
   const { query, updateQuery } = useSearch();
 
   if (query.dateRange.from === null || query.dateRange.to === null) {
@@ -53,6 +58,10 @@ export default function PriceDisplay({ prices, discounts, className }) {
             <span className="font-medium text-sm">
               {df(query.dateRange.from, "PP")} - {df(query.dateRange.to, "PP")}
             </span>
+          </li>
+          <li className="flex justify-between items-center mt-2">
+            <span className="text-slate-400 text-sm">Safety deposit</span>
+            <span className="font-medium text-sm">{currency(deposit)}</span>
           </li>
 
           {basePrice === priceWithDiscount && (
