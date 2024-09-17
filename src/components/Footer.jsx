@@ -178,6 +178,7 @@ export default function Footer() {
                         <p className="text-green-600 duration-500 ease-in-out lightbox">
                           Naklice 29, 21252 Tugare
                         </p>
+                        <p className="text-gray-300 mb-2">VAT: HR12256405531</p>
                       </div>
                     </div>
 
@@ -204,12 +205,18 @@ export default function Footer() {
                         </Link>
                       </div>
                     </div>
-                    <div className="flex mt-12">
+                    <div className="flex mt-12 flex-col">
                       <Link
                         href="/terms-and-conditions"
                         className="text-slate-100 font-semibold hover:text-slate-400 duration-500 ease-in-out"
                       >
                         Terms and Conditions
+                      </Link>
+                      <Link
+                        href="/privacy-policy"
+                        className="text-slate-100 font-semibold hover:text-slate-400 duration-500 ease-in-out"
+                      >
+                        Privacy Policy
                       </Link>
                     </div>
                   </div>
