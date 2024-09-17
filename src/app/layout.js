@@ -23,6 +23,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" dir="LTR" className="scroll-smooth">
+      <head>
+        <meta themeColor="#AC8B16" />
+      </head>
       <body className={`${league_Spartan.className}`}>
         <SearchProvider>
           <Navbar navClass="navbar-white" />
