@@ -25,7 +25,7 @@ export default async function Page() {
         heading={page.data.heading}
         backgroundImage={page.data.image}
       />
-      <div className="container">
+      <div className="container mt-8">
         <PrismicRichText field={page.data.content} components={rtfComponents} />
         {photos && photos.length > 0 && (
           <PhotoGallery photos={photos} heading="Gallery" />
