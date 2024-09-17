@@ -5,7 +5,6 @@ import { components } from "@/slices";
 import SmallHero from "@/components/SmallHero";
 import rtfComponents from "@/lib/richText";
 import PhotoGallery from "@/components/Gallery";
-
 export default async function Page() {
   const client = createClient();
   const page = await client.getSingle("about_us");
