@@ -112,37 +112,16 @@ export const filterAvailablePriceRanges = (priceRanges, fromDate, toDate) => {
 
 const getPriceForDate = (date, priceRanges) => {
   const range = priceRanges.find(({ date_start, date_end }) =>
-    isWithinInterval(date, { start: date_start, end: date_end })
+    isWithinInterval(date, {
+      start: parse(date_start, "yyyy-MM-dd", new Date()),
+      end: parse(date_end, "yyyy-MM-dd", new Date()),
+    })
   );
 
   return range ? range.price : 0;
 };
 
 export const calculateTotalPrice = (priceRanges, fromDate, toDate) => {
-  /*const availablePriceRanges = filterAvailablePriceRanges(
-    priceRanges,
-    fromDate,
-    toDate
-  );
-  let totalPrice = 0;
-
-  availablePriceRanges.forEach((range) => {
-    const overlapStart = max([
-      parse(range.date_start, "yyyy-MM-dd", new Date()),
-      fromDate,
-    ]);
-    const overlapEnd = min([
-      parse(range.date_end, "yyyy-MM-dd", new Date()),
-      toDate,
-    ]);
-
-    const daysInRange = differenceInCalendarDays(overlapEnd, overlapStart);
-
-    totalPrice += daysInRange * range.price;
-  });
-
-  return Math.floor(totalPrice);*/
-
   if (!fromDate || !toDate) return 0;
 
   const days = eachDayOfInterval({ start: fromDate, end: addDays(toDate, -1) }); // skidamo jedan dan jer ne racunamo zadnji dan
@@ -173,11 +152,6 @@ export const calculateTotalPriceWithDiscount = (
   fromDate,
   toDate
 ) => {
-  const availablePriceRanges = filterAvailablePriceRanges(
-    priceRanges,
-    fromDate,
-    toDate
-  );
   let totalPrice = 0;
   let totalDiscount = 0;
 
