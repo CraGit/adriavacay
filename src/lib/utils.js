@@ -110,8 +110,16 @@ export const filterAvailablePriceRanges = (priceRanges, fromDate, toDate) => {
   });
 };
 
+const getPriceForDate = (date, priceRanges) => {
+  const range = priceRanges.find(({ date_start, date_end }) =>
+    isWithinInterval(date, { start: date_start, end: date_end })
+  );
+
+  return range ? range.price : 0;
+};
+
 export const calculateTotalPrice = (priceRanges, fromDate, toDate) => {
-  const availablePriceRanges = filterAvailablePriceRanges(
+  /*const availablePriceRanges = filterAvailablePriceRanges(
     priceRanges,
     fromDate,
     toDate
@@ -132,6 +140,16 @@ export const calculateTotalPrice = (priceRanges, fromDate, toDate) => {
 
     totalPrice += daysInRange * range.price;
   });
+
+  return Math.floor(totalPrice);*/
+
+  if (!fromDate || !toDate) return 0;
+
+  const days = eachDayOfInterval({ start: fromDate, end: addDays(toDate, -1) }); // skidamo jedan dan jer ne racunamo zadnji dan
+
+  const totalPrice = days.reduce((total, date) => {
+    return total + getPriceForDate(date, priceRanges);
+  }, 0);
 
   return Math.floor(totalPrice);
 };
@@ -161,30 +179,25 @@ export const calculateTotalPriceWithDiscount = (
     toDate
   );
   let totalPrice = 0;
+  let totalDiscount = 0;
 
-  availablePriceRanges.forEach((range) => {
-    const overlapStart = max([
-      parse(range.date_start, "yyyy-MM-dd", new Date()),
-      fromDate,
-    ]);
-    const overlapEnd = min([
-      parse(range.date_end, "yyyy-MM-dd", new Date()),
-      toDate,
-    ]);
+  let currentDate = fromDate;
 
-    for (
-      let date = overlapStart;
-      isBefore(date, overlapEnd);
-      date = addDays(date, 1)
-    ) {
-      const dailyPrice = range.price;
-      const discount = getDiscountForDate(date, discountRanges);
-      const discountedPrice = dailyPrice * (1 - discount / 100);
-      totalPrice += discountedPrice;
+  while (currentDate < toDate) {
+    // strogo manje jer ne racunamo zadnji dan
+    const price = getPriceForDate(currentDate, priceRanges);
+    const discount = getDiscountForDate(currentDate, discountRanges);
+
+    if (price !== null) {
+      const discountAmount = (price * discount) / 100;
+      totalPrice += price;
+      totalDiscount += discountAmount;
     }
-  });
 
-  return Math.floor(totalPrice);
+    currentDate = addDays(currentDate, 1);
+  }
+
+  return Math.floor(totalPrice - totalDiscount);
 };
 
 export const isDateInRange = (date, range) => {
