@@ -22,6 +22,7 @@ import { components } from "@/slices";
 import PartialDiv from "@/components/PartialDiv";
 import BookingForm from "./booking-form";
 import PriceDisplay from "./price-display";
+import Reviews from "@/components/Reviews";
 
 export default async function Page({ params }) {
   const client = createClient();
@@ -123,7 +124,8 @@ export default async function Page({ params }) {
                   allowFullScreen
                 ></iframe>
               </div>
-
+              {/* REVIEW */}
+              <Reviews reviews={page.data.reviews} />
               {/* GALLERY */}
               {photos && photos.length > 0 && (
                 <PhotoGallery photos={photos} heading="Gallery" />
