@@ -19,48 +19,48 @@ export const repositoryName =
 const routes = [
   {
     type: "homepage",
-    path: "/",
+    path: "/:lang?",
   },
   {
     type: "accommodation",
-    path: "/accommodation",
+    path: "/:lang?/accommodation",
   },
   {
     type: "accommodation_single",
-    path: "/accommodation/:uid",
+    path: "/:lang?/accommodation/:uid",
   },
   {
     type: "about_us",
-    path: "/about-us",
+    path: "/:lang?/about-us",
   },
 
   {
     type: "destinations",
-    path: "/destinations",
+    path: "/:lang?/destinations",
   },
   {
     type: "destination",
-    path: "/destinations/:uid",
+    path: "/:lang?/destinations/:uid",
   },
   {
     type: "blog",
-    path: "/blog",
+    path: "/:lang?/blog",
   },
   {
     type: "blog_single",
-    path: "/blog/:uid",
+    path: "/:lang?/blog/:uid",
   },
   {
     type: "contact",
-    path: "/contact",
+    path: "/:lang?/contact",
   },
   {
     type: "terms_and_conditions",
-    path: "/terms-and-conditions",
+    path: "/:lang?/terms-and-conditions",
   },
   {
     type: "privacy_policy",
-    path: "/privacy-policy",
+    path: "/:lang?/privacy-policy",
   },
 ];
 

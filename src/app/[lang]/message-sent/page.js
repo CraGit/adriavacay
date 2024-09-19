@@ -1,6 +1,6 @@
 import SmallHeading from "@/components/SmallHeading";
 
-const MessageSentPage = () => {
+const MessageSentPage = ({ params: { lang } }) => {
   return (
     <div className="container flex flex-col justify-center items-center py-48 md:py-72 px-4 md:px-0">
       <SmallHeading heading="Message Sent" />

@@ -13,9 +13,10 @@ const league_Spartan = League_Spartan({
   display: "swap",
   variable: "--font-league_Spartan",
 });
-export const viewport = {
+/*export const viewport = {
   themeColor: "#AC8B16",
-};
+};*/
+
 export const metadata = {
   title: "AdriaVacay -Tailored Stayes, Timeless Memories",
   description:
@@ -25,9 +26,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" dir="LTR" className="scroll-smooth">
-      <head>
-        <meta themeColor={viewport.themeColor} />
-      </head>
+      <head>{/* <meta themeColor={viewport.themeColor} /> */}</head>
       <body className={`${league_Spartan.className}`}>
         <SearchProvider>
           <Navbar navClass="navbar-white" />

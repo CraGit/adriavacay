@@ -5,9 +5,10 @@ import { components } from "@/slices";
 import SmallHero from "@/components/SmallHero";
 import rtfComponents from "@/lib/richText";
 import PhotoGallery from "@/components/Gallery";
-export default async function Page() {
+
+export default async function Page({ params: { lang } }) {
   const client = createClient();
-  const page = await client.getSingle("about_us");
+  const page = await client.getSingle("about_us", { lang });
   const photos = page.data.gallery.map((photo) => {
     return {
       src: photo.image.url,
@@ -34,9 +35,9 @@ export default async function Page() {
   );
 }
 
-export async function generateMetadata() {
+export async function generateMetadata({ params: { lang } }) {
   const client = createClient();
-  const page = await client.getSingle("about_us");
+  const page = await client.getSingle("about_us", { lang });
 
   return {
     title: page.data.meta_title,

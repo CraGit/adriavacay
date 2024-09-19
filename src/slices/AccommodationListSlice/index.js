@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { AccommodationSingle } from "@/app/accommodation/accommodation-single";
+import { AccommodationSingle } from "@/app/[lang]/accommodation/accommodation-single";
 import SectionHeading from "@/components/SectionHeading";
 import { occupiedDatesFromIcal } from "@/lib/utils";
 import { createClient } from "@/prismicio";

@@ -11,7 +11,7 @@ import PhotoGallery from "@/components/Gallery";
 export default async function Page({ params }) {
   const client = createClient();
   const page = await client
-    .getByUID("destination", params.uid)
+    .getByUID("destination", params.uid, { lang: params.lang })
     .catch(() => notFound());
 
   const photos = page.data.gallery.map((photo) => {
@@ -46,7 +46,7 @@ export default async function Page({ params }) {
 export async function generateMetadata({ params }) {
   const client = createClient();
   const page = await client
-    .getByUID("destination", params.uid)
+    .getByUID("destination", params.uid, { lang: params.lang })
     .catch(() => notFound());
 
   return {
@@ -55,9 +55,9 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export async function generateStaticParams() {
+export async function generateStaticParams({ params }) {
   const client = createClient();
-  const pages = await client.getAllByType("destination");
+  const pages = await client.getAllByType("destination", { lang: params.lang });
 
   return pages.map((page) => {
     return { uid: page.uid };
