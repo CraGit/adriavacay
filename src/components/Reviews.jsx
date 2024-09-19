@@ -24,7 +24,7 @@ export default function Reviews({ reviews }) {
     <>
       <div className="container lg:mt-24 mt-16">
         <div className="grid grid-cols-1 pb-8 text-center">
-          <h3 className="mb-4 md:text-3xl md:leading-normal text-2xl leading-normal font-semibold">
+          <h3 className="mb-2 md:text-3xl md:leading-normal text-2xl leading-normal font-semibold">
             What Our Guests Say?
           </h3>
           {/* 
