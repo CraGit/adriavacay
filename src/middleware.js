@@ -16,7 +16,7 @@ export async function middleware(request) {
 
   if (pathnameIsMissingLocale) {
     return NextResponse.rewrite(
-      new URL(`${defaultLocale}${pathname}`, request.url)
+      new URL(`/${defaultLocale}${pathname}`, request.url)
     );
   }
 }

@@ -5,6 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
+import logo from "@/assets/images/logo.svg";
+
 export default function Navbar(props) {
   let { navClass, topnavClass } = props;
   let [isOpen, setIsOpen] = useState(true);
@@ -69,14 +71,16 @@ export default function Navbar(props) {
           {navClass === "" || navClass === undefined ? (
             <Link className="logo" href="/">
               <Image
-                src="/images/logo.svg"
+                //src="/images/logo.svg"
+                src={logo}
                 className="inline-block dark:hidden"
                 alt=""
                 width={140}
                 height={24}
               />
               <Image
-                src="/images/logo.svg"
+                //src="/images/logo.svg"
+                src={logo}
                 className="hidden dark:inline-block"
                 alt=""
                 width={140}
@@ -87,14 +91,16 @@ export default function Navbar(props) {
             <Link className="logo" href="/">
               <span className="inline-block dark:hidden">
                 <Image
-                  src="/images/logo.svg"
+                  //src="/images/logo.svg"
+                  src={logo}
                   className="l-dark"
                   alt=""
                   width={140}
                   height={24}
                 />
                 <Image
-                  src="/images/logo.svg"
+                  //src="/images/logo.svg"
+                  src={logo}
                   className="l-light"
                   alt=""
                   width={140}
@@ -102,7 +108,8 @@ export default function Navbar(props) {
                 />
               </span>
               <Image
-                src="/images/logo.svg"
+                //src="/images/logo.svg"
+                src={logo}
                 className="hidden dark:inline-block"
                 alt=""
                 width={140}
