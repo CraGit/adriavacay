@@ -7,6 +7,7 @@ import { DateRangePicker } from "@/components/DateRangePicker";
 import { cn } from "@/lib/utils";
 import { useSearch } from "@/providers/search-provider";
 import CustomDayPicker from "./custom-day-picker";
+import { useTranslations } from "next-intl";
 
 export default function BookingForm({
   uid,
@@ -40,6 +41,8 @@ export default function BookingForm({
     }
   };
 
+  const t = useTranslations("booking");
+
   return (
     <form onSubmit={handleSubmit}>
       <div className={cn("rounded-md px-4 py-2 shadow", className)}>
@@ -47,7 +50,7 @@ export default function BookingForm({
 
         <div className="grid">
           <div className="lg:col-span-6 mb-1">
-            <label className="font-medium text-sm">Dates</label>
+            <label className="font-medium text-sm">{t("dates")}</label>
             {/* <DateRangePicker
               selected={query.dateRange}
               onSelect={(range) => updateQuery({ dateRange: range })}
@@ -66,6 +69,7 @@ export default function BookingForm({
               unavailableRanges={occupiedRanges}
               selected={query.dateRange}
               onSelect={(range) => updateQuery({ dateRange: range })}
+              placeholder={t("pick")}
             />
             {errors.dateFrom && (
               <span className="text-xs">{errors.dateFrom[0]}</span>
@@ -77,7 +81,7 @@ export default function BookingForm({
           </div>
 
           <div className="lg:col-span-1 mb-1">
-            <label className="font-medium text-sm">Guests</label>
+            <label className="font-medium text-sm">{t("guests")}</label>
             <input
               type="text"
               className={cn(
@@ -93,7 +97,7 @@ export default function BookingForm({
           </div>
 
           <div className="lg:col-span-5 mb-1">
-            <label className="font-medium text-sm">Name:</label>
+            <label className="font-medium text-sm">{t("name")}</label>
             <input
               name="name"
               type="text"
@@ -101,7 +105,7 @@ export default function BookingForm({
                 "form-input mt-1",
                 errors.name && "!border-red-600"
               )}
-              placeholder="Name"
+              placeholder={t("name")}
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -141,7 +145,7 @@ export default function BookingForm({
             type="submit"
             className="btn bg-green-600 hover:bg-green-700 text-white rounded-md w-full"
           >
-            Book Now
+            {t("book-now")}
           </button>
         </div>
       </div>

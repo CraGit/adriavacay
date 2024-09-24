@@ -18,5 +18,21 @@
         "subject": "Subject",
         "message": "Your Message",
         "send": "Send Message"
+    },
+    "booking": {
+        "dates": "Dates",
+        "pick": "Pick a date",
+        "guests": "Guests",
+        "name": "Name",
+        "book-now": "Book Now"
+    },
+    "accommodation-single": {
+        "show-more": "Show more",
+        "hide": "Hide",
+        "distances": "Distances",
+        "amenities": "Amenities",
+        "gallery": "Gallery",
+        "payment-policy": "Payment Policy",
+        "cancellation-policy": "Cancellation Policy"
     }
 }

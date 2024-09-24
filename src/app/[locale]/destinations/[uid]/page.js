@@ -7,8 +7,11 @@ import SmallHero from "@/components/SmallHero";
 import { PrismicRichText } from "@prismicio/react";
 import rtfComponents from "@/lib/richText";
 import PhotoGallery from "@/components/Gallery";
+import { unstable_setRequestLocale } from "next-intl/server";
 
 export default async function Page({ params }) {
+  unstable_setRequestLocale(params.locale);
+
   const client = createClient();
   const page = await client
     .getByUID("destination", params.uid, { lang: params.locale })
@@ -58,10 +61,10 @@ export async function generateMetadata({ params }) {
 export async function generateStaticParams({ params }) {
   const client = createClient();
   const pages = await client.getAllByType("destination", {
-    lang: params.locale,
+    lang: "*",
   });
 
   return pages.map((page) => {
-    return { uid: page.uid };
+    return { uid: page.uid, locale: page.lang };
   });
 }

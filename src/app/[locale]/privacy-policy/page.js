@@ -4,8 +4,11 @@ import SmallHero from "@/components/SmallHero";
 import rtfComponents from "@/lib/richText";
 import { createClient } from "@/prismicio";
 import { routing } from "@/i18n/routing";
+import { unstable_setRequestLocale } from "next-intl/server";
 
 export default async function Page({ params: { locale } }) {
+  unstable_setRequestLocale(locale);
+
   const client = createClient();
   const page = await client.getSingle("privacy_policy", { lang: locale });
 
@@ -37,5 +40,5 @@ export async function generateStaticParams() {
   const client = createClient();
   const pages = await client.getAllByType("privacy_policy", { lang: "*" });
 
-  return pages.map((page) => ({ uid: page.uid, lang: page.lang }));
+  return pages.map((page) => ({ uid: page.uid, locale: page.lang }));
 }

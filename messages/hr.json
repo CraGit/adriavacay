@@ -18,5 +18,21 @@
         "subject": "Naslov",
         "message": "Vaša poruka",
         "send": "Pošalji poruku"
+    },
+    "booking": {
+        "dates": "Datumi",
+        "pick": "Odaberite datume",
+        "guests": "Gosti",
+        "name": "Ime",
+        "book-now": "Rezerviraj sada"
+    },
+    "accommodation-single": {
+        "show-more": "Prikaži više",
+        "hide": "Sakrij",
+        "distances": "Udaljenosti",
+        "amenities": "Pogodnosti",
+        "gallery": "Galerija",
+        "payment-policy": "Politika plaćanja",
+        "cancellation-policy": "Politika otkazivanja"
     }
 }

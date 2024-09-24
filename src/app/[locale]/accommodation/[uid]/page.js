@@ -1,7 +1,7 @@
 import { PrismicRichText, SliceZone } from "@prismicio/react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { unstable_setRequestLocale } from "next-intl/server";
+import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 
 import {
   FiPhone,
@@ -31,8 +31,12 @@ export default async function Page({ params }) {
   const page = await client
     .getByUID("accommodation_single", params.uid, { lang: params.locale })
     .catch(() => notFound());
-  const cancelationPolicy = await client.getSingle("cancelation_policy");
-  const paymentDetails = await client.getSingle("payment_details");
+  const cancelationPolicy = await client.getSingle("cancelation_policy", {
+    lang: params.locale,
+  });
+  const paymentDetails = await client.getSingle("payment_details", {
+    lang: params.locale,
+  });
   const occupiedDates = await occupiedDatesFromIcal(page.data.ical);
   const occupiedRanges = await occupiedRangesFromIcal(page.data.ical);
 
@@ -49,6 +53,8 @@ export default async function Page({ params }) {
   const amenities = amenitiesMapping
     .filter((item) => page.data[item.key])
     .map((item) => item.label);
+
+  const t = await getTranslations("accommodation-single");
 
   return (
     <>
@@ -114,9 +120,12 @@ export default async function Page({ params }) {
                 />
               </PartialDiv>
               {/* DISTANCES */}
-              <Distances distances={page.data.distances} />
+              <Distances
+                heading={t("distances")}
+                distances={page.data.distances}
+              />
               {/* AMENITIES */}
-              <Amenities amenities={amenities} />
+              <Amenities heading={t("amenities")} amenities={amenities} />
 
               <div className="w-full leading-[0] border-0 mt-6">
                 <iframe
@@ -257,6 +266,6 @@ export async function generateStaticParams() {
   });
 
   return pages.map((page) => {
-    return { uid: page.uid, lang: page.lang };
+    return { uid: page.uid, locale: page.lang };
   });
 }

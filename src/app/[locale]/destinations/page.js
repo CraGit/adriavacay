@@ -32,5 +32,5 @@ export async function generateStaticParams() {
   const client = createClient();
   const pages = await client.getAllByType("destinations", { lang: "*" });
 
-  return pages.map((page) => ({ uid: page.uid, lang: page.lang }));
+  return pages.map((page) => ({ uid: page.uid, locale: page.lang }));
 }

@@ -62,6 +62,7 @@ export default function CustomDayPicker({
   unavailableRanges,
   className,
   selected,
+  placeholder,
 }) {
   const today = startOfToday();
 
@@ -105,7 +106,7 @@ export default function CustomDayPicker({
               df(selected.from, "PP")
             )
           ) : (
-            <span>Pick a date</span>
+            <span>{placeholder}</span>
           )}
         </div>
       </PopoverTrigger>
