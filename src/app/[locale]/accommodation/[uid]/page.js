@@ -1,6 +1,7 @@
 import { PrismicRichText, SliceZone } from "@prismicio/react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { unstable_setRequestLocale } from "next-intl/server";
 
 import {
   FiPhone,
@@ -24,6 +25,8 @@ import BookingForm from "./booking-form";
 import PriceDisplay from "./price-display";
 
 export default async function Page({ params }) {
+  unstable_setRequestLocale(params.locale);
+
   const client = createClient();
   const page = await client
     .getByUID("accommodation_single", params.uid, { lang: params.locale })
@@ -247,13 +250,13 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export async function generateStaticParams({ params }) {
+export async function generateStaticParams() {
   const client = createClient();
   const pages = await client.getAllByType("accommodation_single", {
-    lang: params.locale,
+    lang: "*",
   });
 
   return pages.map((page) => {
-    return { uid: page.uid };
+    return { uid: page.uid, lang: page.lang };
   });
 }
