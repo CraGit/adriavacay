@@ -1,19 +1,14 @@
-import { notFound } from "next/navigation";
+import { PrismicRichText, SliceZone } from "@prismicio/react";
 
 import { createClient } from "@/prismicio";
-
+import { components } from "@/slices";
 import SmallHero from "@/components/SmallHero";
-
-import { PrismicRichText } from "@prismicio/react";
 import rtfComponents from "@/lib/richText";
 import PhotoGallery from "@/components/Gallery";
 
-export default async function Page({ params }) {
+export default async function Page({ params: { locale } }) {
   const client = createClient();
-  const page = await client
-    .getByUID("destination", params.uid, { lang: params.lang })
-    .catch(() => notFound());
-
+  const page = await client.getSingle("about_us", { lang: locale });
   const photos = page.data.gallery.map((photo) => {
     return {
       src: photo.image.url,
@@ -23,43 +18,29 @@ export default async function Page({ params }) {
       description: photo.image.alt,
     };
   });
+
   return (
     <>
       <SmallHero
         heading={page.data.heading}
         backgroundImage={page.data.image}
       />
-      <div className="container">
-        {" "}
+      <div className="container mt-8">
         <PrismicRichText field={page.data.content} components={rtfComponents} />
         {photos && photos.length > 0 && (
           <PhotoGallery photos={photos} heading="Gallery" />
         )}
       </div>
-      {/* {page.data.gallery.length > 0 &&  */}
-
-      {/* } */}
     </>
   );
 }
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata({ params: { locale } }) {
   const client = createClient();
-  const page = await client
-    .getByUID("destination", params.uid, { lang: params.lang })
-    .catch(() => notFound());
+  const page = await client.getSingle("about_us", { lang: locale });
 
   return {
     title: page.data.meta_title,
     description: page.data.meta_description,
   };
-}
-
-export async function generateStaticParams({ params }) {
-  const client = createClient();
-  const pages = await client.getAllByType("destination", { lang: params.lang });
-
-  return pages.map((page) => {
-    return { uid: page.uid };
-  });
 }

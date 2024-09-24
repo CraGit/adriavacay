@@ -9,6 +9,7 @@ import { cn, df } from "@/lib/utils";
 
 import { DayPicker } from "./DayPicker";
 import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
+import { useTranslations } from "next-intl";
 
 export const DateRangePicker = ({
   selected,
@@ -52,6 +53,8 @@ export const DateRangePicker = ({
     onSelect(range);
   };
 
+  const t = useTranslations("search");
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -65,7 +68,7 @@ export const DateRangePicker = ({
               df(selected.from, "PP")
             )
           ) : (
-            <span>Pick a date</span>
+            <span>{t("pick")}</span>
           )}
         </div>
       </PopoverTrigger>

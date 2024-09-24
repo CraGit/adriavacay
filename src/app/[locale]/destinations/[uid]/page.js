@@ -1,14 +1,19 @@
-import { PrismicRichText, SliceZone } from "@prismicio/react";
+import { notFound } from "next/navigation";
 
 import { createClient } from "@/prismicio";
-import { components } from "@/slices";
+
 import SmallHero from "@/components/SmallHero";
+
+import { PrismicRichText } from "@prismicio/react";
 import rtfComponents from "@/lib/richText";
 import PhotoGallery from "@/components/Gallery";
 
-export default async function Page({ params: { lang } }) {
+export default async function Page({ params }) {
   const client = createClient();
-  const page = await client.getSingle("about_us", { lang });
+  const page = await client
+    .getByUID("destination", params.uid, { lang: params.locale })
+    .catch(() => notFound());
+
   const photos = page.data.gallery.map((photo) => {
     return {
       src: photo.image.url,
@@ -18,29 +23,45 @@ export default async function Page({ params: { lang } }) {
       description: photo.image.alt,
     };
   });
-
   return (
     <>
       <SmallHero
         heading={page.data.heading}
         backgroundImage={page.data.image}
       />
-      <div className="container mt-8">
+      <div className="container">
+        {" "}
         <PrismicRichText field={page.data.content} components={rtfComponents} />
         {photos && photos.length > 0 && (
           <PhotoGallery photos={photos} heading="Gallery" />
         )}
       </div>
+      {/* {page.data.gallery.length > 0 &&  */}
+
+      {/* } */}
     </>
   );
 }
 
-export async function generateMetadata({ params: { lang } }) {
+export async function generateMetadata({ params }) {
   const client = createClient();
-  const page = await client.getSingle("about_us", { lang });
+  const page = await client
+    .getByUID("destination", params.uid, { lang: params.locale })
+    .catch(() => notFound());
 
   return {
     title: page.data.meta_title,
     description: page.data.meta_description,
   };
+}
+
+export async function generateStaticParams({ params }) {
+  const client = createClient();
+  const pages = await client.getAllByType("destination", {
+    lang: params.locale,
+  });
+
+  return pages.map((page) => {
+    return { uid: page.uid };
+  });
 }

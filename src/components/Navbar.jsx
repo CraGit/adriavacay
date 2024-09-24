@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
-import { LanguageSwitcher } from "./LanguageSwitcher";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 import logo from "@/assets/images/logo.svg";
 
@@ -18,6 +19,8 @@ export default function Navbar(props) {
   let [submenu, setSubmenu] = useState("");
 
   let current = usePathname();
+
+  const t = useTranslations("menu");
 
   useEffect(() => {
     setMenu(current);
@@ -161,7 +164,7 @@ export default function Navbar(props) {
                   className="sub-menu-item"
                   onClick={toggleMenu}
                 >
-                  Home
+                  {t("home")}
                 </Link>
               </li>
 
@@ -170,7 +173,7 @@ export default function Navbar(props) {
                 onClick={toggleMenu}
               >
                 <Link href="/accommodation" className="sub-menu-item">
-                  Accommodation
+                  {t("accommodation")}
                 </Link>
               </li>
               <li
@@ -178,7 +181,7 @@ export default function Navbar(props) {
                 onClick={toggleMenu}
               >
                 <Link href="/about-us" className="sub-menu-item">
-                  About Us
+                  {t("about-us")}
                 </Link>
               </li>
               <li
@@ -186,7 +189,7 @@ export default function Navbar(props) {
                 onClick={toggleMenu}
               >
                 <Link href="/destinations" className="sub-menu-item">
-                  Destinations
+                  {t("destinations")}
                 </Link>
               </li>
               <li
@@ -194,7 +197,7 @@ export default function Navbar(props) {
                 onClick={toggleMenu}
               >
                 <Link href="/blog" className="sub-menu-item">
-                  Blog
+                  {t("blog")}
                 </Link>
               </li>
               <li
@@ -202,11 +205,11 @@ export default function Navbar(props) {
                 onClick={toggleMenu}
               >
                 <Link href="/contact" className="sub-menu-item">
-                  Contact
+                  {t("contact")}
                 </Link>
               </li>
             </ul>
-            <LanguageSwitcher activeLocale={props.locale} />
+            <LanguageSwitcher />
           </div>
         </div>
       </nav>

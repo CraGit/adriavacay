@@ -26,7 +26,7 @@ import PriceDisplay from "./price-display";
 export default async function Page({ params }) {
   const client = createClient();
   const page = await client
-    .getByUID("accommodation_single", params.uid, { lang: params.lang })
+    .getByUID("accommodation_single", params.uid, { lang: params.locale })
     .catch(() => notFound());
   const cancelationPolicy = await client.getSingle("cancelation_policy");
   const paymentDetails = await client.getSingle("payment_details");
@@ -238,7 +238,7 @@ export default async function Page({ params }) {
 export async function generateMetadata({ params }) {
   const client = createClient();
   const page = await client
-    .getByUID("accommodation_single", params.uid, { lang: params.lang })
+    .getByUID("accommodation_single", params.uid, { lang: params.locale })
     .catch(() => notFound());
 
   return {
@@ -250,7 +250,7 @@ export async function generateMetadata({ params }) {
 export async function generateStaticParams({ params }) {
   const client = createClient();
   const pages = await client.getAllByType("accommodation_single", {
-    lang: params.lang,
+    lang: params.locale,
   });
 
   return pages.map((page) => {

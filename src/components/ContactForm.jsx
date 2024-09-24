@@ -7,6 +7,7 @@ import { useState } from "react";
 import { submit } from "@/actions/contact";
 import { FiHexagon, FiMail, FiMapPin, FiPhone } from "@/assets/icons/vander";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 export default function ContactForm({
   heading,
@@ -27,6 +28,8 @@ export default function ContactForm({
     }
   };
 
+  const t = useTranslations("contact");
+
   return (
     <section className="relative lg:py-24 py-16">
       <div className="container">
@@ -42,7 +45,7 @@ export default function ContactForm({
                   <div className="grid lg:grid-cols-12 lg:gap-6">
                     <div className="lg:col-span-6 mb-5">
                       <label htmlFor="name" className="font-medium">
-                        Name:
+                        {t("name")}:
                       </label>
                       <input
                         name="name"
@@ -51,7 +54,7 @@ export default function ContactForm({
                           "form-input mt-2",
                           errors.name && "border-red-600"
                         )}
-                        placeholder="Name :"
+                        placeholder={`${t("name")} :`}
                       />
                       {errors.name && (
                         <span className="text-xs">{errors.name[0]}</span>
@@ -80,7 +83,7 @@ export default function ContactForm({
                   <div className="grid grid-cols-1">
                     <div className="mb-5">
                       <label htmlFor="subject" className="font-medium">
-                        Subject:
+                        {t("subject")}:
                       </label>
                       <input
                         name="subject"
@@ -88,7 +91,7 @@ export default function ContactForm({
                           "form-input mt-2",
                           errors.subject && "border-red-600"
                         )}
-                        placeholder="Subject :"
+                        placeholder={`${t("subject")} :`}
                       />
                       {errors.subject && (
                         <span className="text-xs">{errors.subject[0]}</span>
@@ -97,7 +100,7 @@ export default function ContactForm({
 
                     <div className="mb-5">
                       <label htmlFor="comments" className="font-medium">
-                        Your Message:
+                        {t("message")}:
                       </label>
                       <textarea
                         name="message"
@@ -105,7 +108,7 @@ export default function ContactForm({
                           "form-input mt-2 textarea",
                           errors.message && "border-red-600"
                         )}
-                        placeholder="Message :"
+                        placeholder={`${t("message")} :`}
                       ></textarea>
                       {errors.message && (
                         <span className="text-xs">{errors.message[0]}</span>
@@ -118,7 +121,7 @@ export default function ContactForm({
                     name="send"
                     className="btn bg-green-600 hover:bg-green-700 text-white rounded-md"
                   >
-                    Send Message
+                    {t("send")}
                   </button>
                 </form>
               </div>

@@ -1,31 +1,30 @@
 import { cn } from "@/lib/utils";
 import { PrismicNextLink } from "@prismicio/next";
+import { routing } from "@/i18n/routing";
+import { useLocale } from "next-intl";
 
 const localeLabels = {
   "en-us": "EN",
   hr: "HR",
 };
 
-export const LanguageSwitcher = ({ activeLocale }) => (
-  <div className="flex flex-wrap gap-3">
-    <span aria-hidden>🌐</span>
-    <ul className="flex flex-wrap gap-3">
-      <li>
-        <PrismicNextLink
-          href="/"
-          className={cn(activeLocale === "en-us" && "font-semibold")}
-        >
-          EN
-        </PrismicNextLink>
-      </li>
-      <li>
-        <PrismicNextLink
-          href="/hr"
-          className={cn(activeLocale === "hr" && "font-semibold")}
-        >
-          HR
-        </PrismicNextLink>
-      </li>
-    </ul>
-  </div>
-);
+export default function LanguageSwitcher() {
+  const locale = useLocale();
+  return (
+    <div className="flex flex-wrap gap-3">
+      <span aria-hidden>🌐</span>
+      <ul className="flex flex-wrap gap-3">
+        {routing.locales.map((cur) => (
+          <li>
+            <PrismicNextLink
+              href={`/${cur}`}
+              className={cn(locale === cur && "font-semibold")}
+            >
+              {localeLabels[cur]}
+            </PrismicNextLink>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}

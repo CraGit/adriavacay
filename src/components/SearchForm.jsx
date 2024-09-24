@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Select from "react-select";
+import { useTranslations } from "next-intl";
 
 import { AiOutlineCalendar, GoPeople } from "@/assets/icons/vander";
 import { useSearch } from "@/providers/search-provider";
@@ -47,6 +48,8 @@ export default function SearchForm() {
     router.push("/accommodation");
   };
 
+  const t = useTranslations("search");
+
   return (
     <div>
       <div className="registration-form text-dark text-start">
@@ -56,7 +59,7 @@ export default function SearchForm() {
               htmlFor="buy-min-price"
               className="form-label text-slate-900 dark:text-white font-medium"
             >
-              Dates
+              {t("dates")}:
             </label>
             <div className="filter-search-form relative filter-border mt-2">
               <AiOutlineCalendar className="icons" />
@@ -73,7 +76,7 @@ export default function SearchForm() {
               htmlFor="buy-guests"
               className="form-label text-slate-900 dark:text-white font-medium"
             >
-              Guests :
+              {t("guests")}:
             </label>
 
             <div className="filter-search-form relative mt-2">
@@ -92,7 +95,7 @@ export default function SearchForm() {
               onClick={onSubmit}
               className="btn bg-green-600 hover:bg-green-700 border-green-600 hover:border-green-700 text-white searchbtn submit-btn w-full !h-[60px] lg:rounded-none rounded mt-2"
             >
-              Search
+              {t("search")}
             </button>
           </div>
         </div>

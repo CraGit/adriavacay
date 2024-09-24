@@ -1,0 +1,22 @@
+{
+    "menu": {
+        "home": "Home",
+        "accommodation": "Accommodation",
+        "about-us": "About Us",
+        "destinations": "Destinations",
+        "blog": "Blog",
+        "contact": "Contact"
+    },
+    "search": {
+        "dates": "Dates",
+        "pick": "Pick a date",
+        "guests": "Guests",
+        "search": "Search"
+    },
+    "contact": {
+        "name": "Name",
+        "subject": "Subject",
+        "message": "Your Message",
+        "send": "Send Message"
+    }
+}

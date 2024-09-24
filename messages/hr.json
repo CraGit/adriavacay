@@ -1,0 +1,22 @@
+{
+    "menu": {
+        "home": "Početna",
+        "accommodation": "Smještaj",
+        "about-us": "O nama",
+        "destinations": "Destinacije",
+        "blog": "Blog",
+        "contact": "Kontakt"
+    },
+    "search": {
+        "dates": "Datumi",
+        "pick": "Odaberi datume",
+        "guests": "Gosti",
+        "search": "Traži"
+    },
+    "contact": {
+        "name": "Ime",
+        "subject": "Naslov",
+        "message": "Vaša poruka",
+        "send": "Pošalji poruku"
+    }
+}

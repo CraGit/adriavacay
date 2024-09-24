@@ -4,9 +4,9 @@ import SmallHero from "@/components/SmallHero";
 import rtfComponents from "@/lib/richText";
 import { createClient } from "@/prismicio";
 
-export default async function Page({ params: { lang } }) {
+export default async function Page({ params: { locale } }) {
   const client = createClient();
-  const page = await client.getSingle("terms_and_conditions", { lang });
+  const page = await client.getSingle("privacy_policy", { lang: locale });
 
   return (
     <>
@@ -22,9 +22,9 @@ export default async function Page({ params: { lang } }) {
   );
 }
 
-export async function generateMetadata({ params: { lang } }) {
+export async function generateMetadata({ params: { locale } }) {
   const client = createClient();
-  const page = await client.getSingle("terms_and_conditions", { lang });
+  const page = await client.getSingle("terms_and_conditions", { lang: locale });
 
   return {
     title: page.data.meta_title,
