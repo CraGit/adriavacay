@@ -28,12 +28,13 @@ export default function RootLayout({ children }) {
     <html lang="en" dir="LTR" className="scroll-smooth">
       <head>{/* <meta themeColor={viewport.themeColor} /> */}</head>
       <body className={`${league_Spartan.className}`}>
-        <SearchProvider>
+        {/* <SearchProvider>
           <Navbar navClass="navbar-white" />
           {children}
           <Footer />
           <ContactBar />
-        </SearchProvider>
+        </SearchProvider> */}
+        {children}
       </body>
     </html>
   );

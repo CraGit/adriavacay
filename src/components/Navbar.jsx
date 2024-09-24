@@ -5,6 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
+import { LanguageSwitcher } from "./LanguageSwitcher";
+
 import logo from "@/assets/images/logo.svg";
 
 export default function Navbar(props) {
@@ -138,27 +140,6 @@ export default function Navbar(props) {
           </div>
           {/* <!-- End Mobile Toggle --> */}
 
-          {/* <!-- Login button Start --> */}
-          <ul className="buy-button list-none mb-0">
-            {/* <li className="inline mb-0">
-              <Link
-                href="/auth-login"
-                className="btn btn-icon bg-green-600 hover:bg-green-700 border-green-600 dark:border-green-600 text-white rounded-full"
-              >
-                <User className="h-4 w-4 stroke-[3]"></User>
-              </Link>
-            </li> */}
-            {/* <li className="sm:inline ps-1 mb-0 hidden">
-              <Link
-                href="/contact"
-                className="btn bg-green-600 hover:bg-green-700 border-green-600 dark:border-green-600 text-white rounded-full"
-              >
-                Contact
-              </Link>
-            </li> */}
-          </ul>
-          {/* <!--Login button End--> */}
-
           <div
             id="navigation"
             className={`${isOpen === true ? "hidden" : "block"}`}
@@ -225,6 +206,7 @@ export default function Navbar(props) {
                 </Link>
               </li>
             </ul>
+            <LanguageSwitcher activeLocale={props.locale} />
           </div>
         </div>
       </nav>
