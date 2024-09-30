@@ -5,7 +5,7 @@ import { useLocale } from "next-intl";
 
 const localeLabels = {
   "en-us": "EN",
-  hr: "HR",
+  de: "DE",
 };
 
 export default function LanguageSwitcher() {
