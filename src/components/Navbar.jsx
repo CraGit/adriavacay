@@ -234,8 +234,8 @@ export default function Navbar(props) {
                       </mask>
                       <g mask="url(#a)">
                         <path
-                          fill-rule="evenodd"
-                          clip-rule="evenodd"
+                          fillRule="evenodd"
+                          clipRule="evenodd"
                           d="M0 0v12h16V0H0z"
                           fill="#2E42A5"
                         />
@@ -248,8 +248,8 @@ export default function Navbar(props) {
                           height="12"
                         >
                           <path
-                            fill-rule="evenodd"
-                            clip-rule="evenodd"
+                            fillRule="evenodd"
+                            clipRule="evenodd"
                             d="M0 0v12h16V0H0z"
                             fill="#fff"
                           />
@@ -284,14 +284,14 @@ export default function Navbar(props) {
                             />
                             <mask id="d" fill="#fff">
                               <path
-                                fill-rule="evenodd"
-                                clip-rule="evenodd"
+                                fillRule="evenodd"
+                                clipRule="evenodd"
                                 d="M9.889-1H6.11v5H-.986v4H6.11v5h3.78V8h7.125V4H9.889v-5z"
                               />
                             </mask>
                             <path
-                              fill-rule="evenodd"
-                              clip-rule="evenodd"
+                              fillRule="evenodd"
+                              clipRule="evenodd"
                               d="M9.889-1H6.11v5H-.986v4H6.11v5h3.78V8h7.125V4H9.889v-5z"
                               fill="#F50100"
                             />
@@ -324,7 +324,7 @@ export default function Navbar(props) {
                       >
                         <rect width="16" height="12" rx="-1" fill="#fff" />
                       </mask>
-                      <g mask="url(#a)" fill-rule="evenodd" clip-rule="evenodd">
+                      <g mask="url(#a)" fillRule="evenodd" clipRule="evenodd">
                         <path d="M0 8h16v4H0V8z" fill="#FFD018" />
                         <path d="M0 4h16v4H0V4z" fill="#E31D1C" />
                         <path d="M0 0h16v4H0V0z" fill="#272727" />
