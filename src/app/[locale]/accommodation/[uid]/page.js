@@ -31,14 +31,19 @@ export default async function Page({ params }) {
   const page = await client
     .getByUID("accommodation_single", params.uid, { lang: params.locale })
     .catch(() => notFound());
+
+  const pageEn = await client.getByUID("accommodation_single", params.uid, {
+    lang: "en-us",
+  });
+
   const cancelationPolicy = await client.getSingle("cancelation_policy", {
     lang: params.locale,
   });
   const paymentDetails = await client.getSingle("payment_details", {
     lang: params.locale,
   });
-  const occupiedDates = await occupiedDatesFromIcal(page.data.ical);
-  const occupiedRanges = await occupiedRangesFromIcal(page.data.ical);
+  const occupiedDates = await occupiedDatesFromIcal(pageEn.data.ical);
+  const occupiedRanges = await occupiedRangesFromIcal(pageEn.data.ical);
 
   const photos = page.data.gallery.map((photo) => {
     return {
@@ -156,15 +161,15 @@ export default async function Page({ params }) {
             >
               <div className="sticky top-20">
                 <PriceDisplay
-                  prices={page.data.pricing}
-                  discounts={page.data.discounts}
-                  deposit={page.data.security_deposit}
+                  prices={pageEn.data.pricing}
+                  discounts={pageEn.data.discounts}
+                  deposit={pageEn.data.security_deposit}
                 />
                 <BookingForm
                   uid={params.uid}
                   occupiedDates={occupiedDates}
                   occupiedRanges={occupiedRanges}
-                  priceRanges={page.data.pricing}
+                  priceRanges={pageEn.data.pricing}
                   className="mt-6"
                 />
                 {/* <div className="mt-12 rounded-md bg-slate-50 dark:bg-slate-800 shadow dark:shadow-gray-700">
