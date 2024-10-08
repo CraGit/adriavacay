@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getLocale } from "next-intl/server";
 
 import { AccommodationSingle } from "@/app/[locale]/accommodation/accommodation-single";
 import SectionHeading from "@/components/SectionHeading";
@@ -12,13 +13,34 @@ import { createClient } from "@/prismicio";
  */
 const AccommodationListSlice = async ({ slice }) => {
   const client = createClient();
-  const accommodations = await client.getAllByType("accommodation_single");
+  const locale = await getLocale();
+
+  const accommodations = await client.getAllByType("accommodation_single", {
+    lang: locale,
+  });
+
+  const accommodationsEn = await client.getAllByType("accommodation_single", {
+    lang: "en-us",
+  });
+
+  const pricingAndAvailabilityMap = new Map();
+  accommodationsEn.forEach((a) => {
+    pricingAndAvailabilityMap.set(a.id, a.data);
+  });
 
   const accommodationsWithCalendar = await Promise.all(
-    accommodations.map(async (a) => ({
-      ...a,
-      occupiedDates: await occupiedDatesFromIcal(a.data.ical),
-    }))
+    accommodations.map(async (a) => {
+      const enData = pricingAndAvailabilityMap.get(a.uid);
+
+      return {
+        ...a,
+
+        pricing: enData?.pricing,
+        //availability: enData?.availability,
+
+        occupiedDates: await occupiedDatesFromIcal(enData?.ical),
+      };
+    })
   );
 
   const sortedAccommodations = accommodationsWithCalendar.sort((a, b) => {
