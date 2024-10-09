@@ -14,6 +14,7 @@ import {
   min,
   parse,
   subDays,
+  startOfDay,
 } from "date-fns";
 import { enGB } from "date-fns/locale";
 import { twMerge } from "tailwind-merge";
@@ -47,8 +48,8 @@ export const occupiedDatesFromIcal = async (url) => {
     const text = await res.text();
 
     ical(text).forEach((e) => {
-      const startDate = addDays(e.startDate, 1);
-      const endDate = subDays(e.endDate, 1);
+      const startDate = e.startDate;
+      const endDate = e.endDate;
 
       const interval = eachDayOfInterval({
         start: startDate,
@@ -77,8 +78,8 @@ export const occupiedRangesFromIcal = async (url) => {
     const text = await res.text();
 
     ical(text).forEach((e) => {
-      const startDate = addDays(e.startDate, 1);
-      const endDate = subDays(e.endDate, 1);
+      const startDate = e.startDate;
+      const endDate = e.endDate;
 
       dates.push({ startDate, endDate });
     });
