@@ -230,7 +230,7 @@ export default async function Page({ params }) {
 
                 <div className="mt-12 text-center">
                   <h3 className="mb-6 text-xl leading-normal font-medium text-black dark:text-white">
-                    Have a Question ? Get in touch!
+                    {t("have-a-question")}
                   </h3>
 
                   <div className="mt-6">
@@ -238,7 +238,8 @@ export default async function Page({ params }) {
                       href="/contact"
                       className="btn bg-transparent hover:bg-green-600 border border-green-600 text-green-600 hover:text-white rounded-md"
                     >
-                      <FiPhone className="align-middle me-2" /> Contact us
+                      <FiPhone className="align-middle me-2" />{" "}
+                      {t("contact-us")}
                     </Link>
                   </div>
                 </div>

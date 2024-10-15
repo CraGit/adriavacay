@@ -1,9 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import { FiArrowRight } from "@/assets/icons/vander";
 
 export default function BlogCard({ image, uid, title, url }) {
+  const t = useTranslations("blog-card");
+
   return (
     <div
       key={uid}
@@ -50,7 +53,7 @@ export default function BlogCard({ image, uid, title, url }) {
               href={url}
               className="btn btn-link hover:text-green-600 after:bg-green-600 duration-500 ease-in-out inline-flex items-center"
             >
-              <span>Read More</span>
+              <span>{t("read-more")}</span>
               <FiArrowRight />
             </Link>
           </div>

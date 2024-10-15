@@ -7,6 +7,15 @@
         "blog": "Blog",
         "contact": "Contact"
     },
+    "footer": {
+        "say-hi": "Say Hi!",
+        "send-message": "Send us a message, we will get back to you as soon as we can.",
+        "contact": "Contact",
+        "contact-details": "Contact Details",
+        "terms": "Terms and Conditions",
+        "privacy": "Privacy Policy",
+        "vat": "VAT"
+    },
     "search": {
         "dates": "Dates",
         "pick": "Pick a date",
@@ -26,6 +35,9 @@
         "name": "Name",
         "book-now": "Book Now"
     },
+    "accommodation-list": {
+        "show-all": "Show all"
+    },
     "accommodation-single": {
         "show-more": "Show more",
         "hide": "Hide",
@@ -33,6 +45,15 @@
         "amenities": "Amenities",
         "gallery": "Gallery",
         "payment-policy": "Payment Policy",
-        "cancellation-policy": "Cancellation Policy"
+        "cancellation-policy": "Cancellation Policy",
+        "have-a-question": "Have a Question? Get in touch!",
+        "contact-us": "Contact us"
+    },
+    "card": {
+        "price": "Price",
+        "from": "from"
+    },
+    "blog-card": {
+        "read-more": "Read More"
     }
 }

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getLocale } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 import { AccommodationSingle } from "@/app/[locale]/accommodation/accommodation-single";
 import SectionHeading from "@/components/SectionHeading";
@@ -53,6 +53,8 @@ const AccommodationListSlice = async ({ slice }) => {
     }
   });
 
+  const t = await getTranslations("accommodation-list");
+
   return (
     <section
       data-slice-type={slice.slice_type}
@@ -85,7 +87,7 @@ const AccommodationListSlice = async ({ slice }) => {
               href="/accommodation"
               className="btn bg-green-600 hover:bg-green-700 border-green-600 dark:border-green-600 text-white rounded-full"
             >
-              Show All
+              {t("show-all")}
             </Link>
           </li>
         </div>

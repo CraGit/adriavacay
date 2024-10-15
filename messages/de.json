@@ -7,6 +7,15 @@
         "blog": "Blog",
         "contact": "Kontakt"
     },
+    "footer": {
+        "say-hi": "Reci Hi!",
+        "send-message": "Pošaljite nam poruku, odgovorit ćemo Vam što je prije moguće",
+        "contact": "Kontakt",
+        "contact-details": "Kontakt detalji",
+        "terms": "Uvjeti korištenja",
+        "privacy": "Politika privatnosti",
+        "vat": "MwSt"
+    },
     "search": {
         "dates": "Datumi",
         "pick": "Odaberi datume",
@@ -26,6 +35,9 @@
         "name": "Ime",
         "book-now": "Rezerviraj sada"
     },
+    "accommodation-list": {
+        "show-all": "Prikaži sve"
+    },
     "accommodation-single": {
         "show-more": "Prikaži više",
         "hide": "Sakrij",
@@ -33,6 +45,15 @@
         "amenities": "Pogodnosti",
         "gallery": "Galerija",
         "payment-policy": "Politika plaćanja",
-        "cancellation-policy": "Politika otkazivanja"
+        "cancellation-policy": "Politika otkazivanja",
+        "have-a-question": "Imate pitanje? Javite se!",
+        "contact-us": "Kontaktirajte nas"
+    },
+    "card": {
+        "price": "Cijena",
+        "from": "od"
+    },
+    "blog-card": {
+        "read-more": "Pročitaj više"
     }
 }
