@@ -1,59 +1,59 @@
 {
     "menu": {
-        "home": "Početna",
-        "accommodation": "Smještaj",
-        "about-us": "O nama",
-        "destinations": "Destinacije",
+        "home": "Startseite",
+        "accommodation": "Unterkünfte",
+        "about-us": "Über uns",
+        "destinations": "Reiseziele",
         "blog": "Blog",
         "contact": "Kontakt"
     },
     "footer": {
-        "say-hi": "Reci Hi!",
-        "send-message": "Pošaljite nam poruku, odgovorit ćemo Vam što je prije moguće",
+        "say-hi": "Sag Hallo!",
+        "send-message": "Senden Sie uns bitte eine private Nachricht, und wir werden uns umgehend mit Ihnen in Verbindung setzen.",
         "contact": "Kontakt",
-        "contact-details": "Kontakt detalji",
-        "terms": "Uvjeti korištenja",
-        "privacy": "Politika privatnosti",
+        "contact-details": "Kontaktdaten",
+        "terms": "Allgemeine Geschäftsbedingungen",
+        "privacy": "Datenschutz",
         "vat": "MwSt"
     },
     "search": {
-        "dates": "Datumi",
-        "pick": "Odaberi datume",
-        "guests": "Gosti",
-        "search": "Traži"
+        "dates": "Termine",
+        "pick": "Termin auswählen",
+        "guests": "Gäste",
+        "search": "suchen"
     },
     "contact": {
-        "name": "Ime",
-        "subject": "Naslov",
-        "message": "Vaša poruka",
-        "send": "Pošalji poruku"
+        "name": "Name",
+        "subject": "Thema",
+        "message": "Ihre Nachricht",
+        "send": "Nachricht senden"
     },
     "booking": {
-        "dates": "Datumi",
-        "pick": "Odaberite datume",
-        "guests": "Gosti",
-        "name": "Ime",
-        "book-now": "Rezerviraj sada"
+        "dates": "Termine",
+        "pick": "Termin aussuchen",
+        "guests": "Gäste",
+        "name": "Name",
+        "book-now": "Reservieren Sie jetzt"
     },
     "accommodation-list": {
-        "show-all": "Prikaži sve"
+        "show-all": "Alles anzeigen "
     },
     "accommodation-single": {
-        "show-more": "Prikaži više",
-        "hide": "Sakrij",
-        "distances": "Udaljenosti",
-        "amenities": "Pogodnosti",
-        "gallery": "Galerija",
-        "payment-policy": "Politika plaćanja",
-        "cancellation-policy": "Politika otkazivanja",
-        "have-a-question": "Imate pitanje? Javite se!",
-        "contact-us": "Kontaktirajte nas"
+        "show-more": "mehr anzeigen",
+        "hide": "weniger anzeigen",
+        "distances": "Entfernungen",
+        "amenities": "Ausstattung",
+        "gallery": "Galerie",
+        "payment-policy": "Zahlungsbedingungen",
+        "cancellation-policy": "Stornobedingungen",
+        "have-a-question": "Haben Sie weitere Fragen? Bitte kontaktieren Sie uns!",
+        "contact-us": "Gerne können Sie uns kontaktieren."
     },
     "card": {
-        "price": "Cijena",
-        "from": "od"
+        "price": "Preis",
+        "from": "von"
     },
     "blog-card": {
-        "read-more": "Pročitaj više"
+        "read-more": "mehr lesen"
     }
 }
