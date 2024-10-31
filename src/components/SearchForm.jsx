@@ -8,6 +8,7 @@ import { AiOutlineCalendar, GoPeople } from "@/assets/icons/vander";
 import { useSearch } from "@/providers/search-provider";
 
 import { DateRangePicker } from "./DateRangePicker";
+import { guestOptions, typeOptions } from "@/data";
 
 export default function SearchForm() {
   let Guests = [
@@ -38,12 +39,15 @@ export default function SearchForm() {
 
   const [dateRange, setDateRange] = useState(query.dateRange);
   const [guests, setGuests] = useState(query.guests);
+  const [type, setType] = useState(query.type);
 
   const onSubmit = () => {
     updateQuery({
       dateRange,
       guests,
+      type,
     });
+
     router.push("/accommodation");
   };
 
@@ -51,7 +55,7 @@ export default function SearchForm() {
     <div>
       <div className="registration-form text-dark text-start">
         <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 lg:gap-0 gap-6">
-          <div className="col-span-2">
+          <div className="col-span-1">
             <label
               htmlFor="buy-min-price"
               className="form-label text-slate-900 dark:text-white font-medium"
@@ -79,10 +83,31 @@ export default function SearchForm() {
             <div className="filter-search-form relative mt-2">
               <GoPeople className="icons" />
               <Select
-                value={guests ? Guests.find((x) => x.value === guests) : guests}
+                value={
+                  guests ? guestOptions.find((x) => x.value === guests) : guests
+                }
                 onChange={(option) => setGuests(option ? option.value : option)}
                 className="form-input filter-input-box bg-gray-50 dark:bg-slate-800 border-0"
-                options={Guests}
+                options={guestOptions}
+              />
+            </div>
+          </div>
+
+          <div>
+            <label
+              htmlFor="buy-guests"
+              className="form-label text-slate-900 dark:text-white font-medium"
+            >
+              Accommodation type
+            </label>
+
+            <div className="filter-search-form relative mt-2">
+              <GoPeople className="icons" />
+              <Select
+                value={type ? typeOptions.find((x) => x.value === type) : type}
+                onChange={(option) => setType(option ? option.value : option)}
+                className="form-input filter-input-box bg-gray-50 dark:bg-slate-800 border-0"
+                options={typeOptions}
               />
             </div>
           </div>

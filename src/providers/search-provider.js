@@ -6,6 +6,7 @@ const SearchContext = createContext({
   query: {
     dateRange: { from: null, to: null },
     guests: 1,
+    type: "All",
   },
   updateQuery: () => {},
   resetQuery: () => {},
@@ -15,6 +16,7 @@ const SearchProvider = ({ children }) => {
   const [query, setQuery] = useState({
     dateRange: { from: null, to: null },
     guests: 1,
+    type: "All",
   });
 
   const updateQuery = (params) => {
@@ -25,6 +27,7 @@ const SearchProvider = ({ children }) => {
     setQuery({
       dateRange: { from: null, to: null },
       guests: 1,
+      type: null,
     });
   };
 

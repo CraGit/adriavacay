@@ -89,3 +89,9 @@ export const guestOptions = [
   { value: 19, label: "19" },
   { value: 20, label: "20" },
 ];
+
+export const typeOptions = [
+  { label: "All types", value: "All" },
+  { label: "Villa", value: "Villa" },
+  { label: "Cottage", value: "Cottage" },
+];

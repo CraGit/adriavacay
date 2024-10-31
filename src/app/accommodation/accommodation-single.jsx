@@ -19,7 +19,11 @@ export const AccommodationSingle = ({ accommodations, showAll }) => {
     query.dateRange.from !== null &&
     query.dateRange.to !== null
   ) {
-    const filteredByGuests = accommodations.filter(
+    const filterByType = accommodations.filter((item) =>
+      query.type === "All" ? true : item.data.type === query.type
+    );
+
+    const filteredByGuests = filterByType.filter(
       (item) => item.data.max_guests >= query.guests
     );
 
