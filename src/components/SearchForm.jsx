@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Select from "react-select";
 
-import { AiOutlineCalendar, GoPeople } from "@/assets/icons/vander";
+import { AiOutlineCalendar, GoPeople, GoHome } from "@/assets/icons/vander";
 import { useSearch } from "@/providers/search-provider";
 
 import { DateRangePicker } from "./DateRangePicker";
@@ -102,7 +102,7 @@ export default function SearchForm() {
             </label>
 
             <div className="filter-search-form relative mt-2">
-              <GoPeople className="icons" />
+              <GoHome className="icons" />
               <Select
                 value={type ? typeOptions.find((x) => x.value === type) : type}
                 onChange={(option) => setType(option ? option.value : option)}
