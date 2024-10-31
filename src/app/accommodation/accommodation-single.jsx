@@ -76,7 +76,7 @@ export const AccommodationSingle = ({ accommodations, showAll }) => {
           guests={item.data.max_guests}
           guestsPrikaz={item.data.guestsPrikaz}
         />
-      ) : null; // Ne prikazujemo smještaj ako nema cijene za odabrane datume
+      ) : null; // Ne prikazujemo smještaj ako nema cijene za datume
     });
   } else {
     return accommodations.map((item) => {
