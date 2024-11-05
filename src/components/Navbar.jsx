@@ -215,7 +215,10 @@ export default function Navbar(props) {
               </li>
               <li>
                 {locale === "de" && (
-                  <PrismicNextLink href="/">
+                  <PrismicNextLink
+                    href="/"
+                    className="h-full flex items-center"
+                  >
                     <svg
                       width="16"
                       height="12"
@@ -307,7 +310,10 @@ export default function Navbar(props) {
                   </PrismicNextLink>
                 )}
                 {locale === "en-us" && (
-                  <PrismicNextLink href={`/de`}>
+                  <PrismicNextLink
+                    href={`/de`}
+                    className="h-full flex items-center"
+                  >
                     <svg
                       width="16"
                       height="12"

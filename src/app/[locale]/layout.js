@@ -1,6 +1,6 @@
 import { NextIntlClientProvider } from "next-intl";
-
 import { getMessages, unstable_setRequestLocale } from "next-intl/server";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -14,12 +14,14 @@ export default async function LangLayout({ children, params: { locale } }) {
 
   return (
     <NextIntlClientProvider messages={messages}>
-      <SearchProvider>
-        <Navbar navClass="navbar-white" />
-        {children}
-        <Footer />
-        <ContactBar />
-      </SearchProvider>
+      <NuqsAdapter>
+        <SearchProvider>
+          <Navbar navClass="navbar-white" />
+          {children}
+          <Footer />
+          <ContactBar />
+        </SearchProvider>
+      </NuqsAdapter>
     </NextIntlClientProvider>
   );
 }
