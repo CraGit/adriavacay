@@ -1,9 +1,9 @@
 import SmallHeading from "./SmallHeading";
 
-export default function Distances({ distances }) {
+export default function Distances({ heading, distances }) {
   return (
     <div className="my-8">
-      <SmallHeading heading="Distances" />
+      <SmallHeading heading={heading} />
       {distances.map((distance, index) => (
         <div
           key={index}

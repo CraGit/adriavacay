@@ -1,0 +1,59 @@
+{
+    "menu": {
+        "home": "Startseite",
+        "accommodation": "Unterkünfte",
+        "about-us": "Über uns",
+        "destinations": "Reiseziele",
+        "blog": "Blog",
+        "contact": "Kontakt"
+    },
+    "footer": {
+        "say-hi": "Sag Hallo!",
+        "send-message": "Senden Sie uns bitte eine private Nachricht, und wir werden uns umgehend mit Ihnen in Verbindung setzen.",
+        "contact": "Kontakt",
+        "contact-details": "Kontaktdaten",
+        "terms": "Allgemeine Geschäftsbedingungen",
+        "privacy": "Datenschutz",
+        "vat": "MwSt"
+    },
+    "search": {
+        "dates": "Termine",
+        "pick": "Termin auswählen",
+        "guests": "Gäste",
+        "search": "Suchen"
+    },
+    "contact": {
+        "name": "Name",
+        "subject": "Thema",
+        "message": "Ihre Nachricht",
+        "send": "Nachricht senden"
+    },
+    "booking": {
+        "dates": "Termine",
+        "pick": "Termin aussuchen",
+        "guests": "Gäste",
+        "name": "Name",
+        "book-now": "Reservieren Sie jetzt"
+    },
+    "accommodation-list": {
+        "show-all": "Alles anzeigen "
+    },
+    "accommodation-single": {
+        "show-more": "mehr anzeigen",
+        "hide": "weniger anzeigen",
+        "distances": "Entfernungen",
+        "amenities": "Ausstattung",
+        "gallery": "Galerie",
+        "payment-policy": "Zahlungsbedingungen",
+        "cancellation-policy": "Stornobedingungen",
+        "have-a-question": "Haben Sie weitere Fragen? Bitte kontaktieren Sie uns!",
+        "contact-us": "Gerne können Sie uns kontaktieren."
+    },
+    "card": {
+        "price": "Preis",
+        "from": "von"
+    },
+    "blog-card": {
+        "read-more": "mehr lesen"
+    }
+}

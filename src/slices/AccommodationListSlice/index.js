@@ -1,6 +1,7 @@
 import Link from "next/link";
+import { getLocale, getTranslations } from "next-intl/server";
 
-import { AccommodationSingle } from "@/app/accommodation/accommodation-single";
+import { AccommodationSingle } from "@/app/[locale]/accommodation/accommodation-single";
 import SectionHeading from "@/components/SectionHeading";
 import { occupiedDatesFromIcal } from "@/lib/utils";
 import { createClient } from "@/prismicio";
@@ -13,13 +14,34 @@ import Filter from "@/components/Filter";
  */
 const AccommodationListSlice = async ({ slice }) => {
   const client = createClient();
-  const accommodations = await client.getAllByType("accommodation_single");
+  const locale = await getLocale();
+
+  const accommodations = await client.getAllByType("accommodation_single", {
+    lang: locale,
+  });
+
+  const accommodationsEn = await client.getAllByType("accommodation_single", {
+    lang: "en-us",
+  });
+
+  const pricingAndAvailabilityMap = new Map();
+  accommodationsEn.forEach((a) => {
+    pricingAndAvailabilityMap.set(a.id, a.data);
+  });
 
   const accommodationsWithCalendar = await Promise.all(
-    accommodations.map(async (a) => ({
-      ...a,
-      occupiedDates: await occupiedDatesFromIcal(a.data.ical),
-    }))
+    accommodations.map(async (a) => {
+      const enData = pricingAndAvailabilityMap.get(a.uid);
+
+      return {
+        ...a,
+
+        pricing: enData?.pricing,
+        //availability: enData?.availability,
+
+        occupiedDates: await occupiedDatesFromIcal(enData?.ical),
+      };
+    })
   );
 
   const sortedAccommodations = accommodationsWithCalendar.sort((a, b) => {
@@ -31,6 +53,8 @@ const AccommodationListSlice = async ({ slice }) => {
       return 0;
     }
   });
+
+  const t = await getTranslations("accommodation-list");
 
   return (
     <section
@@ -65,7 +89,7 @@ const AccommodationListSlice = async ({ slice }) => {
               href="/accommodation"
               className="btn bg-green-600 hover:bg-green-700 border-green-600 dark:border-green-600 text-white rounded-full"
             >
-              Show All
+              {t("show-all")}
             </Link>
           </li>
         </div>

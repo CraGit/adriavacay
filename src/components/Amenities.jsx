@@ -2,10 +2,10 @@ import { TiTick } from "react-icons/ti";
 
 import SmallHeading from "./SmallHeading";
 
-export default function Amenities({ amenities }) {
+export default function Amenities({ heading, amenities }) {
   return (
     <div className="lg:w-2/3 lg:mt-0 mt-4">
-      <SmallHeading heading="Amenities" />
+      <SmallHeading heading={heading} />
       <ul className="grid grid-cols-2 lg:gap-y-5 gap-y-3 gap-x-3">
         {amenities.map((amenity) => (
           <li key={amenity} className="col-span-1 flex items-center">

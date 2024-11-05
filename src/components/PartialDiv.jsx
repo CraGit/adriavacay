@@ -1,4 +1,6 @@
 "use client";
+
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 export default function PartialDiv({ children, className }) {
@@ -7,6 +9,8 @@ export default function PartialDiv({ children, className }) {
   const togglePart = () => {
     setPartHidden(!partHidden);
   };
+
+  const t = useTranslations("accommodation-single");
 
   return (
     <>
@@ -27,7 +31,7 @@ export default function PartialDiv({ children, className }) {
         onClick={togglePart}
         className="text-primary-1 text-green-600 underline decoration-dotted mt-2"
       >
-        {partHidden ? "Show more" : "Hide"}
+        {partHidden ? t("show-more") : t("hide")}
       </button>
     </>
   );

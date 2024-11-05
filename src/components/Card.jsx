@@ -1,5 +1,6 @@
+import { Link } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
-import Link from "next/link";
 
 import {
   GoPeople,
@@ -22,6 +23,8 @@ export default function Card({
   alt,
   guestsPrikaz,
 }) {
+  const t = useTranslations("card");
+
   return (
     <div className="group rounded-xl bg-white dark:bg-slate-900 shadow hover:shadow-xl dark:hover:shadow-xl dark:shadow-gray-700 dark:hover:shadow-gray-700 overflow-hidden ease-in-out duration-500">
       <Link
@@ -85,7 +88,7 @@ export default function Card({
 
         <ul className="pt-6 flex justify-between items-center list-none">
           <li>
-            <span className="text-slate-400">Price</span>
+            <span className="text-slate-400">{t("price")}</span>
             <p className="text-lg font-medium">
               {basePrice &&
                 basePrice === discountedPrice &&
@@ -98,7 +101,7 @@ export default function Card({
                   <span className="ml-2">{currency(discountedPrice)}</span>
                 </>
               )}
-              {lowestPrice && `from ${currency(lowestPrice)}`}
+              {lowestPrice && `${t("from")} ${currency(lowestPrice)}`}
             </p>
           </li>
 

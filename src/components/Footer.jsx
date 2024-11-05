@@ -9,8 +9,11 @@ import {
   FiMapPin,
   FiPhone,
 } from "@/assets/icons/vander";
+import { getTranslations } from "next-intl/server";
 
-export default function Footer() {
+export default async function Footer() {
+  const t = await getTranslations("footer");
+
   return (
     <>
       <footer className="relative bg-primary dark:bg-slate-800 mt-24">
@@ -23,11 +26,10 @@ export default function Footer() {
                   <div className="flex flex-row justify-between items-center">
                     <div className="md:text-start text-center z-1">
                       <h3 className="md:text-3xl text-2xl md:leading-normal leading-normal font-medium text-black dark:text-white">
-                        Say Hi!
+                        {t("say-hi")}
                       </h3>
                       <p className="text-slate-400 max-w-xl mx-auto">
-                        Send us a message, we will get back to you as soon as we
-                        can.
+                        {t("send-message")}
                       </p>
                     </div>
 
@@ -36,7 +38,7 @@ export default function Footer() {
                         href="/contact"
                         className="btn bg-green-600 hover:bg-green-700 text-white rounded-full"
                       >
-                        Contact
+                        {t("contact")}
                       </Link>
                     </div>
                   </div>
@@ -167,7 +169,7 @@ export default function Footer() {
 
                   <div className="lg:col-span-8 md:col-span-8 md:ml-auto">
                     <h5 className="tracking-[1px] text-gray-100 font-semibold">
-                      Contact Details
+                      {t("contact-details")}
                     </h5>
                     <div className="flex mt-6">
                       <FiMapPin className="w-5 h-5 text-green-600 me-3"></FiMapPin>
@@ -178,7 +180,9 @@ export default function Footer() {
                         <p className="text-green-600 duration-500 ease-in-out lightbox">
                           Naklice 29, 21252 Tugare
                         </p>
-                        <p className="text-gray-300 mb-2">VAT: HR12256405531</p>
+                        <p className="text-gray-300 mb-2">
+                          {t("vat")}: HR12256405531
+                        </p>
                       </div>
                     </div>
 
@@ -210,13 +214,13 @@ export default function Footer() {
                         href="/terms-and-conditions"
                         className="text-slate-100 font-semibold hover:text-slate-400 duration-500 ease-in-out"
                       >
-                        Terms and Conditions
+                        {t("terms")}
                       </Link>
                       <Link
                         href="/privacy-policy"
                         className="text-slate-100 font-semibold hover:text-slate-400 duration-500 ease-in-out"
                       >
-                        Privacy Policy
+                        {t("privacy")}
                       </Link>
                     </div>
                   </div>
