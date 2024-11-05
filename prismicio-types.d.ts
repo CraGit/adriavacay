@@ -405,6 +405,18 @@ interface AccommodationSingleDocumentData {
   ical: prismic.KeyTextField;
 
   /**
+   * Type field in *Accommodation Single*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **Default Value**: Villa
+   * - **API ID Path**: accommodation_single.type
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  type: prismic.SelectField<"Villa" | "Cottage", "filled">;
+
+  /**
    * Gallery field in *Accommodation Single*
    *
    * - **Field Type**: Group

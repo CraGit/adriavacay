@@ -23,6 +23,7 @@ import { components } from "@/slices";
 import PartialDiv from "@/components/PartialDiv";
 import BookingForm from "./booking-form";
 import PriceDisplay from "./price-display";
+import Reviews from "@/components/Reviews";
 
 export default async function Page({ params }) {
   unstable_setRequestLocale(params.locale);
@@ -140,11 +141,14 @@ export default async function Page({ params }) {
                   allowFullScreen
                 ></iframe>
               </div>
-
+              {/* REVIEW */}
+              <Reviews reviews={page.data.reviews} />
               {/* GALLERY */}
-              {photos && photos.length > 0 && (
-                <PhotoGallery photos={photos} heading="Gallery" />
-              )}
+              <div className="mt-4">
+                {photos && photos.length > 0 && (
+                  <PhotoGallery photos={photos} heading="Gallery" />
+                )}
+              </div>
               <PrismicRichText
                 field={paymentDetails.data.content}
                 components={rtfComponents}

@@ -5,6 +5,7 @@ import { AccommodationSingle } from "@/app/[locale]/accommodation/accommodation-
 import SectionHeading from "@/components/SectionHeading";
 import { occupiedDatesFromIcal } from "@/lib/utils";
 import { createClient } from "@/prismicio";
+import Filter from "@/components/Filter";
 
 /**
  * @typedef {import("@prismicio/client").Content.AccommodationListSliceSlice} AccommodationListSliceSlice
@@ -61,6 +62,7 @@ const AccommodationListSlice = async ({ slice }) => {
       data-slice-variation={slice.variation}
       className="relative lg:py-16 py-8"
     >
+      {slice.primary.limit === "No limit" && <Filter />}
       <SectionHeading
         heading={slice.primary.heading}
         subheading={slice.primary.description}

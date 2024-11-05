@@ -58,7 +58,7 @@ export const DateRangePicker = ({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <div className={cn("form-input", className)}>
+        <div className={cn("form-input flex items-center", className)}>
           {selected?.from ? (
             selected.to ? (
               <>

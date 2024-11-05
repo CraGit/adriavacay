@@ -4,48 +4,37 @@ import { useRouter } from "@/i18n/routing";
 import { useState } from "react";
 import Select from "react-select";
 import { useTranslations } from "next-intl";
+import qs from "query-string";
 
-import { AiOutlineCalendar, GoPeople } from "@/assets/icons/vander";
+import { AiOutlineCalendar, GoPeople, GoHome } from "@/assets/icons/vander";
 import { useSearch } from "@/providers/search-provider";
 
 import { DateRangePicker } from "./DateRangePicker";
+import { guestOptions, typeOptions } from "@/data";
 
 export default function SearchForm() {
-  let Guests = [
-    { value: 1, label: "1" },
-    { value: 2, label: "2" },
-    { value: 3, label: "3" },
-    { value: 4, label: "4" },
-    { value: 5, label: "5" },
-    { value: 6, label: "6" },
-    { value: 7, label: "7" },
-    { value: 8, label: "8" },
-    { value: 9, label: "9" },
-    { value: 10, label: "10" },
-    { value: 11, label: "11" },
-    { value: 12, label: "12" },
-    { value: 13, label: "13" },
-    { value: 14, label: "14" },
-    { value: 15, label: "15" },
-    { value: 16, label: "16" },
-    { value: 17, label: "17" },
-    { value: 18, label: "18" },
-    { value: 19, label: "19" },
-    { value: 20, label: "20" },
-  ];
-
   const { query, updateQuery } = useSearch();
   const router = useRouter();
 
   const [dateRange, setDateRange] = useState(query.dateRange);
   const [guests, setGuests] = useState(query.guests);
+  const [type, setType] = useState(query.type);
 
   const onSubmit = () => {
     updateQuery({
       dateRange,
       guests,
+      type,
     });
-    router.push("/accommodation");
+
+    const href = qs.stringifyUrl({
+      url: "/accommodation",
+      query: {
+        type: type === "All" ? undefined : type,
+      },
+    });
+
+    router.push(href);
   };
 
   const t = useTranslations("search");
@@ -54,7 +43,7 @@ export default function SearchForm() {
     <div>
       <div className="registration-form text-dark text-start">
         <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 lg:gap-0 gap-6">
-          <div className="col-span-2">
+          <div className="col-span-1">
             <label
               htmlFor="buy-min-price"
               className="form-label text-slate-900 dark:text-white font-medium"
@@ -82,10 +71,31 @@ export default function SearchForm() {
             <div className="filter-search-form relative mt-2">
               <GoPeople className="icons" />
               <Select
-                value={guests ? Guests.find((x) => x.value === guests) : guests}
+                value={
+                  guests ? guestOptions.find((x) => x.value === guests) : guests
+                }
                 onChange={(option) => setGuests(option ? option.value : option)}
                 className="form-input filter-input-box bg-gray-50 dark:bg-slate-800 border-0"
-                options={Guests}
+                options={guestOptions}
+              />
+            </div>
+          </div>
+
+          <div>
+            <label
+              htmlFor="buy-guests"
+              className="form-label text-slate-900 dark:text-white font-medium"
+            >
+              Accommodation type
+            </label>
+
+            <div className="filter-search-form relative mt-2">
+              <GoHome className="icons" />
+              <Select
+                value={type ? typeOptions.find((x) => x.value === type) : type}
+                onChange={(option) => setType(option ? option.value : option)}
+                className="form-input filter-input-box bg-gray-50 dark:bg-slate-800 border-0"
+                options={typeOptions}
               />
             </div>
           </div>

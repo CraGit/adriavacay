@@ -8,9 +8,18 @@ import {
   hasOverlap,
 } from "@/lib/utils";
 import { useSearch } from "@/providers/search-provider";
+import { useQueryState } from "nuqs";
+import { useEffect } from "react";
 
 export const AccommodationSingle = ({ accommodations, showAll }) => {
-  const { query } = useSearch();
+  const [type, setType] = useQueryState("type", {
+    defaultValue: "All",
+  });
+  const { query, updateQuery } = useSearch();
+
+  useEffect(() => {
+    query.type !== type && query.type !== "All" && setType(query.type);
+  }, []);
 
   if (
     !showAll &&
@@ -19,7 +28,11 @@ export const AccommodationSingle = ({ accommodations, showAll }) => {
     query.dateRange.from !== null &&
     query.dateRange.to !== null
   ) {
-    const filteredByGuests = accommodations.filter(
+    const filterByType = accommodations.filter((item) =>
+      type === "All" ? true : item.data.type === type
+    );
+
+    const filteredByGuests = filterByType.filter(
       (item) => item.data.max_guests >= query.guests
     );
 
@@ -72,29 +85,31 @@ export const AccommodationSingle = ({ accommodations, showAll }) => {
           guests={item.data.max_guests}
           guestsPrikaz={item.data.guestsPrikaz}
         />
-      ) : null; // Ne prikazujemo smještaj ako nema cijene za odabrane datume
+      ) : null; // Ne prikazujemo ako nema cijene za datume
     });
   } else {
-    return accommodations.map((item) => {
-      const lowestPrice = Math.floor(
-        Math.min(...item.data.pricing.map((p) => p.price))
-      );
+    return accommodations
+      .filter((item) => (type === "All" ? true : item.data.type === type))
+      .map((item) => {
+        const lowestPrice = Math.floor(
+          Math.min(...item.data.pricing.map((p) => p.price))
+        );
 
-      return (
-        <Card
-          key={item.id}
-          uid={item.uid}
-          baths={item.data.bathrooms}
-          bedrooms={item.data.bedrooms}
-          lowestPrice={lowestPrice}
-          image={item.data.gallery[0].image.url}
-          alt={item.data.gallery[0].image.alt}
-          sqm={item.data.sqm}
-          title={item.data.heading}
-          guests={item.data.max_guests}
-          guestsPrikaz={item.data.guestsPrikaz}
-        />
-      );
-    });
+        return (
+          <Card
+            key={item.id}
+            uid={item.uid}
+            baths={item.data.bathrooms}
+            bedrooms={item.data.bedrooms}
+            lowestPrice={lowestPrice}
+            image={item.data.gallery[0].image.url}
+            alt={item.data.gallery[0].image.alt}
+            sqm={item.data.sqm}
+            title={item.data.heading}
+            guests={item.data.max_guests}
+            guestsPrikaz={item.data.guestsPrikaz}
+          />
+        );
+      });
   }
 };

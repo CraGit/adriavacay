@@ -2665,7 +2665,8 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
             margin-inline-end: 10px;
   }
   #topnav .navigation-menu.nav-light > li > a{
-    color: rgb(172 139 21 / 0.5);
+    color: rgb(172 139 21 );
+    /* color: #4D4D4D; */
 
   }
   #topnav .navigation-menu.nav-light > li.active > a{
