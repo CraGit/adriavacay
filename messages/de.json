@@ -26,7 +26,9 @@
         "name": "Name",
         "subject": "Thema",
         "message": "Ihre Nachricht",
-        "send": "Nachricht senden"
+        "send": "Nachricht senden",
+        "phone": "Telefon",
+        "address": "Adresse"
     },
     "booking": {
         "dates": "Termine",

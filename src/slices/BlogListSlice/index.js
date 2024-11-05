@@ -1,5 +1,6 @@
 import BlogList from "@/components/BlogList";
 import { createClient } from "@/prismicio";
+import { getLocale } from "next-intl/server";
 
 /**
  * @typedef {import("@prismicio/client").Content.BlogListSliceSlice} BlogListSliceSlice
@@ -8,8 +9,9 @@ import { createClient } from "@/prismicio";
  */
 const BlogListSlice = async ({ slice }) => {
   const client = createClient();
+  const locale = await getLocale();
 
-  const blogs = await client.getAllByType("blog_single");
+  const blogs = await client.getAllByType("blog_single", { lang: locale });
   return (
     <section
       data-slice-type={slice.slice_type}

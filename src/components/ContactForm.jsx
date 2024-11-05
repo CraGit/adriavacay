@@ -144,7 +144,7 @@ export default function ContactForm({
             </div>
 
             <div className="content mt-7">
-              <h5 className="title h5 text-xl font-medium">Phone</h5>
+              <h5 className="title h5 text-xl font-medium">{t("phone")}</h5>
 
               <div className="mt-5">
                 <Link
@@ -186,7 +186,7 @@ export default function ContactForm({
             </div>
 
             <div className="content mt-7">
-              <h5 className="title h5 text-xl font-medium">Address</h5>
+              <h5 className="title h5 text-xl font-medium">{t("address")}</h5>
 
               <div className="mt-5">
                 <p className="btn btn-link text-green-600 hover:text-green-600 after:bg-green-600 transition duration-500">
