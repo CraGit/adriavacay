@@ -213,7 +213,7 @@ export default function Navbar(props) {
                   {t("contact")}
                 </Link>
               </li>
-              <li>
+              <li className="pb-2 md:pb-0">
                 {locale === "de" && (
                   <PrismicNextLink
                     href="/"
