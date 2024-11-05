@@ -7,6 +7,8 @@ import Footer from "@/components/Footer";
 import SearchProvider from "@/providers/search-provider";
 import ContactBar from "@/components/ContactBar";
 import Script from "next/script";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
+
 const GTM_ID = "GTM-NPW97CCQ";
 const league_Spartan = League_Spartan({
   subsets: ["latin"],
@@ -39,12 +41,14 @@ export default function RootLayout({ children }) {
         <meta themeColor={viewport.themeColor} />
       </head>
       <body className={`${league_Spartan.className}`}>
-        <SearchProvider>
-          <Navbar navClass="navbar-white" />
-          {children}
-          <Footer />
-          <ContactBar />
-        </SearchProvider>
+        <NuqsAdapter>
+          <SearchProvider>
+            <Navbar navClass="navbar-white" />
+            {children}
+            <Footer />
+            <ContactBar />
+          </SearchProvider>
+        </NuqsAdapter>
         <noscript
           dangerouslySetInnerHTML={{
             __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}" height="0" width="0" style="display: none; visibility: hidden;"></iframe>`,
