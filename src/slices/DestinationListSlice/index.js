@@ -12,6 +12,7 @@ const DestinationListSlice = async ({ slice }) => {
   const locale = await getLocale();
 
   const blogs = await client.getAllByType("destination", { lang: locale });
+
   return (
     <section
       data-slice-type={slice.slice_type}

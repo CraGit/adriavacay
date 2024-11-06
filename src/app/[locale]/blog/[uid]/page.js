@@ -6,11 +6,14 @@ import SmallHero from "@/components/SmallHero";
 import { PrismicRichText } from "@prismicio/react";
 import rtfComponents from "@/lib/richText";
 import PhotoGallery from "@/components/Gallery";
+import { unstable_setRequestLocale } from "next-intl/server";
 
 export default async function Page({ params }) {
+  unstable_setRequestLocale(params.locale);
+
   const client = createClient();
   const page = await client
-    .getByUID("blog_single", params.uid)
+    .getByUID("blog_single", params.uid, { lang: params.locale })
     .catch(() => notFound());
 
   const photos = page.data.gallery.map((photo) => {
@@ -43,7 +46,7 @@ export default async function Page({ params }) {
 export async function generateMetadata({ params }) {
   const client = createClient();
   const page = await client
-    .getByUID("blog_single", params.uid)
+    .getByUID("blog_single", params.uid, { lang: params.locale })
     .catch(() => notFound());
 
   return {
@@ -54,9 +57,9 @@ export async function generateMetadata({ params }) {
 
 export async function generateStaticParams() {
   const client = createClient();
-  const pages = await client.getAllByType("blog_single");
+  const pages = await client.getAllByType("blog_single", { lang: "*" });
 
   return pages.map((page) => {
-    return { uid: page.uid };
+    return { uid: page.uid, locale: page.lang };
   });
 }
