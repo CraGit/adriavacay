@@ -40,7 +40,7 @@ export default function RootLayout({ children }) {
         `}
       </Script>
       <head>
-        <meta themeColor={viewport.themeColor} />
+        <meta themecolor={viewport.themeColor} />
       </head>
       <body className={`${league_Spartan.className}`}>
         {children}

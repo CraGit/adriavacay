@@ -33,7 +33,12 @@ export default async function Page({ params }) {
     .getByUID("accommodation_single", params.uid, { lang: params.locale })
     .catch(() => notFound());
 
-  const pageEn = await client.getByUID("accommodation_single", params.uid, {
+  const uidEn =
+    params.locale === "en-us"
+      ? params.uid
+      : page.alternate_languages.find((lang) => lang.lang === "en-us").uid;
+
+  const pageEn = await client.getByUID("accommodation_single", uidEn, {
     lang: "en-us",
   });
 
