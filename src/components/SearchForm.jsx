@@ -86,7 +86,7 @@ export default function SearchForm() {
               htmlFor="buy-guests"
               className="form-label text-slate-900 dark:text-white font-medium"
             >
-              Accommodation type
+              {t("accommodation-type")}
             </label>
 
             <div className="filter-search-form relative mt-2">

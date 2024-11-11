@@ -62,11 +62,12 @@ export default async function Page({ params }) {
     };
   });
 
+  const t = await getTranslations("accommodation-single");
+  const amenitiesTranslation = await getTranslations("amenities");
+
   const amenities = amenitiesMapping
     .filter((item) => page.data[item.key])
-    .map((item) => item.label);
-
-  const t = await getTranslations("accommodation-single");
+    .map((item) => amenitiesTranslation(item.key));
 
   return (
     <>
