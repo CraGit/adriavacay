@@ -1374,6 +1374,18 @@ interface AccommodationSingleDocumentData {
   beach_access: prismic.BooleanField;
 
   /**
+   * Pets Fee field in *Accommodation Single*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: accommodation_single.pets_fee
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#boolean
+   */
+  pets_fee: prismic.BooleanField;
+
+  /**
    * Slice Zone field in *Accommodation Single*
    *
    * - **Field Type**: Slice Zone

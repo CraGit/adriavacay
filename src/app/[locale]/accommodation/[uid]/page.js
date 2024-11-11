@@ -9,6 +9,7 @@ import {
   LiaCompressArrowsAltSolid,
   LuBath,
   LuBedDouble,
+  LuDog,
 } from "@/assets/icons/vander";
 import Amenities from "@/components/Amenities";
 import Distances from "@/components/Distances";
@@ -83,7 +84,7 @@ export default async function Page({ params }) {
                 <li className="flex items-center lg:me-6 me-4">
                   <GoPeople className=" lg:text-3xl text-2xl me-2 text-green-600" />
                   <span className="lg:text-xl">
-                    {page.data.guestsPrikaz} Guests
+                    {page.data.guestsPrikaz} {t("guests")}
                   </span>
                 </li>
                 <li className="flex items-center lg:me-6 me-4">
@@ -96,10 +97,16 @@ export default async function Page({ params }) {
                   <span className="lg:text-xl">{page.data.bedrooms}</span>
                 </li>
 
-                <li className="flex items-center">
+                <li className="flex items-center lg:me-6 me-4">
                   <LuBath className=" lg:text-3xl text-2xl me-2 text-green-600" />
                   <span className="lg:text-xl">{page.data.bathrooms}</span>
                 </li>
+                {page.data.pets_fee && (
+                  <li className="flex items-center">
+                    <LuDog className=" lg:text-3xl text-2xl me-2 text-green-600" />
+                    <span className="lg:text-xl">{t("pets-allowed")}</span>
+                  </li>
+                )}
               </ul>
               {/* 
               <p className="text-slate-400">
@@ -151,7 +158,7 @@ export default async function Page({ params }) {
               {/* GALLERY */}
               <div className="mt-4">
                 {photos && photos.length > 0 && (
-                  <PhotoGallery photos={photos} heading="Gallery" />
+                  <PhotoGallery photos={photos} heading={t("gallery")} />
                 )}
               </div>
               <PrismicRichText
