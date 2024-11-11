@@ -96,7 +96,7 @@ export default function BookingForm({
             )}
           </div>
 
-          <div className="lg:col-span-5 mb-1">
+          <div className="lg:col-span-5 mb-1 ml-4">
             <label className="font-medium text-sm">{t("name")}</label>
             <input
               name="name"
