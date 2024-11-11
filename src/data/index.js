@@ -65,7 +65,7 @@ export const amenitiesMapping = [
   { key: "private_buoy_for_the_boat", label: "Private Buoy for the Boat" },
   { key: "private_sub_boards", label: "Private Sub Boards" },
   { key: "beach_access", label: "Beach Access" },
-  { key: "pet_friendly", label: "Pet Friendly" },
+  { key: "pets_fee", label: "Pets Fee" },
 ];
 
 export const guestOptions = [
