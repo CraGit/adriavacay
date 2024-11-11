@@ -1,12 +1,15 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 import { useQueryState } from "nuqs";
 
 const Filter = () => {
   const [type, setType] = useQueryState("type", {
     defaultValue: "All",
   });
+
+  const t = useTranslations("search");
 
   return (
     <div className="relative mb-8 flex items-center justify-center gap-2">
@@ -17,7 +20,7 @@ const Filter = () => {
           type === "All" && "border-green-600"
         )}
       >
-        All
+        {t("all")}
       </button>
       <button
         onClick={() => setType("Villa")}
@@ -26,7 +29,7 @@ const Filter = () => {
           type === "Villa" && "border-green-600"
         )}
       >
-        Villas
+        {t("villas")}
       </button>
       <button
         onClick={() => setType("Cottage")}
@@ -35,7 +38,7 @@ const Filter = () => {
           type === "Cottage" && "border-green-600"
         )}
       >
-        Cottages
+        {t("cottages")}
       </button>
     </div>
   );

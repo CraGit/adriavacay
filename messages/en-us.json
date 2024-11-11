@@ -22,9 +22,12 @@
     "guests": "Guests",
     "search": "Search",
     "accommodation-type": "Accommodation type",
+    "all": "All",
     "all-types": "All types",
     "villa": "Villa",
-    "cottage": "Cottage"
+    "villas": "Villas",
+    "cottage": "Cottage",
+    "cottages": "Cottages"
   },
   "contact": {
     "name": "Name",

@@ -22,9 +22,12 @@
     "guests": "Gäste",
     "search": "Suchen",
     "accommodation-type": "Unterkunftsart",
+    "all": "Alle",
     "all-types": "Alle Haustypen",
     "villa": "Villa",
-    "cottage": "Bungalow"
+    "villas": "Villas",
+    "cottage": "Bungalow",
+    "cottages": "Bungalows"
   },
   "contact": {
     "name": "Name",

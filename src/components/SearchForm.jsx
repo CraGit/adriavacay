@@ -10,7 +10,7 @@ import { AiOutlineCalendar, GoPeople, GoHome } from "@/assets/icons/vander";
 import { useSearch } from "@/providers/search-provider";
 
 import { DateRangePicker } from "./DateRangePicker";
-import { guestOptions, typeOptions } from "@/data";
+import { guestOptions } from "@/data";
 
 export default function SearchForm() {
   const { query, updateQuery } = useSearch();
@@ -38,6 +38,12 @@ export default function SearchForm() {
   };
 
   const t = useTranslations("search");
+
+  const typeOptions = [
+    { label: t("all-types"), value: "All" },
+    { label: t("villa"), value: "Villa" },
+    { label: t("cottage"), value: "Cottage" },
+  ];
 
   return (
     <div>
