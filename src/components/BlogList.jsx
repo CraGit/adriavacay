@@ -1,14 +1,6 @@
-"use client";
-
-import { usePathname } from "@/i18n/routing";
-
 import BlogCard from "./BlogCard";
 
 export default function BlogList({ blogs }) {
-  const pathname = usePathname();
-
-  const basePath = pathname.includes("destinations") ? "destinations" : "blog";
-
   return (
     <section className="relative md:py-24 py-16">
       <div className="container">
@@ -16,7 +8,11 @@ export default function BlogList({ blogs }) {
           {blogs.map((item) => (
             <BlogCard
               uid={item.uid}
-              url={`/${basePath}/${item.uid}`}
+              url={
+                item.type === "destination"
+                  ? `/destinations/${item.uid}`
+                  : `/blog/${item.uid}`
+              }
               title={item.data.heading}
               image={item.data.image.url}
               key={item.uid}
