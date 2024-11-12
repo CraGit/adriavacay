@@ -6,6 +6,7 @@
 import BlogList from "@/components/BlogList";
 import SmallHeading from "@/components/SmallHeading";
 import { createClient } from "@/prismicio";
+import { getLocale } from "next-intl/server";
 
 const SelectedDestinations = async ({ slice }) => {
   const destinationsUids = slice.primary.selected_destinations.map(
@@ -13,11 +14,12 @@ const SelectedDestinations = async ({ slice }) => {
   );
 
   const client = createClient();
+  const locale = await getLocale();
 
   // Fetch both destinations and blog posts by UIDs
   const [destinations, blogs] = await Promise.all([
-    client.getAllByUIDs("destination", destinationsUids),
-    client.getAllByUIDs("blog_single", destinationsUids),
+    client.getAllByUIDs("destination", destinationsUids, { lang: locale }),
+    client.getAllByUIDs("blog_single", destinationsUids, { lang: locale }),
   ]);
 
   // Combine both destinations and blogs, if necessary
