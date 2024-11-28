@@ -10,6 +10,7 @@ export default function SmallHero({ heading, backgroundImage }) {
           alt={backgroundImage.alt}
           style={{ objectFit: "cover" }}
           sizes="100vw"
+          priority
         />
       </div>
       <div className="absolute inset-0 bg-black opacity-50"></div>

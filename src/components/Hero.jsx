@@ -42,6 +42,7 @@ export default function Hero({
             alt="hero"
             fill
             style={{ objectFit: "cover" }}
+            priority
           />
         </div>
         <div className="absolute inset-0 bg-black/50"></div>
