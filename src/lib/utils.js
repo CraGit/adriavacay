@@ -92,7 +92,7 @@ export const occupiedRangesFromIcal = async (url) => {
 
 export const hasOverlap = (range, excludedDates) => {
   return excludedDates.some((d) =>
-    isWithinInterval(d, { start: range[0], end: range[1] })
+    isWithinInterval(d, { start: range.from, end: range.to })
   );
 };
 

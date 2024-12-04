@@ -26,7 +26,7 @@ const AccommodationListSlice = async ({ slice }) => {
 
   const pricingAndAvailabilityMap = new Map();
   accommodationsEn.forEach((a) => {
-    pricingAndAvailabilityMap.set(a.id, a.data);
+    pricingAndAvailabilityMap.set(a.uid, a.data);
   });
 
   const accommodationsWithCalendar = await Promise.all(
