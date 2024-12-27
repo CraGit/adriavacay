@@ -1,11 +1,11 @@
-import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 
 import { AccommodationSingle } from "@/app/[locale]/accommodation/accommodation-single";
+import Filter from "@/components/Filter";
 import SectionHeading from "@/components/SectionHeading";
+import { Link } from "@/i18n/routing";
 import { occupiedDatesFromIcal } from "@/lib/utils";
 import { createClient } from "@/prismicio";
-import Filter from "@/components/Filter";
 
 /**
  * @typedef {import("@prismicio/client").Content.AccommodationListSliceSlice} AccommodationListSliceSlice
