@@ -30,6 +30,14 @@ const routes = [
     path: "/:lang?/accommodation/:uid",
   },
   {
+    type: "for_sale",
+    path: "/:lang?/for-sale",
+  },
+  {
+    type: "for_sale_single",
+    path: "/:lang?/for-sale/:uid",
+  },
+  {
     type: "about_us",
     path: "/:lang?/about-us",
   },

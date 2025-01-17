@@ -61,6 +61,22 @@
     "guests": "Gäste",
     "what-our-guests-say": "Was denken unsere Gäste?"
   },
+  "for-sale-list": {
+    "show-all": "Alles anzeigen "
+  },
+  "for-sale-single": {
+    "show-more": "mehr anzeigen",
+    "hide": "weniger anzeigen",
+    "distances": "Entfernungen",
+    "amenities": "Ausstattung",
+    "gallery": "Galerie",
+    "payment-policy": "Zahlungsbedingungen",
+    "cancellation-policy": "Stornobedingungen",
+    "have-a-question": "Haben Sie weitere Fragen? Bitte kontaktieren Sie uns!",
+    "contact-us": "Gerne können Sie uns kontaktieren.",
+    "guests": "Gäste",
+    "what-our-guests-say": "Was denken unsere Gäste?"
+  },
   "card": {
     "price": "Preis",
     "from": "von"

@@ -1933,6 +1933,250 @@ export type DestinationsDocument<Lang extends string = string> =
     Lang
   >;
 
+type ForSaleDocumentDataSlicesSlice = never;
+
+/**
+ * Content for For Sale documents
+ */
+interface ForSaleDocumentData {
+  /**
+   * Slice Zone field in *For Sale*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: for_sale.slices[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#slices
+   */
+  slices: prismic.SliceZone<ForSaleDocumentDataSlicesSlice> /**
+   * Meta Title field in *For Sale*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A title of the page used for social media and search engines
+   * - **API ID Path**: for_sale.meta_title
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */;
+  meta_title: prismic.KeyTextField;
+
+  /**
+   * Meta Description field in *For Sale*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A brief summary of the page
+   * - **API ID Path**: for_sale.meta_description
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  meta_description: prismic.KeyTextField;
+
+  /**
+   * Meta Image field in *For Sale*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: for_sale.meta_image
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  meta_image: prismic.ImageField<never>;
+}
+
+/**
+ * For Sale document from Prismic
+ *
+ * - **API ID**: `for_sale`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type ForSaleDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithoutUID<
+    Simplify<ForSaleDocumentData>,
+    "for_sale",
+    Lang
+  >;
+
+/**
+ * Item in *For Sale Single → Gallery*
+ */
+export interface ForSaleSingleDocumentDataGalleryItem {
+  /**
+   * Image field in *For Sale Single → Gallery*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: for_sale_single.gallery[].image
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image: prismic.ImageField<never>;
+}
+
+type ForSaleSingleDocumentDataSlicesSlice = never;
+
+/**
+ * Content for For Sale Single documents
+ */
+interface ForSaleSingleDocumentData {
+  /**
+   * Heading field in *For Sale Single*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: for_sale_single.heading
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  heading: prismic.KeyTextField;
+
+  /**
+   * Gallery field in *For Sale Single*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: for_sale_single.gallery[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  gallery: prismic.GroupField<Simplify<ForSaleSingleDocumentDataGalleryItem>>;
+
+  /**
+   * Guests Prikaz field in *For Sale Single*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: for_sale_single.guestsPrikaz
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  guestsPrikaz: prismic.KeyTextField;
+
+  /**
+   * m2 field in *For Sale Single*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: for_sale_single.sqm
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  sqm: prismic.KeyTextField;
+
+  /**
+   * Bedrooms field in *For Sale Single*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: for_sale_single.bedrooms
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  bedrooms: prismic.KeyTextField;
+
+  /**
+   * Bathrooms field in *For Sale Single*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: for_sale_single.bathrooms
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  bathrooms: prismic.KeyTextField;
+
+  /**
+   * Content field in *For Sale Single*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: for_sale_single.content
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  content: prismic.RichTextField;
+
+  /**
+   * Price field in *For Sale Single*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: for_sale_single.price
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  price: prismic.KeyTextField;
+
+  /**
+   * Google Map Embed field in *For Sale Single*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: for_sale_single.google_map_embed
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  google_map_embed: prismic.KeyTextField;
+
+  /**
+   * Slice Zone field in *For Sale Single*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: for_sale_single.slices[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#slices
+   */
+  slices: prismic.SliceZone<ForSaleSingleDocumentDataSlicesSlice> /**
+   * Meta Title field in *For Sale Single*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A title of the page used for social media and search engines
+   * - **API ID Path**: for_sale_single.meta_title
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */;
+  meta_title: prismic.KeyTextField;
+
+  /**
+   * Meta Description field in *For Sale Single*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A brief summary of the page
+   * - **API ID Path**: for_sale_single.meta_description
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  meta_description: prismic.KeyTextField;
+
+  /**
+   * Meta Image field in *For Sale Single*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: for_sale_single.meta_image
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  meta_image: prismic.ImageField<never>;
+}
+
+/**
+ * For Sale Single document from Prismic
+ *
+ * - **API ID**: `for_sale_single`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type ForSaleSingleDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithUID<
+    Simplify<ForSaleSingleDocumentData>,
+    "for_sale_single",
+    Lang
+  >;
+
 type HomepageDocumentDataSlicesSlice =
   | AccommodationListSliceSlice
   | HeroSliceSlice;
@@ -2249,6 +2493,8 @@ export type AllDocumentTypes =
   | ContactDocument
   | DestinationDocument
   | DestinationsDocument
+  | ForSaleDocument
+  | ForSaleSingleDocument
   | HomepageDocument
   | PaymentDetailsDocument
   | PrivacyPolicyDocument
@@ -2762,6 +3008,13 @@ declare module "@prismicio/client" {
       DestinationsDocument,
       DestinationsDocumentData,
       DestinationsDocumentDataSlicesSlice,
+      ForSaleDocument,
+      ForSaleDocumentData,
+      ForSaleDocumentDataSlicesSlice,
+      ForSaleSingleDocument,
+      ForSaleSingleDocumentData,
+      ForSaleSingleDocumentDataGalleryItem,
+      ForSaleSingleDocumentDataSlicesSlice,
       HomepageDocument,
       HomepageDocumentData,
       HomepageDocumentDataSlicesSlice,
