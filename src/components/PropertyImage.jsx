@@ -10,7 +10,6 @@ import { FiCamera } from "@/assets/icons/vander";
 import "react-18-image-lightbox/style.css";
 
 export default function PropertyImage({ photos }) {
-  console.log(photos);
   let [isOpen, setIsOpen] = useState(false);
 
   let [photoIndex, setActiveIndex] = useState(0);
