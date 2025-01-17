@@ -6,6 +6,8 @@ import { routing } from "@/i18n/routing";
 import { unstable_setRequestLocale } from "next-intl/server";
 
 export default async function Page({ params: { locale } }) {
+  unstable_setRequestLocale(locale);
+
   const client = createClient();
   const page = await client.getSingle("for_sale", { lang: locale });
 

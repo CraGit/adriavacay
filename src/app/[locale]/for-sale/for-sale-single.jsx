@@ -3,8 +3,7 @@
 import CardForSale from "./CardForSale";
 
 export const ForSaleSingle = ({ villas }) => {
-  console.log(villas);
-  return villas.map((item) => {
+  return villas.map((item) => (
     <CardForSale
       key={item.id}
       uid={item.uid}
@@ -16,6 +15,6 @@ export const ForSaleSingle = ({ villas }) => {
       sqm={item.data.sqm}
       title={item.data.heading}
       guestsPrikaz={item.data.guestsPrikaz}
-    />;
-  });
+    />
+  ));
 };
