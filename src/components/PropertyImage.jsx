@@ -10,6 +10,7 @@ import { FiCamera } from "@/assets/icons/vander";
 import "react-18-image-lightbox/style.css";
 
 export default function PropertyImage({ photos }) {
+  console.log(photos);
   let [isOpen, setIsOpen] = useState(false);
 
   let [photoIndex, setActiveIndex] = useState(0);
@@ -49,8 +50,8 @@ export default function PropertyImage({ photos }) {
           <div className="w-1/2 p-1">
             <div className="group relative overflow-hidden">
               <Image
-                src={photos[1].src || photos[0].src}
-                alt={photos[1].alt || "property photo"}
+                src={photos[1]?.src || photos[0].src}
+                alt={photos[1]?.alt || "property photo"}
                 width={0}
                 height={0}
                 sizes="100vw"
@@ -73,8 +74,8 @@ export default function PropertyImage({ photos }) {
           <div className="w-1/2 p-1">
             <div className="group relative overflow-hidden">
               <Image
-                src={photos[2].src || photos[0].src}
-                alt={photos[2].alt || "property photo"}
+                src={photos[2]?.src || photos[0].src}
+                alt={photos[2]?.alt || "property photo"}
                 width={0}
                 height={0}
                 sizes="100vw"
@@ -99,8 +100,8 @@ export default function PropertyImage({ photos }) {
           <div className="w-1/2 p-1">
             <div className="group relative overflow-hidden">
               <Image
-                src={photos[3].src || photos[0].src}
-                alt={photos[3].alt || "property photo"}
+                src={photos[3]?.src || photos[0].src}
+                alt={photos[3]?.alt || "property photo"}
                 width={0}
                 height={0}
                 sizes="100vw"
@@ -123,8 +124,8 @@ export default function PropertyImage({ photos }) {
           <div className="w-1/2 p-1">
             <div className="group relative overflow-hidden">
               <Image
-                src={photos[4].src || photos[0].src}
-                alt={photos[4].alt || "property photo"}
+                src={photos[4]?.src || photos[0].src}
+                alt={photos[4]?.alt || "property photo"}
                 width={0}
                 height={0}
                 sizes="100vw"
