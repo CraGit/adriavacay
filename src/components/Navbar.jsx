@@ -182,6 +182,14 @@ export default function Navbar(props) {
                 </Link>
               </li>
               <li
+                className={menu === "/for-sale" ? "active" : ""}
+                onClick={toggleMenu}
+              >
+                <Link href="/for-sale" className="sub-menu-item">
+                  {t("for-sale")}
+                </Link>
+              </li>
+              <li
                 className={menu === "/about-us" ? "active" : ""}
                 onClick={toggleMenu}
               >
