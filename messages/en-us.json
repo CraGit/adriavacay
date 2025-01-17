@@ -61,6 +61,23 @@
     "guests": "Guests",
     "what-our-guests-say": "What Our Guests Say?"
   },
+  "for-sale-list": {
+    "show-all": "Show all"
+  },
+  "for-sale-single": {
+    "show-more": "Show more",
+    "hide": "Hide",
+    "distances": "Distances",
+    "amenities": "Amenities",
+    "gallery": "Gallery",
+    "payment-policy": "Payment Policy",
+    "cancellation-policy": "Cancellation Policy",
+    "have-a-question": "Have a Question? Get in touch!",
+    "contact-us": "Contact us",
+    "pets-allowed": "Pets Allowed",
+    "guests": "Guests",
+    "what-our-guests-say": "What Our Guests Say?"
+  },
   "card": {
     "price": "Price",
     "from": "from"

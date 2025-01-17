@@ -1,14 +1,27 @@
 {
   "format": "page",
   "id": "for_sale",
+  "label": "For Sale",
+  "repeatable": false,
+  "status": true,
   "json": {
     "Main": {
       "slices": {
-        "config": {
-          "choices": {}
-        },
+        "type": "Slices",
         "fieldset": "Slice Zone",
-        "type": "Slices"
+        "config": {
+          "choices": {
+            "small_hero_slice": {
+              "type": "SharedSlice"
+            },
+            "hero_slice": {
+              "type": "SharedSlice"
+            },
+            "for_sale_list_slice": {
+              "type": "SharedSlice"
+            }
+          }
+        }
       }
     },
     "SEO & Metadata": {
@@ -38,8 +51,5 @@
         "type": "Image"
       }
     }
-  },
-  "label": "For Sale",
-  "repeatable": false,
-  "status": true
+  }
 }

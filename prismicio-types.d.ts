@@ -1933,7 +1933,10 @@ export type DestinationsDocument<Lang extends string = string> =
     Lang
   >;
 
-type ForSaleDocumentDataSlicesSlice = never;
+type ForSaleDocumentDataSlicesSlice =
+  | SmallHeroSliceSlice
+  | HeroSliceSlice
+  | ForSaleListSliceSlice;
 
 /**
  * Content for For Sale documents
@@ -2713,6 +2716,61 @@ export type DestinationListSliceSlice = prismic.SharedSlice<
 >;
 
 /**
+ * Primary content in *ForSaleListSlice → Default → Primary*
+ */
+export interface ForSaleListSliceSliceDefaultPrimary {
+  /**
+   * Heading field in *ForSaleListSlice → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: for_sale_list_slice.default.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  heading: prismic.KeyTextField;
+
+  /**
+   * Description field in *ForSaleListSlice → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: for_sale_list_slice.default.primary.description
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  description: prismic.KeyTextField;
+}
+
+/**
+ * Default variation for ForSaleListSlice Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type ForSaleListSliceSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<ForSaleListSliceSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *ForSaleListSlice*
+ */
+type ForSaleListSliceSliceVariation = ForSaleListSliceSliceDefault;
+
+/**
+ * ForSaleListSlice Shared Slice
+ *
+ * - **API ID**: `for_sale_list_slice`
+ * - **Description**: ForSaleListSlice
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type ForSaleListSliceSlice = prismic.SharedSlice<
+  "for_sale_list_slice",
+  ForSaleListSliceSliceVariation
+>;
+
+/**
  * Primary content in *HeroSlice → Default → Primary*
  */
 export interface HeroSliceSliceDefaultPrimary {
@@ -3041,6 +3099,10 @@ declare module "@prismicio/client" {
       DestinationListSliceSlice,
       DestinationListSliceSliceVariation,
       DestinationListSliceSliceDefault,
+      ForSaleListSliceSlice,
+      ForSaleListSliceSliceDefaultPrimary,
+      ForSaleListSliceSliceVariation,
+      ForSaleListSliceSliceDefault,
       HeroSliceSlice,
       HeroSliceSliceDefaultPrimary,
       HeroSliceSliceVariation,
