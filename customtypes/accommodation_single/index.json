@@ -31,7 +31,7 @@
         "config": {
           "label": "Type",
           "placeholder": "",
-          "options": ["Villa", "Cottage"],
+          "options": ["Villa", "Cottage", "Apartment"],
           "default_value": "Villa"
         }
       },

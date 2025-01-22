@@ -414,7 +414,7 @@ interface AccommodationSingleDocumentData {
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/field#select
    */
-  type: prismic.SelectField<"Villa" | "Cottage", "filled">;
+  type: prismic.SelectField<"Villa" | "Cottage" | "Apartment", "filled">;
 
   /**
    * Gallery field in *Accommodation Single*
