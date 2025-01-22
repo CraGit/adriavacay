@@ -18,7 +18,7 @@ export default async function Page({ params: { locale } }) {
 
 export async function generateMetadata({ params: { locale } }) {
   const client = createClient();
-  const page = await client.getSingle("for_sale", { lang: locale });
+  const page = await client.getSingle("accommodation", { lang: locale });
 
   return {
     title: page.data.meta_title,

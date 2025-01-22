@@ -46,7 +46,7 @@ export const AccommodationSingle = ({ accommodations, showAll }) => {
 
     const filteredByChangeoverDay = filteredByDate.filter((item) =>
       filterByChangeoverDayAndMinimumStay(
-        item.data.pricing,
+        item.pricing,
         query.dateRange.from,
         query.dateRange.to
       )
@@ -58,14 +58,14 @@ export const AccommodationSingle = ({ accommodations, showAll }) => {
 
     return filteredByChangeoverDay.map((item) => {
       const price = calculateTotalPrice(
-        item.data.pricing,
+        item.pricing,
         query.dateRange.from,
         query.dateRange.to
       );
 
       const discountedPrice = calculateTotalPriceWithDiscount(
-        item.data.pricing,
-        item.data.discounts,
+        item.pricing,
+        item.discounts,
         query.dateRange.from,
         query.dateRange.to
       );

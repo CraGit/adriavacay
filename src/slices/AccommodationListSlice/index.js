@@ -20,7 +20,29 @@ const AccommodationListSlice = async ({ slice }) => {
     lang: locale,
   });
 
-  const accommodationsEn = await client.getAllByType("accommodation_single", {
+  const accommodationsWithCalendar = await Promise.all(
+    accommodations.map(async (a) => {
+      if (locale === "de") {
+        const enData = await client.getByID(a.alternate_languages[0].id);
+
+        return {
+          ...a,
+          pricing: enData.data.pricing,
+          discounts: enData.data.discounts,
+          occupiedDates: await occupiedDatesFromIcal(enData.data.ical),
+        };
+      } else {
+        return {
+          ...a,
+          pricing: a.data.pricing,
+          discounts: a.data.discounts,
+          occupiedDates: await occupiedDatesFromIcal(a.data.ical),
+        };
+      }
+    })
+  );
+
+  /*const accommodationsEn = await client.getAllByType("accommodation_single", {
     lang: "en-us",
   });
 
@@ -32,17 +54,17 @@ const AccommodationListSlice = async ({ slice }) => {
   const accommodationsWithCalendar = await Promise.all(
     accommodations.map(async (a) => {
       const enData = pricingAndAvailabilityMap.get(a.uid);
-
       return {
         ...a,
 
         pricing: enData?.pricing,
+        discounts: enData?.discounts,
         //availability: enData?.availability,
 
         occupiedDates: await occupiedDatesFromIcal(enData?.ical),
       };
     })
-  );
+  );*/
 
   const sortedAccommodations = accommodationsWithCalendar.sort((a, b) => {
     if (a.data.isFeatured && !b.data.isFeatured) {
