@@ -156,5 +156,12 @@
     "private_sub_boards": "Private Sub Boards",
     "beach_access": "Beach Access",
     "pets_fee": "Pets Fee"
+  },
+  "errors": {
+    "error": "Error",
+    "error-message": "Looks like we have an error. Please try again later.",
+    "not-found-title": "Page Not Found",
+    "not-found-message": "The page you are looking for does not exist.",
+    "back-to-home": "Back to Home"
   }
 }

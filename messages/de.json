@@ -155,5 +155,12 @@
     "private_sub_boards": "Eigene SUP-Boards",
     "beach_access": "Strandzugang",
     "pets_fee": "Haustiere gegen Gebühr"
+  },
+  "errors": {
+    "error": "Fehler",
+    "error-message": "Es scheint, als wäre ein Fehler aufgetreten. Bitte versuchen Sie es später noch einmal.",
+    "not-found-title": "Seite nicht gefunden",
+    "not-found-message": "Die gesuchte Seite existiert nicht.",
+    "back-to-home": "Zurück zur Startseite"
   }
 }
