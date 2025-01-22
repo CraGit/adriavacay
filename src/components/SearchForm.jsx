@@ -43,6 +43,7 @@ export default function SearchForm() {
     { label: t("all-types"), value: "All" },
     { label: t("villa"), value: "Villa" },
     { label: t("cottage"), value: "Cottage" },
+    { label: t("apartment"), value: "Apartment" },
   ];
 
   return (

@@ -40,6 +40,15 @@ const Filter = () => {
       >
         {t("cottages")}
       </button>
+      <button
+        onClick={() => setType("Apartment")}
+        className={cn(
+          "border-2 p-2 rounded-md w-24 text-sm",
+          type === "Apartment" && "border-green-600"
+        )}
+      >
+        {t("apartments")}
+      </button>
     </div>
   );
 };

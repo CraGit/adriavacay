@@ -28,7 +28,9 @@
     "villa": "Villa",
     "villas": "Villas",
     "cottage": "Cottage",
-    "cottages": "Cottages"
+    "cottages": "Cottages",
+    "apartment": "Apartment",
+    "apartments": "Apartments"
   },
   "contact": {
     "name": "Name",
