@@ -39,6 +39,7 @@ export default function CardGrid({ cardDetails, limit = "No limit" }) {
                 title={item.data.heading}
                 guestsPrikaz={item.data.guestsPrikaz}
                 guests={item.data.max_guests}
+                type={item.data.type}
               />
             ))}
         </div>

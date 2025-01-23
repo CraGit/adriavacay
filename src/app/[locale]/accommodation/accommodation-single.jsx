@@ -84,6 +84,7 @@ export const AccommodationSingle = ({ accommodations, showAll }) => {
           title={item.data.heading}
           guests={item.data.max_guests}
           guestsPrikaz={item.data.guestsPrikaz}
+          type={item.data.type}
         />
       ) : null; // Ne prikazujemo ako nema cijene za datume
     });
@@ -108,6 +109,7 @@ export const AccommodationSingle = ({ accommodations, showAll }) => {
             title={item.data.heading}
             guests={item.data.max_guests}
             guestsPrikaz={item.data.guestsPrikaz}
+            type={item.data.type}
           />
         );
       });

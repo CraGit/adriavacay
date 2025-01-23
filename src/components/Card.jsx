@@ -22,6 +22,7 @@ export default function Card({
   lowestPrice,
   alt,
   guestsPrikaz,
+  type,
 }) {
   const t = useTranslations("card");
 
@@ -32,6 +33,9 @@ export default function Card({
         className="text-lg hover:text-green-600 font-medium ease-in-out duration-500 hover:cursor-pointer"
       >
         <div className="relative">
+          <div className="absolute top-4 end-4 bg-green-600 text-white dark:text-slate-900 dark:bg-green-600 px-2 py-1 rounded-full text-sm font-medium">
+            {type}
+          </div>
           <Image
             src={image}
             alt={alt}
