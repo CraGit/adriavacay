@@ -25,6 +25,7 @@ export default function Card({
   type,
 }) {
   const t = useTranslations("card");
+  const tSearch = useTranslations("search");
 
   return (
     <div className="group rounded-xl bg-white dark:bg-slate-900 shadow hover:shadow-xl dark:hover:shadow-xl dark:shadow-gray-700 dark:hover:shadow-gray-700 overflow-hidden ease-in-out duration-500">
@@ -34,7 +35,7 @@ export default function Card({
       >
         <div className="relative">
           <div className="absolute top-4 end-4 bg-green-600 text-white dark:text-slate-900 dark:bg-green-600 px-2 py-1 rounded-full text-sm font-medium">
-            {type}
+            {tSearch(type.toLowerCase())}
           </div>
           <Image
             src={image}
