@@ -2,7 +2,6 @@ import { SliceZone } from "@prismicio/react";
 
 import { createClient } from "@/prismicio";
 import { components } from "@/slices";
-import { routing } from "@/i18n/routing";
 import { unstable_setRequestLocale } from "next-intl/server";
 
 export default async function Page({ params: { locale } }) {
