@@ -37,32 +37,41 @@ export const currency = (amount) => {
 
 export const occupiedDatesFromIcal = async (url) => {
   const dates = [];
+  const checkoutDates = []; // Track checkout dates separately
 
   try {
-    if (!url) return dates;
+    if (!url) return { occupiedDates: dates, checkoutDates };
 
     const res = await fetch(url, { cache: "no-store" });
 
-    if (!res.ok) return dates;
+    if (!res.ok) return { occupiedDates: dates, checkoutDates };
 
     const text = await res.text();
 
     ical(text).forEach((e) => {
-      const startDate = e.startDate;
-      const endDate = e.endDate;
+      const startDate = startOfDay(e.startDate);
+      const endDate = startOfDay(e.endDate);
 
+      // Add checkout date to separate array
+      checkoutDates.push(endDate);
+
+      // Fully occupied dates exclude checkout date
       const interval = eachDayOfInterval({
         start: startDate,
-        end: endDate,
+        end: subDays(endDate, 1),
       });
 
       dates.push(...interval);
     });
   } catch (error) {
-    return dates;
+    console.error("Error parsing iCal:", error);
+    return { occupiedDates: dates, checkoutDates };
   }
 
-  return dates;
+  return {
+    occupiedDates: dates,
+    checkoutDates, // Return both arrays
+  };
 };
 
 export const occupiedRangesFromIcal = async (url) => {
@@ -192,24 +201,25 @@ export const filterByChangeoverDayAndMinimumStay = (
   fromDate,
   toDate
 ) => {
+  if (!fromDate || !toDate) return false;
+
   let startRangeValid = false;
   let endRangeValid = false;
+  let minimumStayValid = false;
 
   const totalStay = differenceInCalendarDays(toDate, fromDate);
 
-  priceRanges.forEach((range) => {
-    // Calculate the overlap between the price range and the user's date range
-    const overlapStart = max([
-      parse(range.date_start, "yyyy-MM-dd", new Date()),
-      fromDate,
-    ]);
-    const overlapEnd = min([
-      parse(range.date_end, "yyyy-MM-dd", new Date()),
-      toDate,
-    ]);
+  for (const range of priceRanges) {
+    // Parse dates once to avoid repeated parsing
+    const rangeStart = parse(range.date_start, "yyyy-MM-dd", new Date());
+    const rangeEnd = parse(range.date_end, "yyyy-MM-dd", new Date());
 
-    // Ensure there is a valid overlap
-    if (isBefore(overlapEnd, overlapStart)) return false;
+    // Calculate the overlap between the price range and the user's date range
+    const overlapStart = max([rangeStart, fromDate]);
+    const overlapEnd = min([rangeEnd, toDate]);
+
+    // Skip if there is no valid overlap
+    if (isBefore(overlapEnd, overlapStart)) continue;
 
     // Check if the changeover day conditions are met
     if (
@@ -226,12 +236,11 @@ export const filterByChangeoverDayAndMinimumStay = (
       endRangeValid = true;
     }
 
-    // Apply minimum stay only if the changeover day is "Flexible"
-    if (range.changeoverDay === "Flexible" && totalStay < range.minimum_stay) {
-      startRangeValid = false;
-      endRangeValid = false;
+    // Check minimum stay requirement for all changeover types
+    if (totalStay >= (range.minimum_stay || 1)) {
+      minimumStayValid = true;
     }
-  });
+  }
 
-  return startRangeValid && endRangeValid;
+  return startRangeValid && endRangeValid && minimumStayValid;
 };
