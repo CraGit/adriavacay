@@ -43,17 +43,37 @@ export const AccommodationSingle = ({ accommodations, showAll }) => {
     query.dateRange.from !== null &&
     query.dateRange.to !== null
   ) {
-    filtered = filtered.filter(
-      (item) => !hasOverlap(query.dateRange, item.occupiedDates)
+    console.log("Original filtered count:", filtered.length);
+    console.log("Query date range:", query.dateRange);
+
+    const beforeOverlapFilter = filtered.length;
+    filtered = filtered.filter((item) => {
+      const hasOverlapResult = hasOverlap(query.dateRange, item.occupiedDates);
+      console.log(
+        `${item.data.heading} - hasOverlap: ${hasOverlapResult}, occupiedDates:`,
+        item.occupiedDates
+      );
+      return !hasOverlapResult;
+    });
+    console.log(
+      `After overlap filter: ${beforeOverlapFilter} -> ${filtered.length}`
     );
 
     // Apply changeover day filter only if dates are provided
-    filtered = filtered.filter((item) =>
-      filterByChangeoverDayAndMinimumStay(
+    const beforeChangeoverFilter = filtered.length;
+    filtered = filtered.filter((item) => {
+      const changeoverResult = filterByChangeoverDayAndMinimumStay(
         item.pricing,
         query.dateRange.from,
         query.dateRange.to
-      )
+      );
+      console.log(
+        `${item.data.heading} - changeover result: ${changeoverResult}`
+      );
+      return changeoverResult;
+    });
+    console.log(
+      `After changeover filter: ${beforeChangeoverFilter} -> ${filtered.length}`
     );
 
     // If we have dates, render with calculated prices

@@ -24,19 +24,24 @@ const AccommodationListSlice = async ({ slice }) => {
     accommodations.map(async (a) => {
       if (locale === "de") {
         const enData = await client.getByID(a.alternate_languages[0].id);
+        const occupiedData = await occupiedDatesFromIcal(enData.data.ical);
 
         return {
           ...a,
           pricing: enData.data.pricing,
           discounts: enData.data.discounts,
-          occupiedDates: await occupiedDatesFromIcal(enData.data.ical),
+          occupiedDates: occupiedData.occupiedDates,
+          checkoutDates: occupiedData.checkoutDates,
         };
       } else {
+        const occupiedData = await occupiedDatesFromIcal(a.data.ical);
+
         return {
           ...a,
           pricing: a.data.pricing,
           discounts: a.data.discounts,
-          occupiedDates: await occupiedDatesFromIcal(a.data.ical),
+          occupiedDates: occupiedData.occupiedDates,
+          checkoutDates: occupiedData.checkoutDates,
         };
       }
     })

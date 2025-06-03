@@ -49,7 +49,7 @@ export default async function Page({ params }) {
   const paymentDetails = await client.getSingle("payment_details", {
     lang: params.locale,
   });
-  const occupiedDates = await occupiedDatesFromIcal(pageEn.data.ical);
+  const occupiedData = await occupiedDatesFromIcal(pageEn.data.ical);
   const occupiedRanges = await occupiedRangesFromIcal(pageEn.data.ical);
 
   const photos = page.data.gallery.map((photo) => {
@@ -184,7 +184,7 @@ export default async function Page({ params }) {
                 />
                 <BookingForm
                   uid={params.uid}
-                  occupiedDates={occupiedDates}
+                  occupiedDates={occupiedData.occupiedDates}
                   occupiedRanges={occupiedRanges}
                   priceRanges={pageEn.data.pricing}
                   className="mt-6"

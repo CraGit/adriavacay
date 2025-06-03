@@ -100,9 +100,24 @@ export const occupiedRangesFromIcal = async (url) => {
 };
 
 export const hasOverlap = (range, excludedDates) => {
-  return excludedDates.some((d) =>
-    isWithinInterval(d, { start: range.from, end: range.to })
-  );
+  // Add safety check for excludedDates
+  if (!excludedDates || !Array.isArray(excludedDates)) {
+    return false;
+  }
+
+  return excludedDates.some((d) => {
+    // Additional safety check for individual date objects
+    if (!d || !(d instanceof Date)) {
+      return false;
+    }
+
+    // Check if the excluded date falls within the stay period
+    // Exclude the checkout date (end of range) to allow back-to-back bookings
+    return isWithinInterval(d, {
+      start: range.from,
+      end: addDays(range.to, -1), // Exclude checkout date
+    });
+  });
 };
 
 export const filterAvailablePriceRanges = (priceRanges, fromDate, toDate) => {

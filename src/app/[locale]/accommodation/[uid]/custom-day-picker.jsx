@@ -1,6 +1,6 @@
 "use client";
 
-import { isAfter, isBefore, startOfToday } from "date-fns";
+import { isAfter, isBefore, isSameDay, startOfToday } from "date-fns";
 import { enGB } from "date-fns/locale";
 import { useMedia } from "react-use";
 
@@ -11,6 +11,7 @@ import {
   isDateAvailable,
   isDateInOccupiedRanges,
   isEndDateValid,
+  isValidForCheckIn,
 } from "@/lib/cal-utils";
 import { cn, df } from "@/lib/utils";
 import { useSearch } from "@/providers/search-provider";
@@ -70,6 +71,9 @@ export default function CustomDayPicker({
 
   const modifiers = {
     available: (date) => {
+      // Special case: if this is the checkout date, consider it available
+      if (selected.to && isSameDay(date, selected.to)) return true;
+
       if (!selected.from || (selected.from && selected.to)) {
         return (
           isDateAvailable(date, priceRanges, unavailableRanges) &&
@@ -91,6 +95,8 @@ export default function CustomDayPicker({
 
   const modifiersClassNames = {
     available: "text-green-600 font-bold",
+    range_end:
+      "text-white bg-green-600 hover:bg-green-700 rounded-r-full !font-bold",
   };
 
   return (
@@ -119,13 +125,31 @@ export default function CustomDayPicker({
           className="p-3"
           excludeDisabled
           selected={selected}
-          modifiers={modifiers}
+          modifiers={{
+            ...modifiers,
+            // Force the end date (to) to be styled as range_end
+            range_end: selected.to ? [selected.to] : undefined,
+          }}
           modifiersClassNames={modifiersClassNames}
-          disabled={(date) =>
-            isBefore(date, today) ||
-            isDateInOccupiedRanges(date, unavailableRanges) ||
-            !isDateAvailable(date, priceRanges, unavailableRanges)
-          }
+          disabled={(date) => {
+            // Always disable past dates
+            if (isBefore(date, today)) return true;
+
+            // Special case: if this is the checkout date we've selected, don't disable it
+            if (selected.to && isSameDay(date, selected.to)) return false;
+
+            // If no start date selected, use check-in validation
+            if (!selected.from || (selected.from && selected.to)) {
+              return (
+                !isValidForCheckIn(date, unavailableRanges) ||
+                !isDateAvailable(date, priceRanges, unavailableRanges)
+              );
+            }
+
+            // If start date selected and picking end date, allow more flexibility
+            // The actual validation will be done in the DayButton click handler
+            return false;
+          }}
           components={{
             DayButton: (props) =>
               DayButton(props, priceRanges, unavailableRanges),

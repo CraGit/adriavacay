@@ -17,6 +17,26 @@ export const isDateInOccupiedRanges = (date, occupiedRanges) => {
   );
 };
 
+// Check if a date is valid for check-in (checkout dates should be available for new check-ins)
+export const isValidForCheckIn = (date, occupiedRanges) => {
+  return !occupiedRanges.some(({ startDate, endDate }) =>
+    isWithinInterval(date, {
+      start: startDate,
+      end: addDays(endDate, -1), // Exclude the checkout date - it should be available for new check-ins
+    })
+  );
+};
+
+// Check if a date is valid for checkout (can be same day as another check-in)
+export const isValidForCheckOut = (date, occupiedRanges) => {
+  return !occupiedRanges.some(({ startDate, endDate }) =>
+    isWithinInterval(date, {
+      start: addDays(startDate, 1), // Allow checkout on check-in dates of other bookings
+      end: addDays(endDate, -1), // Exclude the checkout date itself
+    })
+  );
+};
+
 export const isChangeoverDayValid = (date, changeoverDay) => {
   const dayOfWeek = format(date, "EEEE");
   return changeoverDay === "Flexible" || dayOfWeek === changeoverDay;
@@ -53,7 +73,7 @@ export const isDateAvailable = (date, priceRanges, unavailableRanges) => {
   if (!range || !range.price) return false;
 
   return (
-    !isDateInOccupiedRanges(date, unavailableRanges) &&
+    isValidForCheckIn(date, unavailableRanges) &&
     isChangeoverDayValid(date, range.changeover_day)
   );
 };
@@ -69,12 +89,21 @@ export const isEndDateValid = (
 
   if (!range) return false;
 
+  // Check if checkout date is valid
+  if (!isValidForCheckOut(endDate, unavailableRanges)) {
+    return false;
+  }
+
+  // Check all dates in the stay period (excluding checkout date)
+  const stayDates = eachDayOfInterval({
+    start: startDate,
+    end: addDays(endDate, -1), // Exclude checkout date
+  });
+
   return (
     isChangeoverDayValid(endDate, range.changeover_day) &&
     (!range.minimum_stay || totalNights >= range.minimum_stay) &&
-    !eachDayOfInterval({ start: startDate, end: endDate }).some((date) =>
-      isDateInOccupiedRanges(date, unavailableRanges)
-    )
+    !stayDates.some((date) => isDateInOccupiedRanges(date, unavailableRanges))
   );
 };
 
