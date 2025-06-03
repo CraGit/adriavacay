@@ -9,7 +9,7 @@ import ContactBar from "@/components/ContactBar";
 import Script from "next/script";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
-const GTM_ID = "GTM-TC6PL87W";
+const GTM_ID = "GTM-NPW97CCQ";
 const league_Spartan = League_Spartan({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800", "900"],
