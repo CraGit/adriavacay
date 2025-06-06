@@ -9,6 +9,10 @@ import {
   currency,
   df,
 } from "@/lib/utils";
+import {
+  hasSufficientPricingData,
+  filterValidPriceRanges,
+} from "@/lib/validation";
 import { useSearch } from "@/providers/search-provider";
 
 export default function PriceDisplay({
@@ -21,6 +25,20 @@ export default function PriceDisplay({
 
   if (query.dateRange.from === null || query.dateRange.to === null) {
     return null;
+  }
+
+  // Validate pricing data before calculations
+  if (!hasSufficientPricingData(prices)) {
+    return (
+      <div className={cn("rounded-md bg-slate-50 shadow", className)}>
+        <div className="p-6">
+          <h5 className="text-2xl font-medium">Price</h5>
+          <p className="text-slate-400 mt-4">
+            Pricing information is currently unavailable for the selected dates.
+          </p>
+        </div>
+      </div>
+    );
   }
 
   const nights = differenceInCalendarDays(
@@ -39,6 +57,21 @@ export default function PriceDisplay({
     query.dateRange.from,
     query.dateRange.to
   );
+
+  // If calculations still return 0 or invalid prices, show error message
+  if (basePrice <= 0) {
+    return (
+      <div className={cn("rounded-md bg-slate-50 shadow", className)}>
+        <div className="p-6">
+          <h5 className="text-2xl font-medium">Price</h5>
+          <p className="text-slate-400 mt-4">
+            Unable to calculate price for the selected dates. Please try
+            different dates.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={cn("rounded-md bg-slate-50 shadow", className)}>

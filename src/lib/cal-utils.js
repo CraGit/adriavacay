@@ -7,6 +7,7 @@ import {
   isBefore,
   isWithinInterval,
 } from "date-fns";
+import { filterValidPriceRanges } from "./validation";
 
 export const isDateInOccupiedRanges = (date, occupiedRanges) => {
   return occupiedRanges.some(({ startDate, endDate }) =>
@@ -69,8 +70,10 @@ export const getApplicablePriceRange = (date, priceRanges) => {
 };
 
 export const isDateAvailable = (date, priceRanges, unavailableRanges) => {
-  const range = getApplicablePriceRange(date, priceRanges);
-  if (!range || !range.price) return false;
+  // Filter out invalid price ranges first
+  const validPriceRanges = filterValidPriceRanges(priceRanges);
+  const range = getApplicablePriceRange(date, validPriceRanges);
+  if (!range || !range.price || range.price <= 0) return false;
 
   return (
     isValidForCheckIn(date, unavailableRanges) &&

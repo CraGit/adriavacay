@@ -18,6 +18,11 @@ import {
 } from "date-fns";
 import { enGB } from "date-fns/locale";
 import { twMerge } from "tailwind-merge";
+import {
+  filterValidPriceRanges,
+  filterValidDiscountRanges,
+  hasSufficientPricingData,
+} from "./validation";
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
@@ -149,10 +154,14 @@ const getPriceForDate = (date, priceRanges) => {
 export const calculateTotalPrice = (priceRanges, fromDate, toDate) => {
   if (!fromDate || !toDate) return 0;
 
+  // Filter out invalid price ranges first
+  const validPriceRanges = filterValidPriceRanges(priceRanges);
+  if (!hasSufficientPricingData(validPriceRanges)) return 0;
+
   const days = eachDayOfInterval({ start: fromDate, end: addDays(toDate, -1) }); // skidamo jedan dan jer ne racunamo zadnji dan
 
   const totalPrice = days.reduce((total, date) => {
-    return total + getPriceForDate(date, priceRanges);
+    return total + getPriceForDate(date, validPriceRanges);
   }, 0);
 
   return Math.floor(totalPrice);
@@ -177,6 +186,14 @@ export const calculateTotalPriceWithDiscount = (
   fromDate,
   toDate
 ) => {
+  if (!fromDate || !toDate) return 0;
+
+  // Filter out invalid price and discount ranges first
+  const validPriceRanges = filterValidPriceRanges(priceRanges);
+  const validDiscountRanges = filterValidDiscountRanges(discountRanges);
+
+  if (!hasSufficientPricingData(validPriceRanges)) return 0;
+
   let totalPrice = 0;
   let totalDiscount = 0;
 
@@ -184,10 +201,10 @@ export const calculateTotalPriceWithDiscount = (
 
   while (currentDate < toDate) {
     // strogo manje jer ne racunamo zadnji dan
-    const price = getPriceForDate(currentDate, priceRanges);
-    const discount = getDiscountForDate(currentDate, discountRanges);
+    const price = getPriceForDate(currentDate, validPriceRanges);
+    const discount = getDiscountForDate(currentDate, validDiscountRanges);
 
-    if (price !== null) {
+    if (price !== null && price > 0) {
       const discountAmount = (price * discount) / 100;
       totalPrice += price;
       totalDiscount += discountAmount;
@@ -218,13 +235,17 @@ export const filterByChangeoverDayAndMinimumStay = (
 ) => {
   if (!fromDate || !toDate) return false;
 
+  // Filter out invalid price ranges first
+  const validPriceRanges = filterValidPriceRanges(priceRanges);
+  if (!hasSufficientPricingData(validPriceRanges)) return false;
+
   let startRangeValid = false;
   let endRangeValid = false;
   let minimumStayValid = false;
 
   const totalStay = differenceInCalendarDays(toDate, fromDate);
 
-  for (const range of priceRanges) {
+  for (const range of validPriceRanges) {
     // Parse dates once to avoid repeated parsing
     const rangeStart = parse(range.date_start, "yyyy-MM-dd", new Date());
     const rangeEnd = parse(range.date_end, "yyyy-MM-dd", new Date());

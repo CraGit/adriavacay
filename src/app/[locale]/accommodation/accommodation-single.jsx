@@ -7,6 +7,7 @@ import {
   filterByChangeoverDayAndMinimumStay,
   hasOverlap,
 } from "@/lib/utils";
+import { filterAccommodationsWithValidPricing } from "@/lib/validation";
 import { useSearch } from "@/providers/search-provider";
 import { useQueryState } from "nuqs";
 import { useEffect } from "react";
@@ -26,10 +27,13 @@ export const AccommodationSingle = ({ accommodations, showAll }) => {
     return renderAllAccommodations(accommodations, type);
   }
 
-  // Initialize with all accommodations filtered by type
+  // Initialize with all accommodations filtered by type and valid pricing
   let filtered = accommodations.filter((item) =>
     type === "All" ? true : item.data.type === type
   );
+
+  // Filter out accommodations with invalid pricing data
+  filtered = filterAccommodationsWithValidPricing(filtered);
 
   // Apply optional guest filter if provided
   if (query && query.guests) {
@@ -43,21 +47,11 @@ export const AccommodationSingle = ({ accommodations, showAll }) => {
     query.dateRange.from !== null &&
     query.dateRange.to !== null
   ) {
-    console.log("Original filtered count:", filtered.length);
-    console.log("Query date range:", query.dateRange);
-
     const beforeOverlapFilter = filtered.length;
     filtered = filtered.filter((item) => {
       const hasOverlapResult = hasOverlap(query.dateRange, item.occupiedDates);
-      console.log(
-        `${item.data.heading} - hasOverlap: ${hasOverlapResult}, occupiedDates:`,
-        item.occupiedDates
-      );
       return !hasOverlapResult;
     });
-    console.log(
-      `After overlap filter: ${beforeOverlapFilter} -> ${filtered.length}`
-    );
 
     // Apply changeover day filter only if dates are provided
     const beforeChangeoverFilter = filtered.length;
@@ -67,14 +61,8 @@ export const AccommodationSingle = ({ accommodations, showAll }) => {
         query.dateRange.from,
         query.dateRange.to
       );
-      console.log(
-        `${item.data.heading} - changeover result: ${changeoverResult}`
-      );
       return changeoverResult;
     });
-    console.log(
-      `After changeover filter: ${beforeChangeoverFilter} -> ${filtered.length}`
-    );
 
     // If we have dates, render with calculated prices
     return renderWithCalculatedPrices(filtered, query.dateRange);
@@ -126,26 +114,41 @@ const renderWithCalculatedPrices = (accommodations, dateRange) => {
 
 // Helper function to render all accommodations with lowest price
 const renderAllAccommodations = (accommodations, type) => {
-  return accommodations.map((item) => {
-    const lowestPrice = Math.floor(
-      Math.min(...item.data.pricing.map((p) => p.price))
-    );
+  // Filter by type and valid pricing
+  let filtered = accommodations.filter((item) =>
+    type === "All" ? true : item.data.type === type
+  );
 
-    return (
-      <Card
-        key={item.id}
-        uid={item.uid}
-        baths={item.data.bathrooms}
-        bedrooms={item.data.bedrooms}
-        lowestPrice={lowestPrice}
-        image={item.data.gallery[0].image.url}
-        alt={item.data.gallery[0].image.alt}
-        sqm={item.data.sqm}
-        title={item.data.heading}
-        guests={item.data.max_guests}
-        guestsPrikaz={item.data.guestsPrikaz}
-        type={item.data.type}
-      />
-    );
-  });
+  // Filter out accommodations with invalid pricing data
+  filtered = filterAccommodationsWithValidPricing(filtered);
+
+  return filtered
+    .map((item) => {
+      const validPrices = item.data.pricing.filter(
+        (p) => p.price && p.price > 0
+      );
+      if (validPrices.length === 0) return null;
+
+      const lowestPrice = Math.floor(
+        Math.min(...validPrices.map((p) => p.price))
+      );
+
+      return (
+        <Card
+          key={item.id}
+          uid={item.uid}
+          baths={item.data.bathrooms}
+          bedrooms={item.data.bedrooms}
+          lowestPrice={lowestPrice}
+          image={item.data.gallery[0].image.url}
+          alt={item.data.gallery[0].image.alt}
+          sqm={item.data.sqm}
+          title={item.data.heading}
+          guests={item.data.max_guests}
+          guestsPrikaz={item.data.guestsPrikaz}
+          type={item.data.type}
+        />
+      );
+    })
+    .filter(Boolean); // Remove null entries
 };

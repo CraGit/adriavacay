@@ -5,6 +5,10 @@ import Filter from "@/components/Filter";
 import SectionHeading from "@/components/SectionHeading";
 import { Link } from "@/i18n/routing";
 import { occupiedDatesFromIcal } from "@/lib/utils";
+import {
+  filterAccommodationsWithValidPricing,
+  cleanAccommodationPricingData,
+} from "@/lib/validation";
 import { createClient } from "@/prismicio";
 
 /**
@@ -26,25 +30,36 @@ const AccommodationListSlice = async ({ slice }) => {
         const enData = await client.getByID(a.alternate_languages[0].id);
         const occupiedData = await occupiedDatesFromIcal(enData.data.ical);
 
-        return {
+        const accommodation = {
           ...a,
           pricing: enData.data.pricing,
           discounts: enData.data.discounts,
           occupiedDates: occupiedData.occupiedDates,
           checkoutDates: occupiedData.checkoutDates,
         };
+
+        // Clean pricing data and validate
+        return cleanAccommodationPricingData(accommodation);
       } else {
         const occupiedData = await occupiedDatesFromIcal(a.data.ical);
 
-        return {
+        const accommodation = {
           ...a,
           pricing: a.data.pricing,
           discounts: a.data.discounts,
           occupiedDates: occupiedData.occupiedDates,
           checkoutDates: occupiedData.checkoutDates,
         };
+
+        // Clean pricing data and validate
+        return cleanAccommodationPricingData(accommodation);
       }
     })
+  );
+
+  // Filter out accommodations with insufficient pricing data
+  const validAccommodations = filterAccommodationsWithValidPricing(
+    accommodationsWithCalendar.filter(Boolean)
   );
 
   /*const accommodationsEn = await client.getAllByType("accommodation_single", {
@@ -71,7 +86,7 @@ const AccommodationListSlice = async ({ slice }) => {
     })
   );*/
 
-  const sortedAccommodations = accommodationsWithCalendar.sort((a, b) => {
+  const sortedAccommodations = validAccommodations.sort((a, b) => {
     if (a.data.isFeatured && !b.data.isFeatured) {
       return -1;
     } else if (!a.data.isFeatured && b.data.isFeatured) {

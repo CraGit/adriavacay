@@ -96,17 +96,30 @@ export default function Card({
             <span className="text-slate-400">{t("price")}</span>
             <p className="text-lg font-medium">
               {basePrice &&
+                basePrice > 0 &&
                 basePrice === discountedPrice &&
                 currency(basePrice)}
-              {basePrice && basePrice !== discountedPrice && (
-                <>
-                  <span className="line-through text-sm">
-                    {currency(basePrice)}
+              {basePrice &&
+                basePrice > 0 &&
+                discountedPrice &&
+                discountedPrice > 0 &&
+                basePrice !== discountedPrice && (
+                  <>
+                    <span className="line-through text-sm">
+                      {currency(basePrice)}
+                    </span>
+                    <span className="ml-2">{currency(discountedPrice)}</span>
+                  </>
+                )}
+              {lowestPrice &&
+                lowestPrice > 0 &&
+                `${t("from")} ${currency(lowestPrice)}`}
+              {(!basePrice || basePrice <= 0) &&
+                (!lowestPrice || lowestPrice <= 0) && (
+                  <span className="text-slate-400 text-sm">
+                    Price unavailable
                   </span>
-                  <span className="ml-2">{currency(discountedPrice)}</span>
-                </>
-              )}
-              {lowestPrice && `${t("from")} ${currency(lowestPrice)}`}
+                )}
             </p>
           </li>
 
