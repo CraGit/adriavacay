@@ -1,9 +1,12 @@
 "use client";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function ContactBar() {
   const pathname = usePathname();
+
+  const t = useTranslations("booking");
 
   // Split the pathname into segments
   const pathSegments = pathname.split("/").filter(Boolean);
@@ -44,7 +47,7 @@ export default function ContactBar() {
               className="bg-green-600 hover:bg-green-700 text-white rounded-full px-4 py-2 min-w-28 text-center"
               onClick={scrollToBookingForm} // Add click handler here
             >
-              Book Now
+              {t("check-price")}
             </a>
           </div>
           <a

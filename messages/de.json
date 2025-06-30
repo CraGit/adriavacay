@@ -45,7 +45,8 @@
     "pick": "Termin aussuchen",
     "guests": "Gäste",
     "name": "Name",
-    "book-now": "Reservieren Sie jetzt"
+    "book-now": "Reservieren Sie jetzt",
+    "check-price": "Preis prüfen"
   },
   "accommodation-list": {
     "show-all": "Alles anzeigen "
