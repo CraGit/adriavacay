@@ -57,7 +57,11 @@
         "type": "Slices",
         "fieldset": "Slice Zone",
         "config": {
-          "choices": {}
+          "choices": {
+            "video_slice": {
+              "type": "SharedSlice"
+            }
+          }
         }
       }
     },

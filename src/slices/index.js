@@ -11,4 +11,5 @@ export const components = {
   hero_slice: dynamic(() => import("./HeroSlice")),
   selected_destinations: dynamic(() => import("./SelectedDestinations")),
   small_hero_slice: dynamic(() => import("./SmallHeroSlice")),
+  video_slice: dynamic(() => import("./VideoSlice")),
 };

@@ -376,7 +376,9 @@ export interface AccommodationSingleDocumentDataReviewsItem {
   stars: prismic.SelectField<"5" | "4" | "3" | "2" | "1", "filled">;
 }
 
-type AccommodationSingleDocumentDataSlicesSlice = SelectedDestinationsSlice;
+type AccommodationSingleDocumentDataSlicesSlice =
+  | VideoSliceSlice
+  | SelectedDestinationsSlice;
 
 /**
  * Content for Accommodation Single documents
@@ -1523,7 +1525,7 @@ export interface BlogSingleDocumentDataGalleryItem {
   image: prismic.ImageField<never>;
 }
 
-type BlogSingleDocumentDataSlicesSlice = never;
+type BlogSingleDocumentDataSlicesSlice = VideoSliceSlice;
 
 /**
  * Content for Blog Single documents
@@ -2181,6 +2183,7 @@ export type ForSaleSingleDocument<Lang extends string = string> =
   >;
 
 type HomepageDocumentDataSlicesSlice =
+  | VideoSliceSlice
   | AccommodationListSliceSlice
   | HeroSliceSlice;
 
@@ -3022,6 +3025,71 @@ export type SmallHeroSliceSlice = prismic.SharedSlice<
   SmallHeroSliceSliceVariation
 >;
 
+/**
+ * Primary content in *VideoSlice → Default → Primary*
+ */
+export interface VideoSliceSliceDefaultPrimary {
+  /**
+   * YouTube URL field in *VideoSlice → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Enter YouTube video URL
+   * - **API ID Path**: video_slice.default.primary.youtube_url
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  youtube_url: prismic.KeyTextField;
+
+  /**
+   * Video Title field in *VideoSlice → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Enter video title
+   * - **API ID Path**: video_slice.default.primary.title
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  title: prismic.KeyTextField;
+
+  /**
+   * Description field in *VideoSlice → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Enter video description
+   * - **API ID Path**: video_slice.default.primary.description
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  description: prismic.RichTextField;
+}
+
+/**
+ * Default variation for VideoSlice Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: VideoSlice
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type VideoSliceSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<VideoSliceSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *VideoSlice*
+ */
+type VideoSliceSliceVariation = VideoSliceSliceDefault;
+
+/**
+ * VideoSlice Shared Slice
+ *
+ * - **API ID**: `video_slice`
+ * - **Description**: VideoSlice
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type VideoSliceSlice = prismic.SharedSlice<
+  "video_slice",
+  VideoSliceSliceVariation
+>;
+
 declare module "@prismicio/client" {
   interface CreateClient {
     (
@@ -3116,6 +3184,10 @@ declare module "@prismicio/client" {
       SmallHeroSliceSliceDefaultPrimary,
       SmallHeroSliceSliceVariation,
       SmallHeroSliceSliceDefault,
+      VideoSliceSlice,
+      VideoSliceSliceDefaultPrimary,
+      VideoSliceSliceVariation,
+      VideoSliceSliceDefault,
     };
   }
 }

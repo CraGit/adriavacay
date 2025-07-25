@@ -1,0 +1,26 @@
+{
+  "type": "SharedSlice",
+  "id": "video_slice",
+  "name": "VideoSlice",
+  "description": "VideoSlice",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "VideoSlice",
+      "imageUrl": "",
+      "primary": {
+        "youtube_url": {
+          "type": "Text",
+          "config": {
+            "label": "YouTube URL",
+            "placeholder": "Enter YouTube video URL"
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}
