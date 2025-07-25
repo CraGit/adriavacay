@@ -1,0 +1,9 @@
+{
+  "servers": {
+    "Prismic MCP": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@prismicio/mcp-server"]
+    }
+  }
+}
