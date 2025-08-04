@@ -1,12 +1,20 @@
 "use server";
 
-import mail from "@sendgrid/mail";
+import nodemailer from "nodemailer";
 import { notFound, redirect } from "next/navigation";
 
 import { createClient } from "@/prismicio";
 import { bookingSchema } from "@/data/schemas";
 
-mail.setApiKey(process.env.SENDGRID_API_KEY || "");
+const transporter = nodemailer.createTransport({
+  host: process.env.MAIL_HOST,
+  port: process.env.MAIL_PORT,
+  secure: process.env.MAIL_SECURE === "true",
+  auth: {
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASSWORD,
+  },
+});
 
 export async function submitBooking(uid, dateRange, guests, formData) {
   const validatedFields = bookingSchema.safeParse({
@@ -37,20 +45,17 @@ export async function submitBooking(uid, dateRange, guests, formData) {
     Villa: ${page.data.heading}
   `;
 
-  const data = {
+  const mailOptions = {
+    from: process.env.MAIL_USER,
     to: process.env.MAIL_TO,
-    from: process.env.MAIL_FROM,
-    replyTo: {
-      email: validatedFields.data.email,
-      name: validatedFields.data.name,
-    },
+    replyTo: validatedFields.data.email,
     subject: "AdriaVacay - upit za rezervacija vile",
     text: message,
     html: message.replace(/\r\n/g, "<br>"),
   };
 
   try {
-    await mail.send(data);
+    await transporter.sendMail(mailOptions);
   } catch (error) {
     console.log(error);
     throw new Error("Failed to send email");
