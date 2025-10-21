@@ -41,11 +41,26 @@ const DayButton = (props, priceRanges, unavailableRanges) => {
       if (
         isDateAvailable(date, priceRanges, unavailableRanges) &&
         hasValidEndDates(date, priceRanges, unavailableRanges) &&
-        isAfter(date, today)
+        // allow selecting today as a valid check-in
+        !isBefore(date, today)
       ) {
         updateQuery({ dateRange: { from: date, to: null } });
       }
     } else if (from && !to) {
+      // If user clicked a date before the current start while picking an end,
+      // treat it as a new start (same validation as above).
+      if (isBefore(date, from)) {
+        if (
+          isDateAvailable(date, priceRanges, unavailableRanges) &&
+          hasValidEndDates(date, priceRanges, unavailableRanges) &&
+          !isBefore(date, today)
+        ) {
+          updateQuery({ dateRange: { from: date, to: null } });
+        } else {
+          alert("Invalid date selected");
+        }
+        return;
+      }
       if (isEndDateValid(from, date, priceRanges, unavailableRanges)) {
         updateQuery({ dateRange: { from, to: date } });
       } else {
