@@ -26,33 +26,66 @@ const AccommodationListSlice = async ({ slice }) => {
 
   const accommodationsWithCalendar = await Promise.all(
     accommodations.map(async (a) => {
-      if (locale === "de") {
-        const enData = await client.getByID(a.alternate_languages[0].id);
-        const occupiedData = await occupiedDatesFromIcal(enData.data.ical);
+      try {
+        if (locale === "de") {
+          const alternates = Array.isArray(a.alternate_languages)
+            ? a.alternate_languages
+            : [];
+          const englishAlt = alternates.find((alt) => alt.lang && alt.lang.startsWith("en")) || alternates[0] || null;
 
-        const accommodation = {
-          ...a,
-          pricing: enData.data.pricing,
-          discounts: enData.data.discounts,
-          occupiedDates: occupiedData.occupiedDates,
-          checkoutDates: occupiedData.checkoutDates,
-        };
+          let enData = null;
+          if (englishAlt && englishAlt.id) {
+            try {
+              enData = await client.getByID(englishAlt.id);
+            } catch (e) {
+              // failed to fetch english alt, leave enData null
+              console.warn("Failed to fetch alternate language for accommodation", englishAlt, e);
+            }
+          }
 
-        // Clean pricing data and validate
-        return cleanAccommodationPricingData(accommodation);
-      } else {
-        const occupiedData = await occupiedDatesFromIcal(a.data.ical);
+          if (enData && enData.data) {
+            const occupiedData = await occupiedDatesFromIcal(enData.data.ical);
 
-        const accommodation = {
-          ...a,
-          pricing: a.data.pricing,
-          discounts: a.data.discounts,
-          occupiedDates: occupiedData.occupiedDates,
-          checkoutDates: occupiedData.checkoutDates,
-        };
+            const accommodation = {
+              ...a,
+              pricing: enData.data.pricing,
+              discounts: enData.data.discounts,
+              occupiedDates: occupiedData.occupiedDates,
+              checkoutDates: occupiedData.checkoutDates,
+            };
 
-        // Clean pricing data and validate
-        return cleanAccommodationPricingData(accommodation);
+            // Clean pricing data and validate
+            return cleanAccommodationPricingData(accommodation);
+          }
+
+          // Fallback: try to use the current document's data if english alternate isn't available
+          const occupiedDataFallback = await occupiedDatesFromIcal(a.data?.ical || "");
+          const accommodationFallback = {
+            ...a,
+            pricing: a.data?.pricing,
+            discounts: a.data?.discounts,
+            occupiedDates: occupiedDataFallback.occupiedDates,
+            checkoutDates: occupiedDataFallback.checkoutDates,
+          };
+
+          return cleanAccommodationPricingData(accommodationFallback);
+        } else {
+          const occupiedData = await occupiedDatesFromIcal(a.data.ical);
+
+          const accommodation = {
+            ...a,
+            pricing: a.data.pricing,
+            discounts: a.data.discounts,
+            occupiedDates: occupiedData.occupiedDates,
+            checkoutDates: occupiedData.checkoutDates,
+          };
+
+          // Clean pricing data and validate
+          return cleanAccommodationPricingData(accommodation);
+        }
+      } catch (err) {
+        console.error("Error processing accommodation", a, err);
+        return null;
       }
     })
   );
