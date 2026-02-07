@@ -33,13 +33,19 @@ export const ConsentContext = createContext({
   declineAll: () => {},
 });
 
-export default function ConsentProvider({ children }) {
-  const [consent, setConsentState] = useState(null);
+export default function ConsentProvider({ children, initialConsent }) {
+  // initialConsent is provided from server render to avoid UI flash
+  const [consent, setConsentState] = useState(
+    typeof initialConsent !== "undefined" ? initialConsent : null
+  );
 
   useEffect(() => {
-    const c = readConsentFromCookie();
-    setConsentState(c);
-  }, []);
+    // If initialConsent wasn't provided, read cookie on client mount
+    if (typeof initialConsent === "undefined") {
+      const c = readConsentFromCookie();
+      setConsentState(c);
+    }
+  }, [initialConsent]);
 
   const setConsent = useCallback((obj) => {
     setConsentState(obj);

@@ -44,7 +44,7 @@ export default function RootLayout({ children }) {
         <meta themecolor={viewport.themeColor} />
       </head>
       <body className={`${league_Spartan.className}`}>
-        <ConsentProvider>
+        <ConsentProvider initialConsent={serverConsent}>
           {children}
           <ConsentGate />
           <CookieBanner />
