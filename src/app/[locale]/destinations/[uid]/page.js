@@ -62,9 +62,11 @@ export async function generateStaticParams({ params }) {
   const client = createClient();
   const pages = await client.getAllByType("destination", {
     lang: "*",
+    fetchOptions: { next: { cache: "no-store" } },
   });
 
   return pages.map((page) => {
-    return { uid: page.uid, locale: page.lang };
+    const locale = page.lang && page.lang.startsWith("en") ? "en-us" : page.lang && page.lang.startsWith("de") ? "de" : page.lang;
+    return { uid: page.uid, locale };
   });
 }

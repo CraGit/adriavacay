@@ -49,6 +49,7 @@ export default async function sitemap() {
   try {
     const accommodations = await client.getAllByType("accommodation_single", {
       lang: "*",
+      fetchOptions: { next: { cache: "no-store" } },
     });
 
     const accommodationsByUid = {};
@@ -60,7 +61,7 @@ export default async function sitemap() {
     }
 
     for (const [uid, docs] of Object.entries(accommodationsByUid)) {
-      const defaultDoc = docs["en-us"] || Object.values(docs)[0];
+      const defaultDoc = Object.values(docs).find(d => d.lang && d.lang.startsWith("en")) || Object.values(docs)[0];
       
       // Create separate entries for each language
       for (const locale of locales) {
@@ -91,6 +92,7 @@ export default async function sitemap() {
   try {
     const forSale = await client.getAllByType("for_sale_single", {
       lang: "*",
+      fetchOptions: { next: { cache: "no-store" } },
     });
 
     const forSaleByUid = {};
@@ -102,7 +104,7 @@ export default async function sitemap() {
     }
 
     for (const [uid, docs] of Object.entries(forSaleByUid)) {
-      const defaultDoc = docs["en-us"] || Object.values(docs)[0];
+      const defaultDoc = Object.values(docs).find(d => d.lang && d.lang.startsWith("en")) || Object.values(docs)[0];
       
       // Create separate entries for each language
       for (const locale of locales) {
@@ -133,6 +135,7 @@ export default async function sitemap() {
   try {
     const destinations = await client.getAllByType("destination", {
       lang: "*",
+      fetchOptions: { next: { cache: "no-store" } },
     });
 
     const destinationsByUid = {};
@@ -144,7 +147,7 @@ export default async function sitemap() {
     }
 
     for (const [uid, docs] of Object.entries(destinationsByUid)) {
-      const defaultDoc = docs["en-us"] || Object.values(docs)[0];
+      const defaultDoc = Object.values(docs).find(d => d.lang && d.lang.startsWith("en")) || Object.values(docs)[0];
       
       // Create separate entries for each language
       for (const locale of locales) {
@@ -175,6 +178,7 @@ export default async function sitemap() {
   try {
     const blogPosts = await client.getAllByType("blog_single", {
       lang: "*",
+      fetchOptions: { next: { cache: "no-store" } },
     });
 
     const blogPostsByUid = {};
@@ -186,7 +190,7 @@ export default async function sitemap() {
     }
 
     for (const [uid, docs] of Object.entries(blogPostsByUid)) {
-      const defaultDoc = docs["en-us"] || Object.values(docs)[0];
+      const defaultDoc = Object.values(docs).find(d => d.lang && d.lang.startsWith("en")) || Object.values(docs)[0];
       
       // Create separate entries for each language
       for (const locale of locales) {

@@ -22,6 +22,7 @@ const AccommodationListSlice = async ({ slice }) => {
 
   const accommodations = await client.getAllByType("accommodation_single", {
     lang: locale,
+    fetchOptions: { next: { cache: "no-store" } },
   });
 
   const accommodationsWithCalendar = await Promise.all(

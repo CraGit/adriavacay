@@ -13,7 +13,7 @@ export async function getLocales(doc, client) {
   ]);
 
   return [doc, ...altDocs].map((page) => {
-    const lang = repository?.languages.find((l) => l.id === page.lang);
+    const lang = repository?.languages.find((l) => l.id === page.lang || (page.lang && page.lang.startsWith(l.id)));
 
     return {
       lang: lang?.id || "",

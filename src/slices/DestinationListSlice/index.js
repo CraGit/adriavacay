@@ -11,7 +11,10 @@ const DestinationListSlice = async ({ slice }) => {
   const client = createClient();
   const locale = await getLocale();
 
-  const blogs = await client.getAllByType("destination", { lang: locale });
+  const blogs = await client.getAllByType("destination", {
+    lang: locale,
+    fetchOptions: { next: { cache: "no-store" } },
+  });
 
   return (
     <section
