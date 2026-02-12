@@ -6,7 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SearchProvider from "@/providers/search-provider";
 import ContactBar from "@/components/ContactBar";
-import { NuqsAdapter } from "nuqs/adapters/next/app";
+import NuqsWrapper from "@/components/NuqsWrapper";
 import ConsentProvider from "@/providers/consent-provider";
 import CookieBanner from "@/components/CookieBanner";
 import ConsentGate from "@/components/ConsentGate";
@@ -45,9 +45,11 @@ export default function RootLayout({ children }) {
       </head>
       <body className={`${league_Spartan.className}`}>
         <ConsentProvider initialConsent={serverConsent}>
-          {children}
-          <ConsentGate />
-          <CookieBanner />
+          <NuqsWrapper>
+            {children}
+            <ConsentGate />
+            <CookieBanner />
+          </NuqsWrapper>
         </ConsentProvider>
         {/* Render noscript iframe server-side when consent is present */}
         {serverConsent && serverConsent.analytics ? (
