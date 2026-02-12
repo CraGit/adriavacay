@@ -4,8 +4,6 @@ import { createClient } from "@/prismicio";
 import { components } from "@/slices";
 import { unstable_setRequestLocale } from "next-intl/server";
 
-export const dynamic = "force-dynamic";
-
 export default async function Page({ params: { locale } }) {
   unstable_setRequestLocale(locale);
 
@@ -31,7 +29,7 @@ export async function generateStaticParams() {
   const client = createClient();
   const pages = await client.getAllByType("accommodation", {
     lang: "*",
-    fetchOptions: { next: { cache: "no-store" } },
+    fetchOptions: { cache: "no-store" },
   });
 
   return pages.map((page) => {

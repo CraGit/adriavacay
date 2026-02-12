@@ -16,7 +16,7 @@ const ForSaleListSlice = async ({ slice }) => {
   const locale = await getLocale();
   const villas = await client.getAllByType("for_sale_single", {
     lang: locale,
-    fetchOptions: { next: { cache: "no-store" } },
+    fetchOptions: { cache: "no-store" },
   });
 
   const t = await getTranslations("for-sale-list");

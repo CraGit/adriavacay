@@ -40,7 +40,7 @@ export async function generateStaticParams() {
   const client = createClient();
   const pages = await client.getAllByType("terms_and_conditions", {
     lang: "*",
-    fetchOptions: { next: { cache: "no-store" } },
+    fetchOptions: { cache: "no-store" },
   });
 
   return pages.map((page) => {

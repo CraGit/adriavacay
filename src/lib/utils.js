@@ -47,7 +47,7 @@ export const occupiedDatesFromIcal = async (url) => {
   try {
     if (!url) return { occupiedDates: dates, checkoutDates };
 
-    const res = await fetch(url, { cache: "no-store" });
+    const res = await fetch(url, { next: { revalidate: 3600 } });
 
     if (!res.ok) return { occupiedDates: dates, checkoutDates };
 
@@ -85,7 +85,7 @@ export const occupiedRangesFromIcal = async (url) => {
   try {
     if (!url) return dates;
 
-    const res = await fetch(url, { cache: "no-store" });
+    const res = await fetch(url, { next: { revalidate: 3600 } });
 
     if (!res.ok) return dates;
 

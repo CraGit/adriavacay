@@ -13,7 +13,7 @@ const DestinationListSlice = async ({ slice }) => {
 
   const blogs = await client.getAllByType("destination", {
     lang: locale,
-    fetchOptions: { next: { cache: "no-store" } },
+    fetchOptions: { cache: "no-store" },
   });
 
   return (

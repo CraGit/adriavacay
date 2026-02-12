@@ -26,8 +26,6 @@ import BookingForm from "./booking-form";
 import PriceDisplay from "./price-display";
 import Reviews from "@/components/Reviews";
 
-export const dynamic = "force-dynamic";
-
 export default async function Page({ params }) {
   unstable_setRequestLocale(params.locale);
 
@@ -288,7 +286,7 @@ export async function generateStaticParams() {
   const client = createClient();
   const pages = await client.getAllByType("accommodation_single", {
     lang: "*",
-    fetchOptions: { next: { cache: "no-store" } },
+    fetchOptions: { cache: "no-store" },
   });
 
   return pages.map((page) => {

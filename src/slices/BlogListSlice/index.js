@@ -13,7 +13,7 @@ const BlogListSlice = async ({ slice }) => {
 
   const blogs = await client.getAllByType("blog_single", {
     lang: locale,
-    fetchOptions: { next: { cache: "no-store" } },
+    fetchOptions: { cache: "no-store" },
   });
   return (
     <section

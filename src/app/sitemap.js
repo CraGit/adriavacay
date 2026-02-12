@@ -49,7 +49,6 @@ export default async function sitemap() {
   try {
     const accommodations = await client.getAllByType("accommodation_single", {
       lang: "*",
-      fetchOptions: { next: { cache: "no-store" } },
     });
 
     const accommodationsByUid = {};
@@ -92,7 +91,6 @@ export default async function sitemap() {
   try {
     const forSale = await client.getAllByType("for_sale_single", {
       lang: "*",
-      fetchOptions: { next: { cache: "no-store" } },
     });
 
     const forSaleByUid = {};
@@ -135,7 +133,6 @@ export default async function sitemap() {
   try {
     const destinations = await client.getAllByType("destination", {
       lang: "*",
-      fetchOptions: { next: { cache: "no-store" } },
     });
 
     const destinationsByUid = {};
@@ -178,7 +175,6 @@ export default async function sitemap() {
   try {
     const blogPosts = await client.getAllByType("blog_single", {
       lang: "*",
-      fetchOptions: { next: { cache: "no-store" } },
     });
 
     const blogPostsByUid = {};
