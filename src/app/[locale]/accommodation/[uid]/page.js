@@ -37,11 +37,13 @@ export default async function Page({ params }) {
   const uidEn =
     params.locale === "en-us"
       ? params.uid
-      : page.alternate_languages.find((lang) => lang.lang === "en-us").uid;
+      : page.alternate_languages.find((lang) => lang.lang === "en-us")?.uid;
 
-  const pageEn = await client.getByUID("accommodation_single", uidEn, {
-    lang: "en-us",
-  });
+  const pageEn = uidEn
+    ? await client.getByUID("accommodation_single", uidEn, {
+        lang: "en-us",
+      })
+    : page;
 
   const cancelationPolicy = await client.getSingle("cancelation_policy", {
     lang: params.locale,
