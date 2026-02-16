@@ -376,6 +376,87 @@ export interface AccommodationSingleDocumentDataReviewsItem {
   stars: prismic.SelectField<"5" | "4" | "3" | "2" | "1", "filled">;
 }
 
+/**
+ * Item in *Accommodation Single → Features*
+ */
+export interface AccommodationSingleDocumentDataFeaturesItem {
+  /**
+   * Heated Pool field in *Accommodation Single → Features*
+   *
+   * - **Field Type**: Timestamp
+   * - **Placeholder**: *None*
+   * - **API ID Path**: accommodation_single.features[].heatedPool
+   * - **Documentation**: https://prismic.io/docs/field#timestamp
+   */
+  heatedPool: prismic.TimestampField;
+
+  /**
+   * Jacuzzi field in *Accommodation Single → Features*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: accommodation_single.features[].jacuzzi
+   * - **Documentation**: https://prismic.io/docs/field#boolean
+   */
+  jacuzzi: prismic.BooleanField;
+
+  /**
+   * Sauna field in *Accommodation Single → Features*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: accommodation_single.features[].sauna
+   * - **Documentation**: https://prismic.io/docs/field#boolean
+   */
+  sauna: prismic.BooleanField;
+
+  /**
+   * Sea View field in *Accommodation Single → Features*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: accommodation_single.features[].seaView
+   * - **Documentation**: https://prismic.io/docs/field#boolean
+   */
+  seaView: prismic.BooleanField;
+
+  /**
+   * Beach field in *Accommodation Single → Features*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: accommodation_single.features[].beach
+   * - **Documentation**: https://prismic.io/docs/field#boolean
+   */
+  beach: prismic.BooleanField;
+
+  /**
+   * Playground field in *Accommodation Single → Features*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: accommodation_single.features[].playground
+   * - **Documentation**: https://prismic.io/docs/field#boolean
+   */
+  playground: prismic.BooleanField;
+
+  /**
+   * Garden field in *Accommodation Single → Features*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: accommodation_single.features[].garden
+   * - **Documentation**: https://prismic.io/docs/field#boolean
+   */
+  garden: prismic.BooleanField;
+}
+
 type AccommodationSingleDocumentDataSlicesSlice =
   | VideoSliceSlice
   | SelectedDestinationsSlice;
@@ -1386,6 +1467,32 @@ interface AccommodationSingleDocumentData {
    * - **Documentation**: https://prismic.io/docs/field#boolean
    */
   pets_fee: prismic.BooleanField;
+
+  /**
+   * Features field in *Accommodation Single*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: accommodation_single.features[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  features: prismic.GroupField<
+    Simplify<AccommodationSingleDocumentDataFeaturesItem>
+  >;
+
+  /**
+   * Location field in *Accommodation Single*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: accommodation_single.location
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  location: prismic.SelectField<
+    "Split Area" | "Omis Area" | "Makarska Area" | "Dubrovnik Area"
+  >;
 
   /**
    * Slice Zone field in *Accommodation Single*
@@ -3038,26 +3145,6 @@ export interface VideoSliceSliceDefaultPrimary {
    * - **Documentation**: https://prismic.io/docs/field#key-text
    */
   youtube_url: prismic.KeyTextField;
-
-  /**
-   * Video Title field in *VideoSlice → Default → Primary*
-   *
-   * - **Field Type**: Text
-   * - **Placeholder**: Enter video title
-   * - **API ID Path**: video_slice.default.primary.title
-   * - **Documentation**: https://prismic.io/docs/field#key-text
-   */
-  title: prismic.KeyTextField;
-
-  /**
-   * Description field in *VideoSlice → Default → Primary*
-   *
-   * - **Field Type**: Rich Text
-   * - **Placeholder**: Enter video description
-   * - **API ID Path**: video_slice.default.primary.description
-   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
-   */
-  description: prismic.RichTextField;
 }
 
 /**
@@ -3114,6 +3201,7 @@ declare module "@prismicio/client" {
       AccommodationSingleDocumentDataDiscountsItem,
       AccommodationSingleDocumentDataDistancesItem,
       AccommodationSingleDocumentDataReviewsItem,
+      AccommodationSingleDocumentDataFeaturesItem,
       AccommodationSingleDocumentDataSlicesSlice,
       BlogDocument,
       BlogDocumentData,

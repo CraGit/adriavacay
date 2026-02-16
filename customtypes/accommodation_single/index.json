@@ -860,6 +860,89 @@
           "default_value": false
         }
       },
+      "features": {
+        "type": "Group",
+        "config": {
+          "label": "Features",
+          "repeat": true,
+          "fields": {
+            "heatedPool": {
+              "type": "Timestamp",
+              "config": {
+                "label": "Heated Pool",
+                "placeholder": ""
+              }
+            },
+            "jacuzzi": {
+              "type": "Boolean",
+              "config": {
+                "label": "Jacuzzi",
+                "default_value": false,
+                "placeholder_true": "true",
+                "placeholder_false": "false"
+              }
+            },
+            "sauna": {
+              "type": "Boolean",
+              "config": {
+                "label": "Sauna",
+                "default_value": false,
+                "placeholder_true": "true",
+                "placeholder_false": "false"
+              }
+            },
+            "seaView": {
+              "type": "Boolean",
+              "config": {
+                "label": "Sea View",
+                "placeholder_false": "false",
+                "placeholder_true": "true",
+                "default_value": false
+              }
+            },
+            "beach": {
+              "type": "Boolean",
+              "config": {
+                "label": "Beach",
+                "default_value": false,
+                "placeholder_true": "true",
+                "placeholder_false": "false"
+              }
+            },
+            "playground": {
+              "type": "Boolean",
+              "config": {
+                "label": "Playground",
+                "default_value": false,
+                "placeholder_true": "true",
+                "placeholder_false": "false"
+              }
+            },
+            "garden": {
+              "type": "Boolean",
+              "config": {
+                "label": "Garden",
+                "default_value": false,
+                "placeholder_true": "true",
+                "placeholder_false": "false"
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "type": "Select",
+        "config": {
+          "label": "Location",
+          "placeholder": "",
+          "options": [
+            "Split Area",
+            "Omis Area",
+            "Makarska Area",
+            "Dubrovnik Area"
+          ]
+        }
+      },
       "slices": {
         "type": "Slices",
         "fieldset": "Slice Zone",
