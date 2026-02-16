@@ -383,12 +383,13 @@ export interface AccommodationSingleDocumentDataFeaturesItem {
   /**
    * Heated Pool field in *Accommodation Single → Features*
    *
-   * - **Field Type**: Timestamp
+   * - **Field Type**: Boolean
    * - **Placeholder**: *None*
+   * - **Default Value**: false
    * - **API ID Path**: accommodation_single.features[].heatedPool
-   * - **Documentation**: https://prismic.io/docs/field#timestamp
+   * - **Documentation**: https://prismic.io/docs/field#boolean
    */
-  heatedPool: prismic.TimestampField;
+  heatedPool: prismic.BooleanField;
 
   /**
    * Jacuzzi field in *Accommodation Single → Features*

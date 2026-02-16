@@ -867,10 +867,12 @@
           "repeat": true,
           "fields": {
             "heatedPool": {
-              "type": "Timestamp",
+              "type": "Boolean",
               "config": {
                 "label": "Heated Pool",
-                "placeholder": ""
+                "default_value": false,
+                "placeholder_true": "true",
+                "placeholder_false": "false"
               }
             },
             "jacuzzi": {
