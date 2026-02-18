@@ -44,6 +44,7 @@ export default function Card({
             height={0}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             style={{ width: "100%", height: "250px" }}
+            quality={75}
           />
 
           {/* <div className="absolute top-4 end-4">

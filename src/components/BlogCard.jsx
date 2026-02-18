@@ -20,6 +20,7 @@ export default function BlogCard({ image, uid, title, url }) {
           height={0}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           style={{ width: "100%", height: "250px" }}
+          quality={75}
         />
         <div className="absolute end-4 top-4">
           {/* <span className="bg-green-600 text-white text-[14px] px-2.5 py-1 font-medium rounded-full h-5">

@@ -10,6 +10,7 @@ export default function SmallHero({ heading, backgroundImage }) {
           alt={backgroundImage.alt}
           style={{ objectFit: "cover" }}
           sizes="100vw"
+          quality={75}
           priority
         />
       </div>

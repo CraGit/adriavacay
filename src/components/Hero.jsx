@@ -42,6 +42,8 @@ export default function Hero({
             alt="hero"
             fill
             style={{ objectFit: "cover" }}
+            sizes="100vw"
+            quality={75}
             priority
           />
         </div>

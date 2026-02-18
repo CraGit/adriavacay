@@ -25,10 +25,11 @@ export default function PropertyImage({ photos }) {
           <Image
             src={photos[0].src}
             alt={photos[0].alt || "property photo"}
-            width={0}
-            height={0}
-            sizes="100vw"
+            width={photos[0].width || 800}
+            height={photos[0].height || 600}
+            sizes="(min-width:1024px) 50vw, 100vw"
             style={{ width: "100%", height: "auto" }}
+            quality={75}
             priority
           />
           <div className="absolute inset-0 group-hover:bg-slate-900/70 duration-500 ease-in-out"></div>
@@ -51,11 +52,11 @@ export default function PropertyImage({ photos }) {
               <Image
                 src={photos[1]?.src || photos[0].src}
                 alt={photos[1]?.alt || "property photo"}
-                width={0}
-                height={0}
-                sizes="100vw"
+                width={photos[1]?.width || 400}
+                height={photos[1]?.height || 300}
+                sizes="(min-width:1024px) 25vw, 50vw"
                 style={{ width: "100%", height: "auto" }}
-                priority
+                quality={75}
               />
               <div className="absolute inset-0 group-hover:bg-slate-900/70 duration-500 ease-in-out"></div>
               <div className="absolute top-1/2 -translate-y-1/2 start-0 end-0 text-center invisible group-hover:visible">
@@ -75,11 +76,11 @@ export default function PropertyImage({ photos }) {
               <Image
                 src={photos[2]?.src || photos[0].src}
                 alt={photos[2]?.alt || "property photo"}
-                width={0}
-                height={0}
-                sizes="100vw"
+                width={photos[2]?.width || 400}
+                height={photos[2]?.height || 300}
+                sizes="(min-width:1024px) 25vw, 50vw"
                 style={{ width: "100%", height: "auto" }}
-                priority
+                quality={75}
               />
               <div className="absolute inset-0 group-hover:bg-slate-900/70 duration-500 ease-in-out"></div>
               <div className="absolute top-1/2 -translate-y-1/2 start-0 end-0 text-center invisible group-hover:visible">
@@ -101,11 +102,11 @@ export default function PropertyImage({ photos }) {
               <Image
                 src={photos[3]?.src || photos[0].src}
                 alt={photos[3]?.alt || "property photo"}
-                width={0}
-                height={0}
-                sizes="100vw"
+                width={photos[3]?.width || 400}
+                height={photos[3]?.height || 300}
+                sizes="(min-width:1024px) 25vw, 50vw"
                 style={{ width: "100%", height: "auto" }}
-                priority
+                quality={75}
               />
               <div className="absolute inset-0 group-hover:bg-slate-900/70 duration-500 ease-in-out"></div>
               <div className="absolute top-1/2 -translate-y-1/2 start-0 end-0 text-center invisible group-hover:visible">
@@ -125,11 +126,11 @@ export default function PropertyImage({ photos }) {
               <Image
                 src={photos[4]?.src || photos[0].src}
                 alt={photos[4]?.alt || "property photo"}
-                width={0}
-                height={0}
-                sizes="100vw"
+                width={photos[4]?.width || 400}
+                height={photos[4]?.height || 300}
+                sizes="(min-width:1024px) 25vw, 50vw"
                 style={{ width: "100%", height: "auto" }}
-                priority
+                quality={75}
               />
               <div className="absolute inset-0 group-hover:bg-slate-900/70 duration-500 ease-in-out"></div>
               <div className="absolute top-1/2 -translate-y-1/2 start-0 end-0 text-center invisible group-hover:visible">

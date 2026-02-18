@@ -81,10 +81,12 @@ const routes = [
 export const createClient = (config = {}) => {
   const client = prismic.createClient(repositoryName, {
     routes,
-    fetchOptions:
-      process.env.NODE_ENV === "production"
-        ? { next: { tags: ["prismic"] }, cache: "force-cache" }
-        : { next: { revalidate: 5 } },
+    // In production: long-lived force-cache tagged for on-demand revalidation.
+    // In dev: no default fetchOptions — callers set their own (e.g. no-store in
+    // generateStaticParams) without triggering the cache/revalidate conflict.
+    ...(process.env.NODE_ENV === "production" && {
+      fetchOptions: { next: { tags: ["prismic"] }, cache: "force-cache" },
+    }),
     ...config,
   });
 
