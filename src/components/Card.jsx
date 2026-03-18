@@ -18,6 +18,7 @@ const FEATURE_LABELS = {
   beach: "Beach",
   playground: "Playground",
   garden: "Garden",
+  petFriendly: "Pet Friendly",
 };
 
 function getActiveFeatures(features) {

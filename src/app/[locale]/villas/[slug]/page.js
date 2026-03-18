@@ -72,6 +72,11 @@ const VILLA_PAGES = {
     titleDe: "Villen mit Garten",
     filter: (v) => v.data.features?.some((f) => f.garden),
   },
+  "villas-with-pet-friendly": {
+    title: "Pet Friendly Villas",
+    titleDe: "Villen haustierfreundlich",
+    filter: (v) => v.data.features?.some((f) => f.petFriendly),
+  },
 };
 
 export async function generateStaticParams() {

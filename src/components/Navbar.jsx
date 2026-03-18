@@ -192,36 +192,62 @@ export default function Navbar(props) {
                   {t("villas")}
                 </Link>
                 <span className="menu-arrow" />
-                <ul className="submenu">
-                  {[
-                    "villas-in-split",
-                    "villas-in-omis",
-                    "villas-in-makarska",
-                    "villas-in-dubrovnik",
-                    "villas-in-sibenik",
-                    "villas-with-heated-pool",
-                    "villas-with-jacuzzi",
-                    "villas-with-sauna",
-                    "villas-with-sea-view",
-                    "villas-on-the-beach",
-                    "villas-with-playground",
-                    "villas-with-garden",
-                  ].map((slug) => (
-                    <li
-                      key={slug}
-                      className={
-                        submenu === `/villas/${slug}` ? "active" : ""
-                      }
-                    >
+                <ul className="submenu villas-submenu">
+                  {/* Locations section */}
+                  <li>
+                    <span className="block px-5 pt-2 pb-1 text-[11px] font-semibold uppercase tracking-wider" style={{ color: "rgb(172 139 21)" }}>
+                      {t("locations")}
+                    </span>
+                  </li>
+                  <li className="grid grid-cols-2 pb-2">
+                    {[
+                      ["villas-in-split", "loc-split"],
+                      ["villas-in-omis", "loc-omis"],
+                      ["villas-in-makarska", "loc-makarska"],
+                      ["villas-in-dubrovnik", "loc-dubrovnik"],
+                      ["villas-in-sibenik", "loc-sibenik"],
+                    ].map(([slug, labelKey]) => (
                       <Link
+                        key={slug}
                         href={`/villas/${slug}`}
-                        className="sub-menu-item"
+                        className={`sub-menu-item !py-1.5 !px-5${
+                          submenu === `/villas/${slug}` ? " active" : ""
+                        }`}
                         onClick={toggleMenu}
                       >
-                        {t(slug)}
+                        {t(labelKey)}
                       </Link>
-                    </li>
-                  ))}
+                    ))}
+                  </li>
+                  {/* Features section */}
+                  <li className="border-t border-slate-100 dark:border-gray-700">
+                    <span className="block px-5 pt-2 pb-1 text-[11px] font-semibold uppercase tracking-wider" style={{ color: "rgb(172 139 21)" }}>
+                      {t("features")}
+                    </span>
+                  </li>
+                  <li className="grid grid-cols-2 pb-2">
+                    {[
+                      ["villas-with-heated-pool", "feat-heated-pool"],
+                      ["villas-with-jacuzzi", "feat-jacuzzi"],
+                      ["villas-with-sauna", "feat-sauna"],
+                      ["villas-with-sea-view", "feat-sea-view"],
+                      ["villas-on-the-beach", "feat-beach"],
+                      ["villas-with-playground", "feat-playground"],
+                      ["villas-with-garden", "feat-garden"],
+                      ["villas-with-pet-friendly", "feat-pet-friendly"],
+                    ].map(([slug, labelKey]) => (
+                      <Link
+                        key={slug}
+                        href={`/villas/${slug}`}
+                        className={`sub-menu-item !py-1.5 !px-5${
+                          submenu === `/villas/${slug}` ? " active" : ""
+                        }`}
+                        onClick={toggleMenu}
+                      >
+                        {t(labelKey)}
+                      </Link>
+                    ))}
+                  </li>
                 </ul>
               </li>
 

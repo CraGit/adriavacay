@@ -1,0 +1,96 @@
+{
+  "format": "custom",
+  "id": "settings",
+  "label": "Settings",
+  "repeatable": false,
+  "status": true,
+  "json": {
+    "Contact": {
+      "company_name": {
+        "type": "Text",
+        "config": {
+          "label": "Company Name",
+          "placeholder": "AdriaVacay, vl. Josip Čorić"
+        }
+      },
+      "address_line_1": {
+        "type": "Text",
+        "config": {
+          "label": "Address Line 1",
+          "placeholder": "Street and name"
+        }
+      },
+      "address_line_2": {
+        "type": "Text",
+        "config": {
+          "label": "Address Line 2",
+          "placeholder": "City, ZIP, Country"
+        }
+      },
+      "email": {
+        "type": "Text",
+        "config": {
+          "label": "Email",
+          "placeholder": "info@example.com"
+        }
+      },
+      "phone": {
+        "type": "Text",
+        "config": {
+          "label": "Phone",
+          "placeholder": "+385 97 666 35 32"
+        }
+      },
+      "phone2": {
+        "type": "Text",
+        "config": {
+          "label": "Phone 2",
+          "placeholder": "+385 99 111 22 33"
+        }
+      },
+      "vat": {
+        "type": "Text",
+        "config": {
+          "label": "VAT / OIB",
+          "placeholder": "HR12345678901"
+        }
+      }
+    },
+    "Social Media": {
+      "facebook_url": {
+        "type": "Link",
+        "config": {
+          "label": "Facebook URL",
+          "allowTargetBlank": true
+        }
+      },
+      "instagram_url": {
+        "type": "Link",
+        "config": {
+          "label": "Instagram URL",
+          "allowTargetBlank": true
+        }
+      }
+    },
+    "SEO": {
+      "site_name": {
+        "type": "Text",
+        "config": {
+          "label": "Site Name",
+          "placeholder": "AdriaVacay"
+        }
+      },
+      "og_image": {
+        "type": "Image",
+        "config": {
+          "label": "Default OG Image",
+          "constraint": {
+            "width": 1200,
+            "height": 630
+          },
+          "thumbnails": []
+        }
+      }
+    }
+  }
+}

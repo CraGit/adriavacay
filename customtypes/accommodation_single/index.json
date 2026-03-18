@@ -928,6 +928,15 @@
                 "placeholder_true": "true",
                 "placeholder_false": "false"
               }
+            },
+            "petFriendly": {
+              "type": "Boolean",
+              "config": {
+                "label": "Pet Friendly",
+                "default_value": false,
+                "placeholder_true": "true",
+                "placeholder_false": "false"
+              }
             }
           }
         }

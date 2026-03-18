@@ -10,9 +10,17 @@ import {
   FiPhone,
 } from "@/assets/icons/vander";
 import { getTranslations } from "next-intl/server";
+import { createClient } from "@/prismicio";
 
 export default async function Footer() {
   const t = await getTranslations("footer");
+  const client = createClient();
+  let settings = null;
+  try {
+    settings = await client.getSingle("settings");
+  } catch {
+    settings = null;
+  }
 
   return (
     <>
@@ -175,13 +183,16 @@ export default async function Footer() {
                       <FiMapPin className="w-5 h-5 text-green-600 me-3"></FiMapPin>
                       <div className="">
                         <h6 className="text-gray-300 mb-2">
-                          AdriaVacay, vl. Josip Čorić
+                          {settings?.data?.company_name ?? "AdriaVacay, vl. Josip Čorić"}
                         </h6>
                         <p className="text-green-600 duration-500 ease-in-out lightbox">
-                          Naklice 29, 21252 Tugare
+                          {settings?.data?.address_line_1 ?? "Naklice 29, 21252 Tugare"}
                         </p>
+                        {settings?.data?.address_line_2 && (
+                          <p className="text-gray-300">{settings.data.address_line_2}</p>
+                        )}
                         <p className="text-gray-300 mb-2">
-                          {t("vat")}: HR12256405531
+                          {t("vat")}: {settings?.data?.vat ?? "HR12256405531"}
                         </p>
                       </div>
                     </div>
@@ -190,10 +201,10 @@ export default async function Footer() {
                       <FiMail className="w-5 h-5 text-green-600 me-3"></FiMail>
                       <div className="">
                         <Link
-                          href="mailto:adriavacay@gmail.com"
+                          href={`mailto:${settings?.data?.email ?? "adriavacay@gmail.com"}`}
                           className="text-slate-300 hover:text-slate-400 duration-500 ease-in-out"
                         >
-                          adriavacay@gmail.com
+                          {settings?.data?.email ?? "adriavacay@gmail.com"}
                         </Link>
                       </div>
                     </div>
@@ -202,13 +213,26 @@ export default async function Footer() {
                       <FiPhone className="w-5 h-5 text-green-600 me-3"></FiPhone>
                       <div className="">
                         <Link
-                          href="tel:+385976663532"
+                          href={`tel:${settings?.data?.phone ?? "+385976663532"}`}
                           className="text-slate-300 hover:text-slate-400 duration-500 ease-in-out"
                         >
-                          +385 97 666 35 32
+                          {settings?.data?.phone ?? "+385 97 666 35 32"}
                         </Link>
                       </div>
                     </div>
+                    {settings?.data?.phone2 && (
+                      <div className="flex mt-4">
+                        <FiPhone className="w-5 h-5 text-green-600 me-3" />
+                        <div className="">
+                          <Link
+                            href={`tel:${settings.data.phone2}`}
+                            className="text-slate-300 hover:text-slate-400 duration-500 ease-in-out"
+                          >
+                            {settings.data.phone2}
+                          </Link>
+                        </div>
+                      </div>
+                    )}
                     <div className="flex mt-12 flex-col">
                       <Link
                         href="/terms-and-conditions"

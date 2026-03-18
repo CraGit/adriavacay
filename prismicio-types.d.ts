@@ -456,6 +456,17 @@ export interface AccommodationSingleDocumentDataFeaturesItem {
    * - **Documentation**: https://prismic.io/docs/field#boolean
    */
   garden: prismic.BooleanField;
+
+  /**
+   * Pet Friendly field in *Accommodation Single → Features*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: accommodation_single.features[].petFriendly
+   * - **Documentation**: https://prismic.io/docs/field#boolean
+   */
+  petFriendly: prismic.BooleanField;
 }
 
 type AccommodationSingleDocumentDataSlicesSlice =
