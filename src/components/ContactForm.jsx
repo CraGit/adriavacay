@@ -13,6 +13,7 @@ export default function ContactForm({
   heading,
   companyDetails,
   phone,
+  phone2,
   email,
   address,
 }) {
@@ -146,13 +147,21 @@ export default function ContactForm({
             <div className="content mt-7">
               <h5 className="title h5 text-xl font-medium">{t("phone")}</h5>
 
-              <div className="mt-5">
+              <div className="mt-5 flex flex-col gap-1">
                 <Link
                   href={`tel:${phone}`}
                   className="btn btn-link text-green-600 hover:text-green-600 after:bg-green-600 transition duration-500"
                 >
                   {phone}
                 </Link>
+                {phone2 && (
+                  <Link
+                    href={`tel:${phone2}`}
+                    className="btn btn-link text-green-600 hover:text-green-600 after:bg-green-600 transition duration-500"
+                  >
+                    {phone2}
+                  </Link>
+                )}
               </div>
             </div>
           </div>

@@ -2297,6 +2297,7 @@ export type ForSaleSingleDocument<Lang extends string = string> =
   >;
 
 type HomepageDocumentDataSlicesSlice =
+  | NewsletterSliceSlice
   | VideoSliceSlice
   | AccommodationListSliceSlice
   | HeroSliceSlice;
@@ -2752,6 +2753,16 @@ export interface ContactFormSliceSliceDefaultPrimary {
   phone: prismic.KeyTextField;
 
   /**
+   * Phone 2 field in *ContactFormSlice → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: contact_form_slice.default.primary.phone2
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  phone2: prismic.KeyTextField;
+
+  /**
    * Email field in *ContactFormSlice → Default → Primary*
    *
    * - **Field Type**: Text
@@ -3013,6 +3024,91 @@ export type HeroSliceSlice = prismic.SharedSlice<
 >;
 
 /**
+ * Primary content in *NewsletterSlice → Default → Primary*
+ */
+export interface NewsletterSliceSliceDefaultPrimary {
+  /**
+   * Heading field in *NewsletterSlice → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Subscribe to our newsletter
+   * - **API ID Path**: newsletter_slice.default.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  heading: prismic.KeyTextField;
+
+  /**
+   * Subheading field in *NewsletterSlice → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Get the latest villa deals and travel tips.
+   * - **API ID Path**: newsletter_slice.default.primary.subheading
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  subheading: prismic.KeyTextField;
+
+  /**
+   * Mailchimp API Key field in *NewsletterSlice → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-usX
+   * - **API ID Path**: newsletter_slice.default.primary.mailchimp_api_key
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  mailchimp_api_key: prismic.KeyTextField;
+
+  /**
+   * Mailchimp Audience ID field in *NewsletterSlice → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: abc123def456
+   * - **API ID Path**: newsletter_slice.default.primary.mailchimp_audience_id
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  mailchimp_audience_id: prismic.KeyTextField;
+
+  /**
+   * Mailchimp Server Prefix field in *NewsletterSlice → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: us1
+   * - **API ID Path**: newsletter_slice.default.primary.mailchimp_server
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  mailchimp_server: prismic.KeyTextField;
+}
+
+/**
+ * Default variation for NewsletterSlice Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type NewsletterSliceSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<NewsletterSliceSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *NewsletterSlice*
+ */
+type NewsletterSliceSliceVariation = NewsletterSliceSliceDefault;
+
+/**
+ * NewsletterSlice Shared Slice
+ *
+ * - **API ID**: `newsletter_slice`
+ * - **Description**: Email newsletter signup connected to Mailchimp
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type NewsletterSliceSlice = prismic.SharedSlice<
+  "newsletter_slice",
+  NewsletterSliceSliceVariation
+>;
+
+/**
  * Item in *SelectedDestinations → Default → Primary → Selected Destinations*
  */
 export interface SelectedDestinationsSliceDefaultPrimarySelectedDestinationsItem {
@@ -3270,6 +3366,10 @@ declare module "@prismicio/client" {
       HeroSliceSliceDefaultPrimary,
       HeroSliceSliceVariation,
       HeroSliceSliceDefault,
+      NewsletterSliceSlice,
+      NewsletterSliceSliceDefaultPrimary,
+      NewsletterSliceSliceVariation,
+      NewsletterSliceSliceDefault,
       SelectedDestinationsSlice,
       SelectedDestinationsSliceDefaultPrimarySelectedDestinationsItem,
       SelectedDestinationsSliceDefaultPrimary,

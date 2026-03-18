@@ -15,6 +15,7 @@ const ContactFormSlice = ({ slice }) => {
         heading={slice.primary.heading}
         companyDetails={slice.primary.company_details}
         phone={slice.primary.phone}
+        phone2={slice.primary.phone2}
         email={slice.primary.email}
         address={slice.primary.address}
       />

@@ -25,10 +25,14 @@ export default async function Page({ params: { locale } }) {
         heading={page.data.heading}
         backgroundImage={page.data.image}
       />
-      <div className="container mt-8">
-        <PrismicRichText field={page.data.content} components={rtfComponents} />
+      <div className="container">
+        <article className="max-w-3xl mx-auto py-12 md:py-16">
+          <PrismicRichText field={page.data.content} components={rtfComponents} />
+        </article>
         {photos && photos.length > 0 && (
-          <PhotoGallery photos={photos} heading="Gallery" />
+          <div className="max-w-5xl mx-auto pb-16">
+            <PhotoGallery photos={photos} heading="Gallery" />
+          </div>
         )}
       </div>
     </>

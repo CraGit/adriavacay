@@ -81,7 +81,7 @@ export default async function Page({ params }) {
         <div className="container md:mt-24 mt-16">
           <div className="md:flex">
             <div className="lg:w-2/3 md:w-1/2 md:p-4 px-3">
-              <h4 className="text-2xl font-medium">{page.data.heading}</h4>
+              <h1 className="text-2xl font-medium">{page.data.heading}</h1>
 
               <ul className="py-6 flex items-center list-none flex-wrap gap-y-2">
                 <li className="flex items-center lg:me-6 me-4">

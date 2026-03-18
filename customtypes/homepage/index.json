@@ -11,6 +11,9 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
+            "newsletter_slice": {
+              "type": "SharedSlice"
+            },
             "video_slice": {
               "type": "SharedSlice"
             },

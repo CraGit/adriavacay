@@ -1,7 +1,12 @@
 import { notFound } from "next/navigation";
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import { createClient } from "@/prismicio";
-import Card from "@/components/Card";
+import { AccommodationSingle } from "@/app/[locale]/accommodation/accommodation-single";
+import { occupiedDatesFromIcal } from "@/lib/utils";
+import {
+  filterAccommodationsWithValidPricing,
+  cleanAccommodationPricingData,
+} from "@/lib/validation";
 
 // ---------------------------------------------------------------------------
 // Slug → filter configuration
@@ -108,9 +113,64 @@ export default async function VillaFilterPage({ params: { slug, locale } }) {
     fetchOptions: { cache: "no-store" },
   });
 
-  const villas = allVillas
+  const filtered = allVillas
     .filter((v) => v.data.type === "Villa")
     .filter(config.filter);
+
+  // Enrich each villa with iCal calendar data and pricing — same logic as AccommodationListSlice
+  const enriched = await Promise.all(
+    filtered.map(async (villa) => {
+      try {
+        if (locale === "de") {
+          const alternates = Array.isArray(villa.alternate_languages)
+            ? villa.alternate_languages
+            : [];
+          const englishAlt =
+            alternates.find((alt) => alt.lang?.startsWith("en")) ||
+            alternates[0] ||
+            null;
+          if (englishAlt?.id) {
+            const enData = await client.getByID(englishAlt.id);
+            if (enData?.data) {
+              const occupiedData = await occupiedDatesFromIcal(enData.data.ical);
+              return cleanAccommodationPricingData({
+                ...villa,
+                pricing: enData.data.pricing,
+                discounts: enData.data.discounts,
+                occupiedDates: occupiedData.occupiedDates,
+                checkoutDates: occupiedData.checkoutDates,
+              });
+            }
+          }
+          // Fallback to current document
+          const occupiedData = await occupiedDatesFromIcal(villa.data?.ical ?? "");
+          return cleanAccommodationPricingData({
+            ...villa,
+            pricing: villa.data?.pricing,
+            discounts: villa.data?.discounts,
+            occupiedDates: occupiedData.occupiedDates,
+            checkoutDates: occupiedData.checkoutDates,
+          });
+        } else {
+          const occupiedData = await occupiedDatesFromIcal(villa.data.ical);
+          return cleanAccommodationPricingData({
+            ...villa,
+            pricing: villa.data.pricing,
+            discounts: villa.data.discounts,
+            occupiedDates: occupiedData.occupiedDates,
+            checkoutDates: occupiedData.checkoutDates,
+          });
+        }
+      } catch (err) {
+        console.error("Error enriching villa", villa.uid, err);
+        return null;
+      }
+    })
+  );
+
+  const villas = filterAccommodationsWithValidPricing(
+    enriched.filter(Boolean)
+  );
 
   const heading = locale === "de" ? config.titleDe : config.title;
 
@@ -139,20 +199,7 @@ export default async function VillaFilterPage({ params: { slug, locale } }) {
             </p>
           ) : (
             <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-[30px]">
-              {villas.map((villa) => (
-                <Card
-                  key={villa.id}
-                  uid={villa.uid}
-                  image={villa.data.gallery?.[0]?.image?.url}
-                  alt={villa.data.gallery?.[0]?.image?.alt ?? ""}
-                  title={villa.data.heading}
-                  sqm={villa.data.sqm}
-                  bedrooms={villa.data.bedrooms}
-                  baths={villa.data.bathrooms}
-                  guestsPrikaz={villa.data.guestsPrikaz}
-                  type={villa.data.type}
-                />
-              ))}
+              <AccommodationSingle accommodations={villas} showAll={false} />
             </div>
           )}
         </div>

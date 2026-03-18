@@ -10,6 +10,27 @@ import {
 } from "@/assets/icons/vander";
 import { currency } from "@/lib/utils";
 
+const FEATURE_LABELS = {
+  heatedPool: "Heated Pool",
+  jacuzzi: "Jacuzzi",
+  sauna: "Sauna",
+  seaView: "Sea View",
+  beach: "Beach",
+  playground: "Playground",
+  garden: "Garden",
+};
+
+function getActiveFeatures(features) {
+  if (!features || features.length === 0) return [];
+  const seen = new Set();
+  for (const item of features) {
+    for (const [key, label] of Object.entries(FEATURE_LABELS)) {
+      if (item[key]) seen.add(label);
+    }
+  }
+  return [...seen];
+}
+
 export default function Card({
   uid,
   image,
@@ -23,9 +44,11 @@ export default function Card({
   alt,
   guestsPrikaz,
   type,
+  features,
 }) {
   const t = useTranslations("card");
   const tSearch = useTranslations("search");
+  const activeFeatures = getActiveFeatures(features);
 
   return (
     <div className="group rounded-xl bg-white dark:bg-slate-900 shadow hover:shadow-xl dark:hover:shadow-xl dark:shadow-gray-700 dark:hover:shadow-gray-700 overflow-hidden ease-in-out duration-500">
@@ -59,13 +82,30 @@ export default function Card({
       </Link>
 
       <div className="p-6">
-        <div className="pb-6">
+        <div className="pb-4">
           <Link
             href={`/accommodation/${uid}`}
             className="text-lg hover:text-green-600 font-medium ease-in-out duration-500"
           >
             {title}
           </Link>
+          {activeFeatures.length > 0 && (
+            <div className="flex flex-wrap gap-1 mt-2">
+              {activeFeatures.slice(0, 4).map((f) => (
+                <span
+                  key={f}
+                  className="text-xs bg-green-50 text-green-700 px-2 py-0.5 rounded-full border border-green-100"
+                >
+                  {f}
+                </span>
+              ))}
+              {activeFeatures.length > 4 && (
+                <span className="text-xs text-slate-400 self-center">
+                  +{activeFeatures.length - 4} more
+                </span>
+              )}
+            </div>
+          )}
         </div>
 
         <ul className="py-6 border-y border-slate-100 dark:border-gray-800 flex items-center list-none">

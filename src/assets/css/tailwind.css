@@ -2283,8 +2283,9 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
   position: relative;
   margin-top: 0px;
   margin-bottom: 0px;
-  margin-left: 10px;
-  margin-right: 10px;
+  /* reduced horizontal gap between desktop menu items */
+  margin-left: 6px;
+  margin-right: 6px;
   display: block;
 }
 :is([dir="ltr"] #topnav .navigation-menu > li){
@@ -2296,8 +2297,9 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
 #topnav .navigation-menu > li > a{
   display: block;
   background-color: transparent;
-  padding-left: 15px;
-  padding-right: 15px;
+  /* reduced left/right padding for tighter menu */
+  padding-left: 10px;
+  padding-right: 10px;
   font-family: var(--font-league_Spartan);
   font-size: 17px;
   line-height: 24px;

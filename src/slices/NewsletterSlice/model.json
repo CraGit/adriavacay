@@ -1,0 +1,54 @@
+{
+  "id": "newsletter_slice",
+  "type": "SharedSlice",
+  "name": "NewsletterSlice",
+  "description": "Email newsletter signup connected to Mailchimp",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": "Subscribe to our newsletter"
+          }
+        },
+        "subheading": {
+          "type": "Text",
+          "config": {
+            "label": "Subheading",
+            "placeholder": "Get the latest villa deals and travel tips."
+          }
+        },
+        "mailchimp_api_key": {
+          "type": "Text",
+          "config": {
+            "label": "Mailchimp API Key",
+            "placeholder": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-usX"
+          }
+        },
+        "mailchimp_audience_id": {
+          "type": "Text",
+          "config": {
+            "label": "Mailchimp Audience ID",
+            "placeholder": "abc123def456"
+          }
+        },
+        "mailchimp_server": {
+          "type": "Text",
+          "config": {
+            "label": "Mailchimp Server Prefix",
+            "placeholder": "us1"
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

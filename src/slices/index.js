@@ -9,6 +9,7 @@ export const components = {
   destination_list_slice: dynamic(() => import("./DestinationListSlice")),
   for_sale_list_slice: dynamic(() => import("./ForSaleListSlice")),
   hero_slice: dynamic(() => import("./HeroSlice")),
+  newsletter_slice: dynamic(() => import("./NewsletterSlice")),
   selected_destinations: dynamic(() => import("./SelectedDestinations")),
   small_hero_slice: dynamic(() => import("./SmallHeroSlice")),
   video_slice: dynamic(() => import("./VideoSlice")),

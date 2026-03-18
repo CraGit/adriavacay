@@ -107,6 +107,7 @@ const renderWithCalculatedPrices = (accommodations, dateRange) => {
         guests={item.data.max_guests}
         guestsPrikaz={item.data.guestsPrikaz}
         type={item.data.type}
+        features={item.data.features}
       />
     ) : null;
   });
@@ -147,6 +148,7 @@ const renderAllAccommodations = (accommodations, type) => {
           guests={item.data.max_guests}
           guestsPrikaz={item.data.guestsPrikaz}
           type={item.data.type}
+          features={item.data.features}
         />
       );
     })
