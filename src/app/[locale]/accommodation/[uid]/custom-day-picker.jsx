@@ -13,10 +13,15 @@ import {
   isEndDateValid,
   isValidForCheckIn,
 } from "@/lib/cal-utils";
+import {
+  myRentIsValidCheckIn,
+  myRentIsEndDateValid,
+  myRentHasValidEndDates,
+} from "@/lib/myrent-utils";
 import { cn, df } from "@/lib/utils";
 import { useSearch } from "@/providers/search-provider";
 
-const DayButton = (props, priceRanges, unavailableRanges) => {
+const DayButton = (props, priceRanges, unavailableRanges, myRentDays) => {
   const {
     query: { dateRange },
     updateQuery,
@@ -37,37 +42,73 @@ const DayButton = (props, priceRanges, unavailableRanges) => {
       return;
     }
 
-    if (!from || (from && to)) {
-      if (
-        isDateAvailable(date, priceRanges, unavailableRanges) &&
-        hasValidEndDates(date, priceRanges, unavailableRanges) &&
-        // allow selecting today as a valid check-in
-        !isBefore(date, today)
-      ) {
-        updateQuery({ dateRange: { from: date, to: null } });
-      }
-    } else if (from && !to) {
-      // If user clicked a date before the current start while picking an end,
-      // treat it as a new start (same validation as above).
-      if (isBefore(date, from)) {
+    if (myRentDays !== undefined) {
+      // --- MyRent mode ---
+      if (!myRentDays) return; // API error: calendar is blocked, clicks do nothing
+
+      if (!from || (from && to)) {
         if (
-          isDateAvailable(date, priceRanges, unavailableRanges) &&
-          hasValidEndDates(date, priceRanges, unavailableRanges) &&
+          myRentIsValidCheckIn(date, myRentDays) &&
+          myRentHasValidEndDates(date, myRentDays) &&
           !isBefore(date, today)
         ) {
           updateQuery({ dateRange: { from: date, to: null } });
+        }
+      } else if (from && !to) {
+        if (isBefore(date, from)) {
+          if (
+            myRentIsValidCheckIn(date, myRentDays) &&
+            myRentHasValidEndDates(date, myRentDays) &&
+            !isBefore(date, today)
+          ) {
+            updateQuery({ dateRange: { from: date, to: null } });
+          } else {
+            alert("Invalid date selected");
+          }
+          return;
+        }
+        if (myRentIsEndDateValid(from, date, myRentDays)) {
+          updateQuery({ dateRange: { from, to: date } });
         } else {
           alert("Invalid date selected");
         }
-        return;
-      }
-      if (isEndDateValid(from, date, priceRanges, unavailableRanges)) {
-        updateQuery({ dateRange: { from, to: date } });
       } else {
-        alert("Invalid date selected");
+        updateQuery({ dateRange: { from: date, to: null } });
       }
     } else {
-      updateQuery({ dateRange: { from: date, to: null } });
+      // --- Prismic / iCal mode (unchanged) ---
+      if (!from || (from && to)) {
+        if (
+          isDateAvailable(date, priceRanges, unavailableRanges) &&
+          hasValidEndDates(date, priceRanges, unavailableRanges) &&
+          // allow selecting today as a valid check-in
+          !isBefore(date, today)
+        ) {
+          updateQuery({ dateRange: { from: date, to: null } });
+        }
+      } else if (from && !to) {
+        // If user clicked a date before the current start while picking an end,
+        // treat it as a new start (same validation as above).
+        if (isBefore(date, from)) {
+          if (
+            isDateAvailable(date, priceRanges, unavailableRanges) &&
+            hasValidEndDates(date, priceRanges, unavailableRanges) &&
+            !isBefore(date, today)
+          ) {
+            updateQuery({ dateRange: { from: date, to: null } });
+          } else {
+            alert("Invalid date selected");
+          }
+          return;
+        }
+        if (isEndDateValid(from, date, priceRanges, unavailableRanges)) {
+          updateQuery({ dateRange: { from, to: date } });
+        } else {
+          alert("Invalid date selected");
+        }
+      } else {
+        updateQuery({ dateRange: { from: date, to: null } });
+      }
     }
   };
   return <button {...buttonProps} onClick={handleClick} />;
@@ -76,6 +117,7 @@ const DayButton = (props, priceRanges, unavailableRanges) => {
 export default function CustomDayPicker({
   priceRanges,
   unavailableRanges,
+  myRentDays,
   className,
   selected,
   placeholder,
@@ -89,6 +131,23 @@ export default function CustomDayPicker({
       // Special case: if this is the checkout date, consider it available
       if (selected.to && isSameDay(date, selected.to)) return true;
 
+      if (myRentDays !== undefined) {
+        // --- MyRent mode ---
+        if (!myRentDays) return false;
+
+        if (!selected.from || (selected.from && selected.to)) {
+          return (
+            myRentIsValidCheckIn(date, myRentDays) &&
+            myRentHasValidEndDates(date, myRentDays)
+          );
+        }
+        return (
+          isAfter(date, selected.from) &&
+          myRentIsEndDateValid(selected.from, date, myRentDays)
+        );
+      }
+
+      // --- Prismic / iCal mode (unchanged) ---
       if (!selected.from || (selected.from && selected.to)) {
         return (
           isDateAvailable(date, priceRanges, unavailableRanges) &&
@@ -101,11 +160,6 @@ export default function CustomDayPicker({
         isEndDateValid(selected.from, date, priceRanges, unavailableRanges)
       );
     },
-    /*unavailable: (date) =>
-      !isBefore(date, today) && isDateInOccupiedRanges(date, unavailableRanges),
-    invalidSelection: (date) =>
-      isInvalidSelection(date, selectedRange, priceRanges, unavailableRanges),
-    past: (date) => isBefore(date, today),*/
   };
 
   const modifiersClassNames = {
@@ -153,6 +207,20 @@ export default function CustomDayPicker({
             // Special case: if this is the checkout date we've selected, don't disable it
             if (selected.to && isSameDay(date, selected.to)) return false;
 
+            if (myRentDays !== undefined) {
+              // --- MyRent mode ---
+              if (!myRentDays) return true; // API error: block all days
+
+              // When picking start (no from selected, or range is complete): enforce check-in validity
+              if (!selected.from || (selected.from && selected.to)) {
+                return !myRentIsValidCheckIn(date, myRentDays);
+              }
+
+              // When picking end date: don't pre-disable — validate on click
+              return false;
+            }
+
+            // --- Prismic / iCal mode (unchanged) ---
             // If no start date selected, use check-in validation
             if (!selected.from || (selected.from && selected.to)) {
               return (
@@ -167,7 +235,7 @@ export default function CustomDayPicker({
           }}
           components={{
             DayButton: (props) =>
-              DayButton(props, priceRanges, unavailableRanges),
+              DayButton(props, priceRanges, unavailableRanges, myRentDays),
           }}
         />
       </PopoverContent>
