@@ -2154,30 +2154,31 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
   border-width: 0px;
   padding: 0px;
 }
-#topnav .navbar-toggle .lines{
-  position: relative;
-  margin-top: 30px;
-  -webkit-margin-end: 0px;
-          margin-inline-end: 0px;
-  margin-bottom: 26px;
-  -webkit-margin-start: 10px;
-          margin-inline-start: 10px;
-  display: block;
-  height: 18px;
-  width: 25px;
-}
-#topnav .navbar-toggle span {
-  -webkit-transition: -webkit-transform 0.5s ease;
-  transition: -webkit-transform 0.5s ease;
-  transition: transform 0.5s ease;
-  transition: transform 0.5s ease, -webkit-transform 0.5s ease;
-  margin-bottom: 5px;
-  display: block;
-  height: 2px;
-  width: 100%;
-  --tw-bg-opacity: 1;
-  background-color: rgb(22 28 45 / var(--tw-bg-opacity));
-}
+  #topnav .navbar-toggle .lines{
+    position: relative;
+    margin-top: 30px;
+    margin-inline-end: 0px;
+    margin-bottom: 26px;
+    margin-inline-start: 10px;
+    display: block;
+    height: 18px;
+    width: 30px;
+  }
+  #topnav .navbar-toggle .lines span {
+    -webkit-transition: transform 300ms cubic-bezier(.4,0,.2,1), opacity 300ms;
+    transition: transform 300ms cubic-bezier(.4,0,.2,1), opacity 300ms;
+    display: block;
+    height: 2px;
+    width: 100%;
+    margin-bottom: 5px;
+    --tw-bg-opacity: 1;
+    background-color: rgb(22 28 45 / var(--tw-bg-opacity));
+    border-radius: 1px;
+  }
+  #topnav .navbar-toggle .lines span:last-child{ margin-bottom: 0; }
+  #topnav .navbar-toggle .lines.open span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
+  #topnav .navbar-toggle .lines.open span:nth-child(2){ opacity: 0; transform: scaleX(0); }
+  #topnav .navbar-toggle .lines.open span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
 :is(.dark #topnav .navbar-toggle span){
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
@@ -2751,12 +2752,16 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
   #topnav .navigation-menu > li{
     float: none !important;
   }
+  /* Mobile: animate submenu open/close via max-height + opacity */
   #topnav .navigation-menu > li .submenu{
     margin: 0px;
-    display: none;
     list-style-type: none;
     -webkit-padding-start: 1.25rem;
             padding-inline-start: 1.25rem;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 300ms cubic-bezier(.4,0,.2,1), opacity 220ms ease;
   }
   #topnav .navigation-menu > li .submenu li a {
     -webkit-transition: all 0.3s;
@@ -2801,7 +2806,9 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
     color: rgb(226 232 240 / var(--tw-text-opacity));
   }
   #topnav .navigation-menu > li .submenu.open{
-    display: block;
+    /* allow enough room for submenu content; value is generous */
+    max-height: 800px;
+    opacity: 1;
   }
   #topnav .navigation-menu > li .submenu .submenu{
     display: none;
@@ -2874,11 +2881,16 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
     right: 0;
     bottom: 0;
     inset-inline-start: 0px;
-    display: none;
+    /* keep present so we can animate visibility/opacity/transform */
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-8px);
     z-index: 998;
     overflow-y: auto;
     --tw-bg-opacity: 1;
     background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+    transition: opacity 280ms cubic-bezier(.4,0,.2,1), transform 280ms cubic-bezier(.4,0,.2,1), visibility 280ms;
   }
 
   :is(.dark #navigation){
@@ -2886,7 +2898,9 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
     background-color: rgb(15 23 42 / var(--tw-bg-opacity));
   }
   #navigation.open{
-    display: block;
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
     overflow-y: auto;
   }
 }

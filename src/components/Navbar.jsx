@@ -16,7 +16,7 @@ import logo from "@/assets/images/logo.svg";
 
 export default function Navbar(props) {
   let { navClass, topnavClass } = props;
-  let [isOpen, setIsOpen] = useState(true);
+  let [isOpen, setIsOpen] = useState(false);
   let [topNavbar, setTopNavBar] = useState(false);
 
   let [menu, setMenu] = useState("");
@@ -49,13 +49,29 @@ export default function Navbar(props) {
         document.getElementById("navigation").getElementsByTagName("a")
       );
       anchorArray.forEach((element) => {
-        element.addEventListener("click", (elem) => {
-          const target = elem.target.getAttribute("href");
-          if (target !== "") {
-            if (elem.target.nextElementSibling) {
-              var submenu = elem.target.nextElementSibling.nextElementSibling;
-              submenu.classList.toggle("open");
-            }
+        // avoid attaching multiple listeners
+        if (element.dataset._navListenerAttached) return;
+        element.dataset._navListenerAttached = "1";
+        element.addEventListener("click", (evt) => {
+          const anchor = evt.currentTarget;
+          const href = anchor.getAttribute("href") || "";
+          // if this anchor navigates to a real path (not '#'), don't toggle submenu here
+          if (href && href !== "#") return;
+
+          // try to locate the submenu reliably
+          let submenu = null;
+          const next = anchor.nextElementSibling;
+          if (next && next.classList && next.classList.contains("menu-arrow")) {
+            submenu = next.nextElementSibling;
+          } else if (next && next.classList && next.classList.contains("submenu")) {
+            submenu = next;
+          } else {
+            const li = anchor.closest("li");
+            if (li) submenu = li.querySelector(".submenu");
+          }
+
+          if (submenu && submenu.classList) {
+            submenu.classList.toggle("open");
           }
         });
       });
@@ -138,7 +154,7 @@ export default function Navbar(props) {
                 id="isToggle"
                 onClick={toggleMenu}
               >
-                <div className="lines">
+                <div className={`lines ${isOpen ? "open" : ""}`} aria-hidden>
                   <span></span>
                   <span></span>
                   <span></span>
@@ -148,10 +164,7 @@ export default function Navbar(props) {
           </div>
           {/* <!-- End Mobile Toggle --> */}
 
-          <div
-            id="navigation"
-            className={`${isOpen === true ? "hidden" : "block"}`}
-          >
+          <div id="navigation" className={`${isOpen ? "open" : ""}`}>
             {/* <!-- Navigation Menu--> */}
             <ul
               className={`navigation-menu  ${
