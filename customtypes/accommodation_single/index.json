@@ -956,6 +956,13 @@
           "default_value": "Split Area"
         }
       },
+      "myRentID": {
+        "type": "Number",
+        "config": {
+          "label": "MyRentID",
+          "placeholder": ""
+        }
+      },
       "slices": {
         "type": "Slices",
         "fieldset": "Slice Zone",

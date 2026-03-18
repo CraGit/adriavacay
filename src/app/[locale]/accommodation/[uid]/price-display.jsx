@@ -92,10 +92,7 @@ export default function PriceDisplay({
               {df(query.dateRange.from, "PP")} - {df(query.dateRange.to, "PP")}
             </span>
           </li>
-          <li className="flex justify-between items-center mt-2">
-            <span className="text-slate-400 text-sm">Safety deposit</span>
-            <span className="font-medium text-sm">{currency(deposit)}</span>
-          </li>
+          {/* safety deposit moved below total per UX request */}
 
           {basePrice === priceWithDiscount && (
             <li className="flex justify-between items-center mt-2">
@@ -128,6 +125,12 @@ export default function PriceDisplay({
               </li>
             </>
           )}
+
+          {/* Safety deposit shown after total with refundable label (single instance) */}
+          <li className="flex justify-between items-center mt-2">
+            <span className="text-slate-400 text-sm">Safety deposit (refundable)</span>
+            <span className="font-medium text-sm">{`+${currency(deposit)}`}</span>
+          </li>
         </ul>
       </div>
     </div>

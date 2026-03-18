@@ -1513,6 +1513,17 @@ interface AccommodationSingleDocumentData {
   >;
 
   /**
+   * MyRentID field in *Accommodation Single*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: *None*
+   * - **API ID Path**: accommodation_single.myRentID
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#number
+   */
+  myRentID: prismic.NumberField;
+
+  /**
    * Slice Zone field in *Accommodation Single*
    *
    * - **Field Type**: Slice Zone
@@ -2517,6 +2528,144 @@ export type PrivacyPolicyDocument<Lang extends string = string> =
     Lang
   >;
 
+/**
+ * Content for Settings documents
+ */
+interface SettingsDocumentData {
+  /**
+   * Company Name field in *Settings*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: AdriaVacay, vl. Josip Čorić
+   * - **API ID Path**: settings.company_name
+   * - **Tab**: Contact
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  company_name: prismic.KeyTextField;
+
+  /**
+   * Address Line 1 field in *Settings*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Street and name
+   * - **API ID Path**: settings.address_line_1
+   * - **Tab**: Contact
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  address_line_1: prismic.KeyTextField;
+
+  /**
+   * Address Line 2 field in *Settings*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: City, ZIP, Country
+   * - **API ID Path**: settings.address_line_2
+   * - **Tab**: Contact
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  address_line_2: prismic.KeyTextField;
+
+  /**
+   * Email field in *Settings*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: info@example.com
+   * - **API ID Path**: settings.email
+   * - **Tab**: Contact
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  email: prismic.KeyTextField;
+
+  /**
+   * Phone field in *Settings*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: +385 97 666 35 32
+   * - **API ID Path**: settings.phone
+   * - **Tab**: Contact
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  phone: prismic.KeyTextField;
+
+  /**
+   * Phone 2 field in *Settings*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: +385 99 111 22 33
+   * - **API ID Path**: settings.phone2
+   * - **Tab**: Contact
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  phone2: prismic.KeyTextField;
+
+  /**
+   * VAT / OIB field in *Settings*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: HR12345678901
+   * - **API ID Path**: settings.vat
+   * - **Tab**: Contact
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  vat: prismic.KeyTextField /**
+   * Facebook URL field in *Settings*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.facebook_url
+   * - **Tab**: Social Media
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */;
+  facebook_url: prismic.LinkField;
+
+  /**
+   * Instagram URL field in *Settings*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.instagram_url
+   * - **Tab**: Social Media
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  instagram_url: prismic.LinkField /**
+   * Site Name field in *Settings*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: AdriaVacay
+   * - **API ID Path**: settings.site_name
+   * - **Tab**: SEO
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */;
+  site_name: prismic.KeyTextField;
+
+  /**
+   * Default OG Image field in *Settings*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.og_image
+   * - **Tab**: SEO
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  og_image: prismic.ImageField<never>;
+}
+
+/**
+ * Settings document from Prismic
+ *
+ * - **API ID**: `settings`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type SettingsDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithoutUID<
+    Simplify<SettingsDocumentData>,
+    "settings",
+    Lang
+  >;
+
 type TermsAndConditionsDocumentDataSlicesSlice = never;
 
 /**
@@ -2630,6 +2779,7 @@ export type AllDocumentTypes =
   | HomepageDocument
   | PaymentDetailsDocument
   | PrivacyPolicyDocument
+  | SettingsDocument
   | TermsAndConditionsDocument;
 
 /**
@@ -3351,6 +3501,8 @@ declare module "@prismicio/client" {
       PrivacyPolicyDocument,
       PrivacyPolicyDocumentData,
       PrivacyPolicyDocumentDataSlicesSlice,
+      SettingsDocument,
+      SettingsDocumentData,
       TermsAndConditionsDocument,
       TermsAndConditionsDocumentData,
       TermsAndConditionsDocumentDataSlicesSlice,
