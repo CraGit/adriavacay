@@ -941,8 +941,10 @@
             "Split Area",
             "Omis Area",
             "Makarska Area",
-            "Dubrovnik Area"
-          ]
+            "Dubrovnik Area",
+            "Šibenik Area"
+          ],
+          "default_value": "Split Area"
         }
       },
       "slices": {

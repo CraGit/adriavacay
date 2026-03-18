@@ -181,6 +181,50 @@ export default function Navbar(props) {
                   {t("accommodation")}
                 </Link>
               </li>
+
+              {/* Villas dropdown */}
+              <li
+                className={`has-submenu parent-menu-item${
+                  menu.startsWith("/villas") ? " active" : ""
+                }`}
+              >
+                <Link href="#" className="sub-menu-item">
+                  {t("villas")}
+                </Link>
+                <span className="menu-arrow" />
+                <ul className="submenu">
+                  {[
+                    "villas-in-split",
+                    "villas-in-omis",
+                    "villas-in-makarska",
+                    "villas-in-dubrovnik",
+                    "villas-in-sibenik",
+                    "villas-with-heated-pool",
+                    "villas-with-jacuzzi",
+                    "villas-with-sauna",
+                    "villas-with-sea-view",
+                    "villas-on-the-beach",
+                    "villas-with-playground",
+                    "villas-with-garden",
+                  ].map((slug) => (
+                    <li
+                      key={slug}
+                      className={
+                        submenu === `/villas/${slug}` ? "active" : ""
+                      }
+                    >
+                      <Link
+                        href={`/villas/${slug}`}
+                        className="sub-menu-item"
+                        onClick={toggleMenu}
+                      >
+                        {t(slug)}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+
               <li
                 className={menu === "/for-sale" ? "active" : ""}
                 onClick={toggleMenu}

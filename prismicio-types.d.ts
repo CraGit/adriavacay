@@ -1487,12 +1487,18 @@ interface AccommodationSingleDocumentData {
    *
    * - **Field Type**: Select
    * - **Placeholder**: *None*
+   * - **Default Value**: Split Area
    * - **API ID Path**: accommodation_single.location
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/field#select
    */
   location: prismic.SelectField<
-    "Split Area" | "Omis Area" | "Makarska Area" | "Dubrovnik Area"
+    | "Split Area"
+    | "Omis Area"
+    | "Makarska Area"
+    | "Dubrovnik Area"
+    | "Šibenik Area",
+    "filled"
   >;
 
   /**
