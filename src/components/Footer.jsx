@@ -280,24 +280,30 @@ export default async function Footer() {
               </div>
 
               <ul className="list-none md:text-end text-center">
-                <li className="inline ms-1">
-                  <a
-                    href="https://www.facebook.com"
-                    target="_blank"
-                    className="btn btn-icon btn-sm text-gray-400 hover:text-white border border-gray-800 dark:border-gray-700 rounded-md hover:border-green-600 dark:hover:border-green-600 hover:bg-green-600 dark:hover:bg-green-600"
-                  >
-                    <FiFacebook className="h-4 w-4"></FiFacebook>
-                  </a>
-                </li>
-                <li className="inline ms-1">
-                  <a
-                    href="https://www.instagram.com/adriavacay"
-                    target="_blank"
-                    className="btn btn-icon btn-sm text-gray-400 hover:text-white border border-gray-800 dark:border-gray-700 rounded-md hover:border-green-600 dark:hover:border-green-600 hover:bg-green-600 dark:hover:bg-green-600"
-                  >
-                    <FiInstagram className="h-4 w-4"></FiInstagram>
-                  </a>
-                </li>
+                {((settings && settings.data && settings.data.facebook_url && settings.data.facebook_url.url) || true) && (
+                  <li className="inline ms-1">
+                    <a
+                      href={settings?.data?.facebook_url?.url ?? "https://www.facebook.com"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-icon btn-sm text-gray-400 hover:text-white border border-gray-800 dark:border-gray-700 rounded-md hover:border-green-600 dark:hover:border-green-600 hover:bg-green-600 dark:hover:bg-green-600"
+                    >
+                      <FiFacebook className="h-4 w-4"></FiFacebook>
+                    </a>
+                  </li>
+                )}
+                {((settings && settings.data && settings.data.instagram_url && settings.data.instagram_url.url) || true) && (
+                  <li className="inline ms-1">
+                    <a
+                      href={settings?.data?.instagram_url?.url ?? "https://www.instagram.com/adriavacay"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-icon btn-sm text-gray-400 hover:text-white border border-gray-800 dark:border-gray-700 rounded-md hover:border-green-600 dark:hover:border-green-600 hover:bg-green-600 dark:hover:bg-green-600"
+                    >
+                      <FiInstagram className="h-4 w-4"></FiInstagram>
+                    </a>
+                  </li>
+                )}
               </ul>
             </div>
           </div>
