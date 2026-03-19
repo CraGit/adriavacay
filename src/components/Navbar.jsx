@@ -2,30 +2,29 @@
 
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
-import { usePathname } from "next/navigation";
+import { usePathname as useNextPathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { cn } from "@/lib/utils";
-import { PrismicNextLink } from "@prismicio/next";
-import { routing } from "@/i18n/routing";
-import { useLocale } from "next-intl";
 
 import LanguageSwitcher from "./LanguageSwitcher";
 
 import logo from "@/assets/images/logo.svg";
 
-export default function Navbar(props) {
-  let { navClass, topnavClass } = props;
+export default function Navbar({ navClass, topnavClass, destinations = [] }) {
   let [isOpen, setIsOpen] = useState(false);
   let [topNavbar, setTopNavBar] = useState(false);
 
   let [menu, setMenu] = useState("");
   let [submenu, setSubmenu] = useState("");
 
-  let current = usePathname();
+  let current = useNextPathname();
 
   const locale = useLocale();
   const t = useTranslations("menu");
+
+  // Pathname without locale prefix for locale-aware links
+  const localeFreePathname = locale === "de" ? (current.replace(/^\/de/, "") || "/") : current;
 
   useEffect(() => {
     setMenu(current);
@@ -175,26 +174,6 @@ export default function Navbar(props) {
                   : "justify-end"
               }`}
             >
-              <li className={menu === "/" ? "active" : ""}>
-                <Link
-                  href="/"
-                  activeclassname="active"
-                  className="sub-menu-item"
-                  onClick={toggleMenu}
-                >
-                  {t("home")}
-                </Link>
-              </li>
-
-              <li
-                className={menu === "/accommodation" ? "active" : ""}
-                onClick={toggleMenu}
-              >
-                <Link href="/accommodation" className="sub-menu-item">
-                  {t("accommodation")}
-                </Link>
-              </li>
-
               {/* Villas dropdown */}
               <li
                 className={`has-submenu parent-menu-item${
@@ -265,6 +244,24 @@ export default function Navbar(props) {
               </li>
 
               <li
+                className={menu === "/apartments" ? "active" : ""}
+                onClick={toggleMenu}
+              >
+                <Link href="/apartments" className="sub-menu-item">
+                  {t("apartments")}
+                </Link>
+              </li>
+
+              <li
+                className={menu === "/holiday-homes" ? "active" : ""}
+                onClick={toggleMenu}
+              >
+                <Link href="/holiday-homes" className="sub-menu-item">
+                  {t("holiday-homes")}
+                </Link>
+              </li>
+
+              <li
                 className={menu === "/for-sale" ? "active" : ""}
                 onClick={toggleMenu}
               >
@@ -281,12 +278,29 @@ export default function Navbar(props) {
                 </Link>
               </li>
               <li
-                className={menu === "/destinations" ? "active" : ""}
-                onClick={toggleMenu}
+                className={`has-submenu parent-menu-item${
+                  menu.startsWith("/destinations") ? " active" : ""
+                }`}
               >
-                <Link href="/destinations" className="sub-menu-item">
+                <Link href="#" className="sub-menu-item" onClick={(e) => e.preventDefault()}>
                   {t("destinations")}
                 </Link>
+                <span className="menu-arrow" />
+                <ul className="submenu">
+                  {destinations.map((dest) => (
+                    <li key={dest.uid}>
+                      <Link
+                        href={`/destinations/${dest.uid}`}
+                        className={`sub-menu-item${
+                          submenu === `/destinations/${dest.uid}` ? " active" : ""
+                        }`}
+                        onClick={toggleMenu}
+                      >
+                        {dest.data.heading}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </li>
               <li
                 className={menu === "/blog" ? "active" : ""}
@@ -306,8 +320,9 @@ export default function Navbar(props) {
               </li>
               <li className="pb-2 md:pb-0">
                 {locale === "de" && (
-                  <PrismicNextLink
-                    href="/"
+                  <Link
+                    href={localeFreePathname}
+                    locale="en-us"
                     className="h-full flex items-center"
                   >
                     <svg
@@ -398,11 +413,12 @@ export default function Navbar(props) {
                         </g>
                       </g>
                     </svg>
-                  </PrismicNextLink>
+                  </Link>
                 )}
                 {locale === "en-us" && (
-                  <PrismicNextLink
-                    href={`/de`}
+                  <Link
+                    href={localeFreePathname}
+                    locale="de"
                     className="h-full flex items-center"
                   >
                     <svg
@@ -427,7 +443,7 @@ export default function Navbar(props) {
                         <path d="M0 0h16v4H0V0z" fill="#272727" />
                       </g>
                     </svg>
-                  </PrismicNextLink>
+                  </Link>
                 )}
               </li>
             </ul>

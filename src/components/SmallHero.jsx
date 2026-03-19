@@ -4,15 +4,17 @@ export default function SmallHero({ heading, backgroundImage }) {
   return (
     <section className="relative table w-full py-32 lg:py-36">
       <div className="absolute inset-0">
-        <Image
-          fill
-          src={backgroundImage.url}
-          alt={backgroundImage.alt}
-          style={{ objectFit: "cover" }}
-          sizes="100vw"
-          quality={75}
-          priority
-        />
+        {backgroundImage?.url && (
+          <Image
+            fill
+            src={backgroundImage.url}
+            alt={backgroundImage.alt || ""}
+            style={{ objectFit: "cover" }}
+            sizes="100vw"
+            quality={75}
+            priority
+          />
+        )}
       </div>
       <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="container">

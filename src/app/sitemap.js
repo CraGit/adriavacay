@@ -12,6 +12,8 @@ export default async function sitemap() {
   const staticPages = [
     { path: "", priority: 1, changeFrequency: "monthly" }, // Homepage
     { path: "/accommodation", priority: 0.9, changeFrequency: "weekly" },
+    { path: "/apartments", priority: 0.9, changeFrequency: "weekly" },
+    { path: "/holiday-homes", priority: 0.9, changeFrequency: "weekly" },
     { path: "/for-sale", priority: 0.9, changeFrequency: "weekly" },
     { path: "/destinations", priority: 0.8, changeFrequency: "weekly" },
     { path: "/blog", priority: 0.8, changeFrequency: "daily" },

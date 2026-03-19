@@ -1,0 +1,24 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"heading": {
+				"__TYPE__": "FieldContent",
+				"value": "Holiday Homes",
+				"type": "Text"
+			},
+			"description": {
+				"__TYPE__": "FieldContent",
+				"value": "Browse our holiday homes",
+				"type": "Text"
+			},
+			"limit": {
+				"__TYPE__": "FieldContent",
+				"value": "No limit",
+				"type": "Select"
+			}
+		},
+		"items": []
+	}
+]

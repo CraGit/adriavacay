@@ -1,6 +1,7 @@
+"use client";
+
 import { cn } from "@/lib/utils";
-import { PrismicNextLink } from "@prismicio/next";
-import { routing } from "@/i18n/routing";
+import { routing, Link, usePathname } from "@/i18n/routing";
 import { useLocale } from "next-intl";
 
 const localeLabels = {
@@ -10,6 +11,7 @@ const localeLabels = {
 
 export default function LanguageSwitcher() {
   const locale = useLocale();
+  const pathname = usePathname();
 
   return (
     <div className="flex flex-wrap gap-3">
@@ -17,12 +19,13 @@ export default function LanguageSwitcher() {
       <ul className="flex flex-wrap gap-3">
         {routing.locales.map((cur) => (
           <li key={cur}>
-            <PrismicNextLink
-              href={`/${cur}`}
+            <Link
+              href={pathname}
+              locale={cur}
               className={cn(locale === cur && "font-semibold")}
             >
               {localeLabels[cur]}
-            </PrismicNextLink>
+            </Link>
           </li>
         ))}
       </ul>

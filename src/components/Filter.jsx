@@ -12,11 +12,11 @@ const Filter = () => {
   const t = useTranslations("search");
 
   return (
-    <div className="relative mb-8 flex items-center justify-center gap-2">
+    <div className="relative mb-8 flex items-center justify-center gap-2 overflow-x-auto flex-nowrap">
       <button
         onClick={() => setType("All")}
         className={cn(
-          "border-2 p-2 rounded-md w-24 text-sm",
+          "border-2 px-4 py-2 rounded-md min-w-[110px] text-sm whitespace-nowrap",
           type === "All" && "border-green-600"
         )}
       >
@@ -25,7 +25,7 @@ const Filter = () => {
       <button
         onClick={() => setType("Villa")}
         className={cn(
-          "border-2 p-2 rounded-md w-24 text-sm",
+          "border-2 px-4 py-2 rounded-md min-w-[110px] text-sm whitespace-nowrap",
           type === "Villa" && "border-green-600"
         )}
       >
@@ -34,7 +34,7 @@ const Filter = () => {
       <button
         onClick={() => setType("Cottage")}
         className={cn(
-          "border-2 p-2 rounded-md w-24 text-sm",
+          "border-2 px-4 py-2 rounded-md min-w-[110px] text-sm whitespace-nowrap",
           type === "Cottage" && "border-green-600"
         )}
       >
@@ -43,7 +43,7 @@ const Filter = () => {
       <button
         onClick={() => setType("Apartment")}
         className={cn(
-          "border-2 p-2 rounded-md w-24 text-sm",
+          "border-2 px-4 py-2 rounded-md min-w-[110px] text-sm whitespace-nowrap",
           type === "Apartment" && "border-green-600"
         )}
       >
