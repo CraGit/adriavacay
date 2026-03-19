@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import { createClient } from "@/prismicio";
 import { AccommodationSingle } from "@/app/[locale]/accommodation/accommodation-single";
@@ -77,6 +78,23 @@ const VILLA_PAGES = {
     titleDe: "Villen haustierfreundlich",
     filter: (v) => v.data.features?.some((f) => f.petFriendly),
   },
+};
+
+// Slug → settings field name for hero image
+const SLUG_TO_HERO_FIELD = {
+  "villas-in-split": "hero_villas_in_split",
+  "villas-in-omis": "hero_villas_in_omis",
+  "villas-in-makarska": "hero_villas_in_makarska",
+  "villas-in-dubrovnik": "hero_villas_in_dubrovnik",
+  "villas-in-sibenik": "hero_villas_in_sibenik",
+  "villas-with-heated-pool": "hero_heated_pool",
+  "villas-with-jacuzzi": "hero_jacuzzi",
+  "villas-with-sauna": "hero_sauna",
+  "villas-with-sea-view": "hero_sea_view",
+  "villas-on-the-beach": "hero_beach",
+  "villas-with-playground": "hero_playground",
+  "villas-with-garden": "hero_garden",
+  "villas-with-pet-friendly": "hero_pet_friendly",
 };
 
 export async function generateStaticParams() {
@@ -179,11 +197,31 @@ export default async function VillaFilterPage({ params: { slug, locale } }) {
 
   const heading = locale === "de" ? config.titleDe : config.title;
 
+  // Fetch hero image from settings
+  const settings = await client
+    .getSingle("settings", { lang: locale })
+    .catch(() => null);
+  const heroField = SLUG_TO_HERO_FIELD[slug];
+  const heroImage = settings?.data?.[heroField];
+
   return (
     <>
       {/* Page header */}
       <section className="relative table w-full py-32 lg:py-36 bg-slate-800">
-        <div className="absolute inset-0 bg-black opacity-60" />
+        <div className="absolute inset-0">
+          {heroImage?.url && (
+            <Image
+              fill
+              src={heroImage.url}
+              alt={heroImage.alt || heading}
+              style={{ objectFit: "cover" }}
+              sizes="100vw"
+              quality={75}
+              priority
+            />
+          )}
+        </div>
+        <div className="absolute inset-0 bg-black opacity-50" />
         <div className="container relative">
           <div className="grid grid-cols-1 text-center mt-10">
             <h1 className="md:text-4xl text-3xl md:leading-normal leading-normal font-medium text-white">

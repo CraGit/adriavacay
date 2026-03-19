@@ -91,6 +91,60 @@
           "thumbnails": []
         }
       }
+    },
+    "Villa Heroes": {
+      "hero_villas_in_split": {
+        "type": "Image",
+        "config": { "label": "Hero – Villas in Split", "constraint": {}, "thumbnails": [] }
+      },
+      "hero_villas_in_omis": {
+        "type": "Image",
+        "config": { "label": "Hero – Villas in Omiš", "constraint": {}, "thumbnails": [] }
+      },
+      "hero_villas_in_makarska": {
+        "type": "Image",
+        "config": { "label": "Hero – Villas in Makarska", "constraint": {}, "thumbnails": [] }
+      },
+      "hero_villas_in_dubrovnik": {
+        "type": "Image",
+        "config": { "label": "Hero – Villas in Dubrovnik", "constraint": {}, "thumbnails": [] }
+      },
+      "hero_villas_in_sibenik": {
+        "type": "Image",
+        "config": { "label": "Hero – Villas in Šibenik", "constraint": {}, "thumbnails": [] }
+      },
+      "hero_heated_pool": {
+        "type": "Image",
+        "config": { "label": "Hero – Heated Pool", "constraint": {}, "thumbnails": [] }
+      },
+      "hero_jacuzzi": {
+        "type": "Image",
+        "config": { "label": "Hero – Jacuzzi", "constraint": {}, "thumbnails": [] }
+      },
+      "hero_sauna": {
+        "type": "Image",
+        "config": { "label": "Hero – Sauna", "constraint": {}, "thumbnails": [] }
+      },
+      "hero_sea_view": {
+        "type": "Image",
+        "config": { "label": "Hero – Sea View", "constraint": {}, "thumbnails": [] }
+      },
+      "hero_beach": {
+        "type": "Image",
+        "config": { "label": "Hero – Beach", "constraint": {}, "thumbnails": [] }
+      },
+      "hero_playground": {
+        "type": "Image",
+        "config": { "label": "Hero – Playground", "constraint": {}, "thumbnails": [] }
+      },
+      "hero_garden": {
+        "type": "Image",
+        "config": { "label": "Hero – Garden", "constraint": {}, "thumbnails": [] }
+      },
+      "hero_pet_friendly": {
+        "type": "Image",
+        "config": { "label": "Hero – Pet Friendly", "constraint": {}, "thumbnails": [] }
+      }
     }
   }
 }
