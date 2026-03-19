@@ -18,6 +18,7 @@ import PropertyImage from "@/components/PropertyImage";
 import { amenitiesMapping } from "@/data";
 import rtfComponents from "@/lib/richText";
 import { occupiedDatesFromIcal, occupiedRangesFromIcal } from "@/lib/utils";
+import { fetchMyRentDays } from "@/lib/myrent";
 import { createClient } from "@/prismicio";
 import { components } from "@/slices";
 
@@ -51,8 +52,26 @@ export default async function Page({ params }) {
   const paymentDetails = await client.getSingle("payment_details", {
     lang: params.locale,
   });
-  const occupiedData = await occupiedDatesFromIcal(pageEn.data.ical);
-  const occupiedRanges = await occupiedRangesFromIcal(pageEn.data.ical);
+  const myRentId = pageEn.data.myRentID;
+  console.log("[MyRent] myRentID value:", myRentId, "type:", typeof myRentId);
+  let occupiedData = { occupiedDates: [], checkoutDates: [] };
+  let occupiedRanges = [];
+  let myRentDays;
+
+  if (myRentId) {
+    console.log("[MyRent] Fetching days for property:", myRentId);
+    try {
+      myRentDays = await fetchMyRentDays(myRentId);
+      console.log("[MyRent] Success, days count:", Object.keys(myRentDays).length);
+    } catch (error) {
+      console.error(`[MyRent] API error for property ${myRentId}:`, error);
+      myRentDays = null;
+    }
+  } else {
+    console.log("[MyRent] No myRentID, falling back to iCal");
+    occupiedData = await occupiedDatesFromIcal(pageEn.data.ical);
+    occupiedRanges = await occupiedRangesFromIcal(pageEn.data.ical);
+  }
 
   const photos = page.data.gallery.map((photo) => {
     return {
@@ -183,12 +202,14 @@ export default async function Page({ params }) {
                   prices={pageEn.data.pricing}
                   discounts={pageEn.data.discounts}
                   deposit={pageEn.data.security_deposit}
+                  myRentDays={myRentDays}
                 />
                 <BookingForm
                   uid={params.uid}
                   occupiedDates={occupiedData.occupiedDates}
                   occupiedRanges={occupiedRanges}
                   priceRanges={pageEn.data.pricing}
+                  myRentDays={myRentDays}
                   className="mt-6"
                 />
                 {/* <div className="mt-12 rounded-md bg-slate-50 dark:bg-slate-800 shadow dark:shadow-gray-700">

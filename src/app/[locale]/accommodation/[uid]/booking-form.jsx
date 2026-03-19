@@ -14,6 +14,7 @@ export default function BookingForm({
   occupiedDates,
   occupiedRanges,
   priceRanges,
+  myRentDays,
   className,
 }) {
   const { query, updateQuery } = useSearch();
@@ -67,6 +68,7 @@ export default function BookingForm({
               )}
               priceRanges={priceRanges}
               unavailableRanges={occupiedRanges}
+              myRentDays={myRentDays}
               selected={query.dateRange}
               onSelect={(range) => updateQuery({ dateRange: range })}
               placeholder={t("pick")}

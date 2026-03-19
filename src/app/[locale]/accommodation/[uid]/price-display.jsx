@@ -13,12 +13,14 @@ import {
   hasSufficientPricingData,
   filterValidPriceRanges,
 } from "@/lib/validation";
+import { myRentCalculatePrice } from "@/lib/myrent-utils";
 import { useSearch } from "@/providers/search-provider";
 
 export default function PriceDisplay({
   prices,
   discounts,
   deposit,
+  myRentDays,
   className,
 }) {
   const { query, updateQuery } = useSearch();
@@ -26,6 +28,73 @@ export default function PriceDisplay({
   if (query.dateRange.from === null || query.dateRange.to === null) {
     return null;
   }
+
+  // --- MyRent mode: myRentDays is defined (set, even if null from API error) ---
+  if (myRentDays !== undefined) {
+    if (!myRentDays) {
+      return (
+        <div className={cn("rounded-md bg-slate-50 shadow", className)}>
+          <div className="p-6">
+            <h5 className="text-2xl font-medium">Price</h5>
+            <p className="text-slate-400 mt-4">
+              Pricing information is currently unavailable for the selected dates.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    const nights = differenceInCalendarDays(query.dateRange.to, query.dateRange.from);
+    const total = myRentCalculatePrice(myRentDays, query.dateRange.from, query.dateRange.to);
+
+    if (total <= 0) {
+      return (
+        <div className={cn("rounded-md bg-slate-50 shadow", className)}>
+          <div className="p-6">
+            <h5 className="text-2xl font-medium">Price</h5>
+            <p className="text-slate-400 mt-4">
+              Unable to calculate price for the selected dates. Please try
+              different dates.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className={cn("rounded-md bg-slate-50 shadow", className)}>
+        <div className="p-6">
+          <h5 className="text-2xl font-medium">Price</h5>
+
+          <div className="flex justify-between items-center mt-4">
+            <span className="text-xl font-medium">for {nights} nights</span>
+            <span className="bg-green-600/10 text-green-600 text-sm px-2.5 py-0.75 rounded h-6">
+              Best price Guarantee
+            </span>
+          </div>
+
+          <ul className="list-none mt-4">
+            <li className="flex justify-between items-center">
+              <span className="text-slate-400 text-sm">Check-in - Check-out</span>
+              <span className="font-medium text-sm">
+                {df(query.dateRange.from, "PP")} - {df(query.dateRange.to, "PP")}
+              </span>
+            </li>
+            <li className="flex justify-between items-center mt-2">
+              <span className="text-slate-400 text-sm">Total</span>
+              <span className="font-medium text-sm">{currency(total)}</span>
+            </li>
+            <li className="flex justify-between items-center mt-2">
+              <span className="text-slate-400 text-sm">Safety deposit (refundable)</span>
+              <span className="font-medium text-sm">{`+${currency(deposit)}`}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    );
+  }
+
+  // --- Prismic mode: no myRentID on this property ---
 
   // Validate pricing data before calculations
   if (!hasSufficientPricingData(prices)) {
