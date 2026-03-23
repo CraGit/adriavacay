@@ -7,6 +7,10 @@ import {
   filterByChangeoverDayAndMinimumStay,
   hasOverlap,
 } from "@/lib/utils";
+import {
+  myRentCalculatePrice,
+  myRentIsEndDateValid,
+} from "@/lib/myrent-utils";
 import { filterAccommodationsWithValidPricing } from "@/lib/validation";
 import { useSearch } from "@/providers/search-provider";
 import { useQueryState } from "nuqs";
@@ -56,6 +60,13 @@ export const AccommodationSingle = ({ accommodations, showAll }) => {
     // Apply changeover day filter only if dates are provided
     const beforeChangeoverFilter = filtered.length;
     filtered = filtered.filter((item) => {
+      if (item.myRentDays) {
+        return myRentIsEndDateValid(
+          query.dateRange.from,
+          query.dateRange.to,
+          item.myRentDays
+        );
+      }
       const changeoverResult = filterByChangeoverDayAndMinimumStay(
         item.pricing,
         query.dateRange.from,
@@ -79,18 +90,22 @@ const renderWithCalculatedPrices = (accommodations, dateRange) => {
   }
 
   return accommodations.map((item) => {
-    const price = calculateTotalPrice(
-      item.pricing,
-      dateRange.from,
-      dateRange.to
-    );
+    const price = item.myRentDays
+      ? myRentCalculatePrice(item.myRentDays, dateRange.from, dateRange.to)
+      : calculateTotalPrice(
+          item.pricing,
+          dateRange.from,
+          dateRange.to
+        );
 
-    const discountedPrice = calculateTotalPriceWithDiscount(
-      item.pricing,
-      item.discounts,
-      dateRange.from,
-      dateRange.to
-    );
+    const discountedPrice = item.myRentDays
+      ? price
+      : calculateTotalPriceWithDiscount(
+          item.pricing,
+          item.discounts,
+          dateRange.from,
+          dateRange.to
+        );
 
     return price && price !== 0 ? (
       <Card
@@ -125,14 +140,23 @@ const renderAllAccommodations = (accommodations, type) => {
 
   return filtered
     .map((item) => {
-      const validPrices = item.data.pricing.filter(
-        (p) => p.price && p.price > 0
-      );
-      if (validPrices.length === 0) return null;
+      let lowestPrice;
 
-      const lowestPrice = Math.floor(
-        Math.min(...validPrices.map((p) => p.price))
-      );
+      if (item.myRentDays) {
+        const prices = Object.values(item.myRentDays)
+          .filter((d) => d.available && d.price > 0)
+          .map((d) => d.price);
+        if (prices.length === 0) return null;
+        lowestPrice = Math.floor(Math.min(...prices));
+      } else {
+        const validPrices = item.data.pricing.filter(
+          (p) => p.price && p.price > 0
+        );
+        if (validPrices.length === 0) return null;
+        lowestPrice = Math.floor(
+          Math.min(...validPrices.map((p) => p.price))
+        );
+      }
 
       return (
         <Card

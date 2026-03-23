@@ -3,6 +3,8 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { AccommodationSingle } from "@/app/[locale]/accommodation/accommodation-single";
 import SectionHeading from "@/components/SectionHeading";
 import { Link } from "@/i18n/routing";
+import { fetchMyRentDays } from "@/lib/myrent";
+import { myRentOccupiedDates } from "@/lib/myrent-utils";
 import { occupiedDatesFromIcal } from "@/lib/utils";
 import {
   filterAccommodationsWithValidPricing,
@@ -55,6 +57,19 @@ const ApartmentListSlice = async ({ slice }) => {
           }
 
           if (enData && enData.data) {
+            const myRentId = enData.data.myRentID;
+            if (myRentId) {
+              const myRentDays = await fetchMyRentDays(myRentId);
+              return {
+                ...a,
+                pricing: enData.data.pricing || [],
+                discounts: enData.data.discounts || [],
+                myRentDays,
+                occupiedDates: myRentOccupiedDates(myRentDays),
+                checkoutDates: [],
+              };
+            }
+
             const occupiedData = await occupiedDatesFromIcal(enData.data.ical);
             const accommodation = {
               ...a,
@@ -64,6 +79,19 @@ const ApartmentListSlice = async ({ slice }) => {
               checkoutDates: occupiedData.checkoutDates,
             };
             return cleanAccommodationPricingData(accommodation);
+          }
+
+          const myRentIdFallback = a.data?.myRentID;
+          if (myRentIdFallback) {
+            const myRentDays = await fetchMyRentDays(myRentIdFallback);
+            return {
+              ...a,
+              pricing: a.data?.pricing || [],
+              discounts: a.data?.discounts || [],
+              myRentDays,
+              occupiedDates: myRentOccupiedDates(myRentDays),
+              checkoutDates: [],
+            };
           }
 
           const occupiedDataFallback = await occupiedDatesFromIcal(
@@ -78,6 +106,19 @@ const ApartmentListSlice = async ({ slice }) => {
           };
           return cleanAccommodationPricingData(accommodationFallback);
         } else {
+          const myRentId = a.data.myRentID;
+          if (myRentId) {
+            const myRentDays = await fetchMyRentDays(myRentId);
+            return {
+              ...a,
+              pricing: a.data.pricing || [],
+              discounts: a.data.discounts || [],
+              myRentDays,
+              occupiedDates: myRentOccupiedDates(myRentDays),
+              checkoutDates: [],
+            };
+          }
+
           const occupiedData = await occupiedDatesFromIcal(a.data.ical);
           const accommodation = {
             ...a,

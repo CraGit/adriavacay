@@ -3,6 +3,8 @@ import Image from "next/image";
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import { createClient } from "@/prismicio";
 import { AccommodationSingle } from "@/app/[locale]/accommodation/accommodation-single";
+import { fetchMyRentDays } from "@/lib/myrent";
+import { myRentOccupiedDates } from "@/lib/myrent-utils";
 import { occupiedDatesFromIcal } from "@/lib/utils";
 import {
   filterAccommodationsWithValidPricing,
@@ -155,6 +157,18 @@ export default async function VillaFilterPage({ params: { slug, locale } }) {
           if (englishAlt?.id) {
             const enData = await client.getByID(englishAlt.id);
             if (enData?.data) {
+              const myRentId = enData.data.myRentID;
+              if (myRentId) {
+                const myRentDays = await fetchMyRentDays(myRentId);
+                return {
+                  ...villa,
+                  pricing: enData.data.pricing || [],
+                  discounts: enData.data.discounts || [],
+                  myRentDays,
+                  occupiedDates: myRentOccupiedDates(myRentDays),
+                  checkoutDates: [],
+                };
+              }
               const occupiedData = await occupiedDatesFromIcal(enData.data.ical);
               return cleanAccommodationPricingData({
                 ...villa,
@@ -166,6 +180,18 @@ export default async function VillaFilterPage({ params: { slug, locale } }) {
             }
           }
           // Fallback to current document
+          const myRentIdFallback = villa.data?.myRentID;
+          if (myRentIdFallback) {
+            const myRentDays = await fetchMyRentDays(myRentIdFallback);
+            return {
+              ...villa,
+              pricing: villa.data?.pricing || [],
+              discounts: villa.data?.discounts || [],
+              myRentDays,
+              occupiedDates: myRentOccupiedDates(myRentDays),
+              checkoutDates: [],
+            };
+          }
           const occupiedData = await occupiedDatesFromIcal(villa.data?.ical ?? "");
           return cleanAccommodationPricingData({
             ...villa,
@@ -175,6 +201,18 @@ export default async function VillaFilterPage({ params: { slug, locale } }) {
             checkoutDates: occupiedData.checkoutDates,
           });
         } else {
+          const myRentId = villa.data.myRentID;
+          if (myRentId) {
+            const myRentDays = await fetchMyRentDays(myRentId);
+            return {
+              ...villa,
+              pricing: villa.data.pricing || [],
+              discounts: villa.data.discounts || [],
+              myRentDays,
+              occupiedDates: myRentOccupiedDates(myRentDays),
+              checkoutDates: [],
+            };
+          }
           const occupiedData = await occupiedDatesFromIcal(villa.data.ical);
           return cleanAccommodationPricingData({
             ...villa,

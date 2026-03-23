@@ -98,3 +98,13 @@ export function myRentHasValidEndDates(startDate, dayRecord) {
   }
   return false;
 }
+
+/**
+ * Extract unavailable (occupied) dates from a MyRent day record as Date objects.
+ * Mirrors the shape of occupiedDates produced by occupiedDatesFromIcal.
+ */
+export function myRentOccupiedDates(dayRecord) {
+  return Object.entries(dayRecord)
+    .filter(([, d]) => !d.available)
+    .map(([dateStr]) => parseISO(dateStr));
+}
