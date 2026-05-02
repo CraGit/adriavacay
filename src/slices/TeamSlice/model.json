@@ -1,0 +1,89 @@
+{
+  "description": "Team section with member cards",
+  "id": "team_slice",
+  "name": "TeamSlice",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "description": "Default variation",
+      "docURL": "...",
+      "id": "default",
+      "imageUrl": "",
+      "name": "Default",
+      "primary": {
+        "heading": {
+          "config": {
+            "label": "Heading",
+            "placeholder": "Meet the team"
+          },
+          "type": "Text"
+        },
+        "subheading": {
+          "config": {
+            "label": "Subheading",
+            "placeholder": ""
+          },
+          "type": "Text"
+        },
+        "members": {
+          "config": {
+            "fields": {
+              "description": {
+                "config": {
+                  "allowTargetBlank": true,
+                  "label": "Description",
+                  "multi": "paragraph,strong,em,hyperlink,list-item",
+                  "placeholder": "Short bio"
+                },
+                "type": "StructuredText"
+              },
+              "email": {
+                "config": {
+                  "label": "Email",
+                  "placeholder": "name@example.com"
+                },
+                "type": "Text"
+              },
+              "name": {
+                "config": {
+                  "label": "Name",
+                  "placeholder": "Full name"
+                },
+                "type": "Text"
+              },
+              "phone": {
+                "config": {
+                  "label": "Phone",
+                  "placeholder": "+385 ..."
+                },
+                "type": "Text"
+              },
+              "photo": {
+                "config": {
+                  "label": "Photo",
+                  "constraint": {
+                    "height": null,
+                    "width": null
+                  },
+                  "thumbnails": []
+                },
+                "type": "Image"
+              },
+              "role": {
+                "config": {
+                  "label": "Role / Title",
+                  "placeholder": "e.g. Property Manager"
+                },
+                "type": "Text"
+              }
+            },
+            "label": "Team Members"
+          },
+          "type": "Group"
+        }
+      },
+      "version": "initial",
+      "items": {}
+    }
+  ]
+}

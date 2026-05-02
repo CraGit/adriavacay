@@ -70,6 +70,10 @@ const routes = [
     type: "privacy_policy",
     path: "/:lang?/privacy-policy",
   },
+  {
+    type: "service_single",
+    path: "/:lang?/services/:uid",
+  },
 ];
 
 /**

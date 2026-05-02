@@ -1,0 +1,100 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"heading": {
+				"__TYPE__": "FieldContent",
+				"value": "powder",
+				"type": "Text"
+			},
+			"members": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"description",
+								{
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "Veniam irure occaecat anim magna excepteur voluptate labore. Occaecat Lorem aliqua adipisicing sunt."
+											}
+										}
+									]
+								}
+							],
+							[
+								"email",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "long",
+									"type": "Text"
+								}
+							],
+							[
+								"name",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "come",
+									"type": "Text"
+								}
+							],
+							[
+								"phone",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "fruit",
+									"type": "Text"
+								}
+							],
+							[
+								"photo",
+								{
+									"__TYPE__": "ImageContent",
+									"origin": {
+										"id": "main",
+										"url": "https://images.unsplash.com/photo-1587614295999-6c1c13675117",
+										"width": 3810,
+										"height": 5715
+									},
+									"url": "https://images.unsplash.com/photo-1587614295999-6c1c13675117",
+									"width": 3810,
+									"height": 5715,
+									"edit": {
+										"zoom": 1,
+										"crop": {
+											"x": 0,
+											"y": 0
+										},
+										"background": "transparent"
+									},
+									"alt": "under",
+									"thumbnails": {}
+								}
+							],
+							[
+								"role",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "hang",
+									"type": "Text"
+								}
+							]
+						]
+					}
+				]
+			},
+			"subheading": {
+				"__TYPE__": "FieldContent",
+				"value": "serious",
+				"type": "Text"
+			}
+		},
+		"items": []
+	}
+]

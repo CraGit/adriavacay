@@ -143,7 +143,7 @@ interface AboutUsDocumentData {
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/slices
    */
-  slices: prismic.SliceZone<AboutUsDocumentDataSlicesSlice> /**
+  slices: prismic.SliceZone<AboutUsDocumentDataSlicesSlice>; /**
    * Meta Title field in *About Us*
    *
    * - **Field Type**: Text
@@ -151,7 +151,7 @@ interface AboutUsDocumentData {
    * - **API ID Path**: about_us.meta_title
    * - **Tab**: SEO & Metadata
    * - **Documentation**: https://prismic.io/docs/fields/text
-   */;
+   */
   meta_title: prismic.KeyTextField;
 
   /**
@@ -211,7 +211,7 @@ interface AccommodationDocumentData {
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/slices
    */
-  slices: prismic.SliceZone<AccommodationDocumentDataSlicesSlice> /**
+  slices: prismic.SliceZone<AccommodationDocumentDataSlicesSlice>; /**
    * Meta Title field in *Accommodation*
    *
    * - **Field Type**: Text
@@ -219,7 +219,7 @@ interface AccommodationDocumentData {
    * - **API ID Path**: accommodation.meta_title
    * - **Tab**: SEO & Metadata
    * - **Documentation**: https://prismic.io/docs/fields/text
-   */;
+   */
   meta_title: prismic.KeyTextField;
 
   /**
@@ -1597,7 +1597,7 @@ interface AccommodationSingleDocumentData {
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/slices
    */
-  slices: prismic.SliceZone<AccommodationSingleDocumentDataSlicesSlice> /**
+  slices: prismic.SliceZone<AccommodationSingleDocumentDataSlicesSlice>; /**
    * Meta Title field in *Accommodation Single*
    *
    * - **Field Type**: Text
@@ -1605,7 +1605,7 @@ interface AccommodationSingleDocumentData {
    * - **API ID Path**: accommodation_single.meta_title
    * - **Tab**: SEO & Metadata
    * - **Documentation**: https://prismic.io/docs/fields/text
-   */;
+   */
   meta_title: prismic.KeyTextField;
 
   /**
@@ -1664,7 +1664,7 @@ interface ApartmentsDocumentData {
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/slices
    */
-  slices: prismic.SliceZone<ApartmentsDocumentDataSlicesSlice> /**
+  slices: prismic.SliceZone<ApartmentsDocumentDataSlicesSlice>; /**
    * Meta Title field in *Apartments*
    *
    * - **Field Type**: Text
@@ -1672,7 +1672,7 @@ interface ApartmentsDocumentData {
    * - **API ID Path**: apartments.meta_title
    * - **Tab**: SEO & Metadata
    * - **Documentation**: https://prismic.io/docs/fields/text
-   */;
+   */
   meta_title: prismic.KeyTextField;
 
   /**
@@ -1732,7 +1732,7 @@ interface BlogDocumentData {
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/slices
    */
-  slices: prismic.SliceZone<BlogDocumentDataSlicesSlice> /**
+  slices: prismic.SliceZone<BlogDocumentDataSlicesSlice>; /**
    * Meta Title field in *Blog*
    *
    * - **Field Type**: Text
@@ -1740,7 +1740,7 @@ interface BlogDocumentData {
    * - **API ID Path**: blog.meta_title
    * - **Tab**: SEO & Metadata
    * - **Documentation**: https://prismic.io/docs/fields/text
-   */;
+   */
   meta_title: prismic.KeyTextField;
 
   /**
@@ -1852,7 +1852,7 @@ interface BlogSingleDocumentData {
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/slices
    */
-  slices: prismic.SliceZone<BlogSingleDocumentDataSlicesSlice> /**
+  slices: prismic.SliceZone<BlogSingleDocumentDataSlicesSlice>; /**
    * Meta Title field in *Blog Single*
    *
    * - **Field Type**: Text
@@ -1860,7 +1860,7 @@ interface BlogSingleDocumentData {
    * - **API ID Path**: blog_single.meta_title
    * - **Tab**: SEO & Metadata
    * - **Documentation**: https://prismic.io/docs/fields/text
-   */;
+   */
   meta_title: prismic.KeyTextField;
 
   /**
@@ -1946,6 +1946,7 @@ export type CancelationPolicyDocument<Lang extends string = string> =
   >;
 
 type ContactDocumentDataSlicesSlice =
+  | TeamSliceSlice
   | ContactFormSliceSlice
   | SmallHeroSliceSlice;
 
@@ -1962,7 +1963,7 @@ interface ContactDocumentData {
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/slices
    */
-  slices: prismic.SliceZone<ContactDocumentDataSlicesSlice> /**
+  slices: prismic.SliceZone<ContactDocumentDataSlicesSlice>; /**
    * Meta Title field in *Contact*
    *
    * - **Field Type**: Text
@@ -1970,7 +1971,7 @@ interface ContactDocumentData {
    * - **API ID Path**: contact.meta_title
    * - **Tab**: SEO & Metadata
    * - **Documentation**: https://prismic.io/docs/fields/text
-   */;
+   */
   meta_title: prismic.KeyTextField;
 
   /**
@@ -2086,7 +2087,7 @@ interface DestinationDocumentData {
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/slices
    */
-  slices: prismic.SliceZone<DestinationDocumentDataSlicesSlice> /**
+  slices: prismic.SliceZone<DestinationDocumentDataSlicesSlice>; /**
    * Meta Title field in *Destination*
    *
    * - **Field Type**: Text
@@ -2094,7 +2095,7 @@ interface DestinationDocumentData {
    * - **API ID Path**: destination.meta_title
    * - **Tab**: SEO & Metadata
    * - **Documentation**: https://prismic.io/docs/fields/text
-   */;
+   */
   meta_title: prismic.KeyTextField;
 
   /**
@@ -2153,7 +2154,7 @@ interface DestinationsDocumentData {
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/slices
    */
-  slices: prismic.SliceZone<DestinationsDocumentDataSlicesSlice> /**
+  slices: prismic.SliceZone<DestinationsDocumentDataSlicesSlice>; /**
    * Meta Title field in *Destinations*
    *
    * - **Field Type**: Text
@@ -2161,7 +2162,7 @@ interface DestinationsDocumentData {
    * - **API ID Path**: destinations.meta_title
    * - **Tab**: SEO & Metadata
    * - **Documentation**: https://prismic.io/docs/fields/text
-   */;
+   */
   meta_title: prismic.KeyTextField;
 
   /**
@@ -2221,7 +2222,7 @@ interface ForSaleDocumentData {
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/slices
    */
-  slices: prismic.SliceZone<ForSaleDocumentDataSlicesSlice> /**
+  slices: prismic.SliceZone<ForSaleDocumentDataSlicesSlice>; /**
    * Meta Title field in *For Sale*
    *
    * - **Field Type**: Text
@@ -2229,7 +2230,7 @@ interface ForSaleDocumentData {
    * - **API ID Path**: for_sale.meta_title
    * - **Tab**: SEO & Metadata
    * - **Documentation**: https://prismic.io/docs/fields/text
-   */;
+   */
   meta_title: prismic.KeyTextField;
 
   /**
@@ -2400,7 +2401,7 @@ interface ForSaleSingleDocumentData {
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/slices
    */
-  slices: prismic.SliceZone<ForSaleSingleDocumentDataSlicesSlice> /**
+  slices: prismic.SliceZone<ForSaleSingleDocumentDataSlicesSlice>; /**
    * Meta Title field in *For Sale Single*
    *
    * - **Field Type**: Text
@@ -2408,7 +2409,7 @@ interface ForSaleSingleDocumentData {
    * - **API ID Path**: for_sale_single.meta_title
    * - **Tab**: SEO & Metadata
    * - **Documentation**: https://prismic.io/docs/fields/text
-   */;
+   */
   meta_title: prismic.KeyTextField;
 
   /**
@@ -2467,7 +2468,7 @@ interface HolidayHomesDocumentData {
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/slices
    */
-  slices: prismic.SliceZone<HolidayHomesDocumentDataSlicesSlice> /**
+  slices: prismic.SliceZone<HolidayHomesDocumentDataSlicesSlice>; /**
    * Meta Title field in *Holiday Homes*
    *
    * - **Field Type**: Text
@@ -2475,7 +2476,7 @@ interface HolidayHomesDocumentData {
    * - **API ID Path**: holiday_homes.meta_title
    * - **Tab**: SEO & Metadata
    * - **Documentation**: https://prismic.io/docs/fields/text
-   */;
+   */
   meta_title: prismic.KeyTextField;
 
   /**
@@ -2536,7 +2537,7 @@ interface HomepageDocumentData {
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/slices
    */
-  slices: prismic.SliceZone<HomepageDocumentDataSlicesSlice> /**
+  slices: prismic.SliceZone<HomepageDocumentDataSlicesSlice>; /**
    * Meta Title field in *homepage*
    *
    * - **Field Type**: Text
@@ -2544,7 +2545,7 @@ interface HomepageDocumentData {
    * - **API ID Path**: homepage.meta_title
    * - **Tab**: SEO & Metadata
    * - **Documentation**: https://prismic.io/docs/fields/text
-   */;
+   */
   meta_title: prismic.KeyTextField;
 
   /**
@@ -2677,7 +2678,7 @@ interface PrivacyPolicyDocumentData {
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/slices
    */
-  slices: prismic.SliceZone<PrivacyPolicyDocumentDataSlicesSlice> /**
+  slices: prismic.SliceZone<PrivacyPolicyDocumentDataSlicesSlice>; /**
    * Meta Title field in *Privacy Policy*
    *
    * - **Field Type**: Text
@@ -2685,7 +2686,7 @@ interface PrivacyPolicyDocumentData {
    * - **API ID Path**: privacy_policy.meta_title
    * - **Tab**: SEO & Metadata
    * - **Documentation**: https://prismic.io/docs/fields/text
-   */;
+   */
   meta_title: prismic.KeyTextField;
 
   /**
@@ -2724,6 +2725,130 @@ export type PrivacyPolicyDocument<Lang extends string = string> =
   prismic.PrismicDocumentWithoutUID<
     Simplify<PrivacyPolicyDocumentData>,
     "privacy_policy",
+    Lang
+  >;
+
+/**
+ * Item in *Service Single → Gallery*
+ */
+export interface ServiceSingleDocumentDataGalleryItem {
+  /**
+   * Image field in *Service Single → Gallery*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: service_single.gallery[].image
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  image: prismic.ImageField<never>;
+}
+
+type ServiceSingleDocumentDataSlicesSlice = VideoSliceSlice | TeamSliceSlice;
+
+/**
+ * Content for Service Single documents
+ */
+interface ServiceSingleDocumentData {
+  /**
+   * Heading field in *Service Single*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: service_single.heading
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  heading: prismic.KeyTextField;
+
+  /**
+   * Image field in *Service Single*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: service_single.image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  image: prismic.ImageField<never>;
+
+  /**
+   * Content field in *Service Single*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: service_single.content
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/rich-text
+   */
+  content: prismic.RichTextField;
+
+  /**
+   * Gallery field in *Service Single*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: service_single.gallery[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+   */
+  gallery: prismic.GroupField<Simplify<ServiceSingleDocumentDataGalleryItem>>;
+
+  /**
+   * Slice Zone field in *Service Single*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: service_single.slices[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/slices
+   */
+  slices: prismic.SliceZone<ServiceSingleDocumentDataSlicesSlice>; /**
+   * Meta Title field in *Service Single*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A title of the page used for social media and search engines
+   * - **API ID Path**: service_single.meta_title
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  meta_title: prismic.KeyTextField;
+
+  /**
+   * Meta Description field in *Service Single*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A brief summary of the page
+   * - **API ID Path**: service_single.meta_description
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  meta_description: prismic.KeyTextField;
+
+  /**
+   * Meta Image field in *Service Single*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: service_single.meta_image
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  meta_image: prismic.ImageField<never>;
+}
+
+/**
+ * Service Single document from Prismic
+ *
+ * - **API ID**: `service_single`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/content-modeling
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type ServiceSingleDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithUID<
+    Simplify<ServiceSingleDocumentData>,
+    "service_single",
     Lang
   >;
 
@@ -2806,7 +2931,7 @@ interface SettingsDocumentData {
    * - **Tab**: Contact
    * - **Documentation**: https://prismic.io/docs/fields/text
    */
-  vat: prismic.KeyTextField /**
+  vat: prismic.KeyTextField; /**
    * Facebook URL field in *Settings*
    *
    * - **Field Type**: Link
@@ -2814,7 +2939,7 @@ interface SettingsDocumentData {
    * - **API ID Path**: settings.facebook_url
    * - **Tab**: Social Media
    * - **Documentation**: https://prismic.io/docs/fields/link
-   */;
+   */
   facebook_url: prismic.LinkField<
     string,
     string,
@@ -2838,7 +2963,7 @@ interface SettingsDocumentData {
     unknown,
     prismic.FieldState,
     never
-  > /**
+  >; /**
    * Site Name field in *Settings*
    *
    * - **Field Type**: Text
@@ -2846,7 +2971,7 @@ interface SettingsDocumentData {
    * - **API ID Path**: settings.site_name
    * - **Tab**: SEO
    * - **Documentation**: https://prismic.io/docs/fields/text
-   */;
+   */
   site_name: prismic.KeyTextField;
 
   /**
@@ -2858,7 +2983,148 @@ interface SettingsDocumentData {
    * - **Tab**: SEO
    * - **Documentation**: https://prismic.io/docs/fields/image
    */
-  og_image: prismic.ImageField<never>;
+  og_image: prismic.ImageField<never>; /**
+   * Hero – Villas in Split field in *Settings*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.hero_villas_in_split
+   * - **Tab**: Villa Heroes
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  hero_villas_in_split: prismic.ImageField<never>;
+
+  /**
+   * Hero – Villas in Omiš field in *Settings*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.hero_villas_in_omis
+   * - **Tab**: Villa Heroes
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  hero_villas_in_omis: prismic.ImageField<never>;
+
+  /**
+   * Hero – Villas in Makarska field in *Settings*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.hero_villas_in_makarska
+   * - **Tab**: Villa Heroes
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  hero_villas_in_makarska: prismic.ImageField<never>;
+
+  /**
+   * Hero – Villas in Dubrovnik field in *Settings*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.hero_villas_in_dubrovnik
+   * - **Tab**: Villa Heroes
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  hero_villas_in_dubrovnik: prismic.ImageField<never>;
+
+  /**
+   * Hero – Villas in Šibenik field in *Settings*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.hero_villas_in_sibenik
+   * - **Tab**: Villa Heroes
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  hero_villas_in_sibenik: prismic.ImageField<never>;
+
+  /**
+   * Hero – Heated Pool field in *Settings*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.hero_heated_pool
+   * - **Tab**: Villa Heroes
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  hero_heated_pool: prismic.ImageField<never>;
+
+  /**
+   * Hero – Jacuzzi field in *Settings*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.hero_jacuzzi
+   * - **Tab**: Villa Heroes
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  hero_jacuzzi: prismic.ImageField<never>;
+
+  /**
+   * Hero – Sauna field in *Settings*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.hero_sauna
+   * - **Tab**: Villa Heroes
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  hero_sauna: prismic.ImageField<never>;
+
+  /**
+   * Hero – Sea View field in *Settings*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.hero_sea_view
+   * - **Tab**: Villa Heroes
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  hero_sea_view: prismic.ImageField<never>;
+
+  /**
+   * Hero – Beach field in *Settings*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.hero_beach
+   * - **Tab**: Villa Heroes
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  hero_beach: prismic.ImageField<never>;
+
+  /**
+   * Hero – Playground field in *Settings*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.hero_playground
+   * - **Tab**: Villa Heroes
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  hero_playground: prismic.ImageField<never>;
+
+  /**
+   * Hero – Garden field in *Settings*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.hero_garden
+   * - **Tab**: Villa Heroes
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  hero_garden: prismic.ImageField<never>;
+
+  /**
+   * Hero – Pet Friendly field in *Settings*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.hero_pet_friendly
+   * - **Tab**: Villa Heroes
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  hero_pet_friendly: prismic.ImageField<never>;
 }
 
 /**
@@ -2925,7 +3191,7 @@ interface TermsAndConditionsDocumentData {
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/slices
    */
-  slices: prismic.SliceZone<TermsAndConditionsDocumentDataSlicesSlice> /**
+  slices: prismic.SliceZone<TermsAndConditionsDocumentDataSlicesSlice>; /**
    * Meta Title field in *Terms and Conditions*
    *
    * - **Field Type**: Text
@@ -2933,7 +3199,7 @@ interface TermsAndConditionsDocumentData {
    * - **API ID Path**: terms_and_conditions.meta_title
    * - **Tab**: SEO & Metadata
    * - **Documentation**: https://prismic.io/docs/fields/text
-   */;
+   */
   meta_title: prismic.KeyTextField;
 
   /**
@@ -2992,6 +3258,7 @@ export type AllDocumentTypes =
   | HomepageDocument
   | PaymentDetailsDocument
   | PrivacyPolicyDocument
+  | ServiceSingleDocument
   | SettingsDocument
   | TermsAndConditionsDocument;
 
@@ -3752,6 +4019,138 @@ export type SmallHeroSliceSlice = prismic.SharedSlice<
 >;
 
 /**
+ * Item in *TeamSlice → Default → Primary → Team Members*
+ */
+export interface TeamSliceSliceDefaultPrimaryMembersItem {
+  /**
+   * Description field in *TeamSlice → Default → Primary → Team Members*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Short bio
+   * - **API ID Path**: team_slice.default.primary.members[].description
+   * - **Documentation**: https://prismic.io/docs/fields/rich-text
+   */
+  description: prismic.RichTextField;
+
+  /**
+   * Email field in *TeamSlice → Default → Primary → Team Members*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: name@example.com
+   * - **API ID Path**: team_slice.default.primary.members[].email
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  email: prismic.KeyTextField;
+
+  /**
+   * Name field in *TeamSlice → Default → Primary → Team Members*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Full name
+   * - **API ID Path**: team_slice.default.primary.members[].name
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  name: prismic.KeyTextField;
+
+  /**
+   * Phone field in *TeamSlice → Default → Primary → Team Members*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: +385 ...
+   * - **API ID Path**: team_slice.default.primary.members[].phone
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  phone: prismic.KeyTextField;
+
+  /**
+   * Photo field in *TeamSlice → Default → Primary → Team Members*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: team_slice.default.primary.members[].photo
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  photo: prismic.ImageField<never>;
+
+  /**
+   * Role / Title field in *TeamSlice → Default → Primary → Team Members*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: e.g. Property Manager
+   * - **API ID Path**: team_slice.default.primary.members[].role
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  role: prismic.KeyTextField;
+}
+
+/**
+ * Primary content in *TeamSlice → Default → Primary*
+ */
+export interface TeamSliceSliceDefaultPrimary {
+  /**
+   * Heading field in *TeamSlice → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Meet the team
+   * - **API ID Path**: team_slice.default.primary.heading
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  heading: prismic.KeyTextField;
+
+  /**
+   * Subheading field in *TeamSlice → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: team_slice.default.primary.subheading
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  subheading: prismic.KeyTextField;
+
+  /**
+   * Team Members field in *TeamSlice → Default → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: team_slice.default.primary.members[]
+   * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+   */
+  members: prismic.GroupField<
+    Simplify<TeamSliceSliceDefaultPrimaryMembersItem>
+  >;
+}
+
+/**
+ * Default variation for TeamSlice Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default variation
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type TeamSliceSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<TeamSliceSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *TeamSlice*
+ */
+type TeamSliceSliceVariation = TeamSliceSliceDefault;
+
+/**
+ * TeamSlice Shared Slice
+ *
+ * - **API ID**: `team_slice`
+ * - **Description**: Team section with member cards
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type TeamSliceSlice = prismic.SharedSlice<
+  "team_slice",
+  TeamSliceSliceVariation
+>;
+
+/**
  * Primary content in *VideoSlice → Default → Primary*
  */
 export interface VideoSliceSliceDefaultPrimary {
@@ -3873,6 +4272,10 @@ declare module "@prismicio/client" {
       PrivacyPolicyDocument,
       PrivacyPolicyDocumentData,
       PrivacyPolicyDocumentDataSlicesSlice,
+      ServiceSingleDocument,
+      ServiceSingleDocumentData,
+      ServiceSingleDocumentDataGalleryItem,
+      ServiceSingleDocumentDataSlicesSlice,
       SettingsDocument,
       SettingsDocumentData,
       TermsAndConditionsDocument,
@@ -3922,6 +4325,11 @@ declare module "@prismicio/client" {
       SmallHeroSliceSliceDefaultPrimary,
       SmallHeroSliceSliceVariation,
       SmallHeroSliceSliceDefault,
+      TeamSliceSlice,
+      TeamSliceSliceDefaultPrimaryMembersItem,
+      TeamSliceSliceDefaultPrimary,
+      TeamSliceSliceVariation,
+      TeamSliceSliceDefault,
       VideoSliceSlice,
       VideoSliceSliceDefaultPrimary,
       VideoSliceSliceVariation,
