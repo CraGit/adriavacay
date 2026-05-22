@@ -36,6 +36,7 @@
     "for-sale": "Zum Verkauf",
     "about-us": "Über uns",
     "destinations": "Reiseziele",
+    "services": "Dienstleistungen",
     "blog": "Blog",
     "contact": "Kontakt"
   },
@@ -95,6 +96,11 @@
     "pets-allowed": "Tiere willkommen",
     "guests": "Gäste",
     "what-our-guests-say": "Was denken unsere Gäste?"
+  },
+  "services-single": {
+    "cta-title": "Interessiert an dieser Dienstleistung?",
+    "cta-text": "Nehmen Sie Kontakt mit uns auf, und wir beantworten gerne Ihre Fragen.",
+    "cta-button": "Kontakt aufnehmen"
   },
   "for-sale-list": {
     "show-all": "Alles anzeigen "

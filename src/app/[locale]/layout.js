@@ -17,12 +17,15 @@ export default async function LangLayout({ children, params: { locale } }) {
   const destinations = await client
     .getAllByType("destination", { lang: locale, fetchOptions: { cache: "no-store" } })
     .catch(() => []);
+  const services = await client
+    .getAllByType("service_single", { lang: locale, fetchOptions: { cache: "no-store" } })
+    .catch(() => []);
 
   return (
       <NextIntlClientProvider messages={messages}>
         <NuqsWrapper>
           <SearchProvider>
-            <Navbar navClass="navbar-white" destinations={destinations} />
+            <Navbar navClass="navbar-white" destinations={destinations} services={services} />
             {children}
             <Footer />
             <ContactBar />

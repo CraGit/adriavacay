@@ -36,6 +36,7 @@
     "about-us": "About Us",
     "for-sale": "For Sale",
     "destinations": "Destinations",
+    "services": "Services",
     "blog": "Blog",
     "contact": "Contact"
   },
@@ -95,6 +96,11 @@
     "pets-allowed": "Pets Allowed",
     "guests": "Guests",
     "what-our-guests-say": "What Our Guests Say?"
+  },
+  "services-single": {
+    "cta-title": "Interested in this service?",
+    "cta-text": "Get in touch with us and we'll answer any questions you might have.",
+    "cta-button": "Contact Us"
   },
   "for-sale-list": {
     "show-all": "Show all"

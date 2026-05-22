@@ -11,7 +11,7 @@ import LanguageSwitcher from "./LanguageSwitcher";
 
 import logo from "@/assets/images/logo.svg";
 
-export default function Navbar({ navClass, topnavClass, destinations = [] }) {
+export default function Navbar({ navClass, topnavClass, destinations = [], services = [] }) {
   let [isOpen, setIsOpen] = useState(false);
   let [topNavbar, setTopNavBar] = useState(false);
 
@@ -297,6 +297,31 @@ export default function Navbar({ navClass, topnavClass, destinations = [] }) {
                         onClick={toggleMenu}
                       >
                         {dest.data.heading}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+              <li
+                className={`has-submenu parent-menu-item${
+                  menu.startsWith("/services") ? " active" : ""
+                }`}
+              >
+                <Link href="#" className="sub-menu-item" onClick={(e) => e.preventDefault()}>
+                  {t("services")}
+                </Link>
+                <span className="menu-arrow" />
+                <ul className="submenu">
+                  {services.map((service) => (
+                    <li key={service.uid}>
+                      <Link
+                        href={`/services/${service.uid}`}
+                        className={`sub-menu-item${
+                          submenu === `/services/${service.uid}` ? " active" : ""
+                        }`}
+                        onClick={toggleMenu}
+                      >
+                        {service.data.heading}
                       </Link>
                     </li>
                   ))}

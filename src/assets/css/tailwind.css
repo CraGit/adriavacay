@@ -2285,8 +2285,8 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
   margin-top: 0px;
   margin-bottom: 0px;
   /* reduced horizontal gap between desktop menu items */
-  margin-left: 6px;
-  margin-right: 6px;
+  margin-left: 3px;
+  margin-right: 3px;
   display: block;
 }
 :is([dir="ltr"] #topnav .navigation-menu > li){
@@ -2299,14 +2299,14 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
   display: block;
   background-color: transparent;
   /* reduced left/right padding for tighter menu */
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 7px;
+  padding-right: 7px;
   font-family: var(--font-league_Spartan);
-  font-size: 17px;
+  font-size: 15px;
   line-height: 24px;
   font-weight: 500;
   line-height: 1.5rem;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   --tw-text-opacity: 1;
   color: rgb(22 28 45 / var(--tw-text-opacity));
 }
