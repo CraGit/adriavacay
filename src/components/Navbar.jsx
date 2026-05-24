@@ -93,55 +93,22 @@ export default function Navbar({ navClass, topnavClass, destinations = [], servi
           }`}
         >
           {/* <!-- Logo container--> */}
-          {navClass === "" || navClass === undefined ? (
-            <Link className="logo" href="/">
-              <Image
-                //src="/images/logo.svg"
-                src={logo}
-                className="inline-block dark:hidden"
-                alt=""
-                width={140}
-                height={24}
-              />
-              <Image
-                //src="/images/logo.svg"
-                src={logo}
-                className="hidden dark:inline-block"
-                alt=""
-                width={140}
-                height={24}
-              />
-            </Link>
-          ) : (
-            <Link className="logo" href="/">
-              <span className="inline-block dark:hidden">
-                <Image
-                  //src="/images/logo.svg"
-                  src={logo}
-                  className="l-dark"
-                  alt=""
-                  width={140}
-                  height={24}
-                />
-                <Image
-                  //src="/images/logo.svg"
-                  src={logo}
-                  className="l-light"
-                  alt=""
-                  width={140}
-                  height={24}
-                />
-              </span>
-              <Image
-                //src="/images/logo.svg"
-                src={logo}
-                className="hidden dark:inline-block"
-                alt=""
-                width={140}
-                height={24}
-              />
-            </Link>
-          )}
+          <Link className="logo" href="/">
+            <Image
+              src={logo}
+              className="inline-block dark:hidden"
+              alt=""
+              width={140}
+              height={24}
+            />
+            <Image
+              src={logo}
+              className="hidden dark:inline-block"
+              alt=""
+              width={140}
+              height={24}
+            />
+          </Link>
           {/* <!-- End Logo container--> */}
 
           {/* <!-- Start Mobile Toggle --> */}
@@ -262,6 +229,32 @@ export default function Navbar({ navClass, topnavClass, destinations = [], servi
               </li>
 
               <li
+                className={`has-submenu parent-menu-item${
+                  menu.startsWith("/services") ? " active" : ""
+                }`}
+              >
+                <Link href="#" className="sub-menu-item" onClick={(e) => e.preventDefault()}>
+                  {t("services")}
+                </Link>
+                <span className="menu-arrow" />
+                <ul className="submenu">
+                  {services.map((service) => (
+                    <li key={service.uid}>
+                      <Link
+                        href={`/services/${service.uid}`}
+                        className={`sub-menu-item${
+                          submenu === `/services/${service.uid}` ? " active" : ""
+                        }`}
+                        onClick={toggleMenu}
+                      >
+                        {service.data.heading}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+
+              <li
                 className={menu === "/for-sale" ? "active" : ""}
                 onClick={toggleMenu}
               >
@@ -302,31 +295,7 @@ export default function Navbar({ navClass, topnavClass, destinations = [], servi
                   ))}
                 </ul>
               </li>
-              <li
-                className={`has-submenu parent-menu-item${
-                  menu.startsWith("/services") ? " active" : ""
-                }`}
-              >
-                <Link href="#" className="sub-menu-item" onClick={(e) => e.preventDefault()}>
-                  {t("services")}
-                </Link>
-                <span className="menu-arrow" />
-                <ul className="submenu">
-                  {services.map((service) => (
-                    <li key={service.uid}>
-                      <Link
-                        href={`/services/${service.uid}`}
-                        className={`sub-menu-item${
-                          submenu === `/services/${service.uid}` ? " active" : ""
-                        }`}
-                        onClick={toggleMenu}
-                      >
-                        {service.data.heading}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </li>
+              
               <li
                 className={menu === "/blog" ? "active" : ""}
                 onClick={toggleMenu}
