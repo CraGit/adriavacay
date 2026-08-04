@@ -47,6 +47,7 @@ const TeamSlice = ({ slice }) => {
                     <PrismicNextImage
                       field={member.photo}
                       fill
+                      fallbackAlt={member.name || "Team member"}
                       style={{ objectFit: "cover" }}
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       quality={75}

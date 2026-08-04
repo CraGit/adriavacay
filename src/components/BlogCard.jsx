@@ -3,8 +3,9 @@ import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 
 import { FiArrowRight } from "@/assets/icons/vander";
+import { getImageAlt } from "@/lib/image-alt";
 
-export default function BlogCard({ image, uid, title, url }) {
+export default function BlogCard({ image, uid, title, url, alt }) {
   const t = useTranslations("blog-card");
 
   return (
@@ -15,6 +16,7 @@ export default function BlogCard({ image, uid, title, url }) {
       <div className="relative overflow-hidden">
         <Image
           src={image}
+          alt={getImageAlt(alt, title)}
           className=""
           width={0}
           height={0}

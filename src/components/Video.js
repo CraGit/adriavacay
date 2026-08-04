@@ -72,24 +72,11 @@ const Video = ({ videoEmbed, className = "" }) => {
   };
 
   const handleThumbnailError = () => {
-    console.log("Thumbnail error for:", thumbnailUrl);
     if (!thumbnailError) {
       setThumbnailError(true);
     }
   };
 
-  const handleThumbnailLoad = () => {
-    console.log("Thumbnail loaded successfully:", thumbnailUrl);
-  };
-
-  console.log("Video debug:", {
-    videoEmbed,
-    videoId,
-    thumbnailUrl,
-    thumbnailError,
-    showVideo
-  });
-  
   if (showVideo) {
     return (
       <div className={`relative aspect-video overflow-hidden rounded-lg ${className}`}>
@@ -113,7 +100,6 @@ const Video = ({ videoEmbed, className = "" }) => {
         alt="Video thumbnail"
         className="absolute inset-0 w-full h-full object-cover z-0"
         onError={handleThumbnailError}
-        onLoad={handleThumbnailLoad}
         style={{ display: 'block' }}
       />
       

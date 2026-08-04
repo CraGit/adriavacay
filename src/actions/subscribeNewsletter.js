@@ -9,7 +9,10 @@ export async function subscribeNewsletter(formData) {
   const MAILCHIMP_SERVER = process.env.MAILCHIMP_SERVER;
 
   if (!MAILCHIMP_API_KEY || !MAILCHIMP_AUDIENCE_ID || !MAILCHIMP_SERVER) {
-    throw new Error("Mailchimp not configured on the server. Set MAILCHIMP_API_KEY, MAILCHIMP_AUDIENCE_ID and MAILCHIMP_SERVER.");
+    console.error(
+      "Mailchimp not configured. Set MAILCHIMP_API_KEY, MAILCHIMP_AUDIENCE_ID and MAILCHIMP_SERVER."
+    );
+    return { ok: false, error: "Newsletter is temporarily unavailable." };
   }
 
   const credentials = Buffer.from(`anystring:${MAILCHIMP_API_KEY}`).toString("base64");

@@ -20,6 +20,7 @@ const HeroSlice = ({ slice }) => {
         start={slice.primary.heading_start}
         end={slice.primary.heading_end}
         backgroundImage={slice.primary.image.url}
+        backgroundImageAlt={slice.primary.image}
         description={slice.primary.description}
         buttonText={slice.primary.button_text}
         buttonLink={slice.primary.button_link}

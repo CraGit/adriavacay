@@ -9,25 +9,27 @@ import PhotoGallery from "@/components/Gallery";
 import { SliceZone } from "@prismicio/react";
 import { components } from "@/slices";
 import { Link } from "@/i18n/routing";
-import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
+import { getImageAlt } from "@/lib/image-alt";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 export default async function Page({ params }) {
-  unstable_setRequestLocale(params.locale);
+  const { locale, uid } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("services-single");
 
   const client = createClient();
   const page = await client
-    .getByUID("service_single", params.uid, { lang: params.locale })
+    .getByUID("service_single", uid, { lang: locale })
     .catch(() => notFound());
 
   const photos = page.data.gallery
     .filter((photo) => photo.image?.url)
     .map((photo) => ({
       src: photo.image.url,
-      alt: photo.image.alt,
+      alt: getImageAlt(photo.image, page.data.heading),
       width: Number(photo.image.dimensions?.width),
       height: Number(photo.image.dimensions?.height),
-      description: photo.image.alt,
+      description: getImageAlt(photo.image, page.data.heading),
     }));
 
   return (
@@ -48,7 +50,7 @@ export default async function Page({ params }) {
                 <div className="rounded-2xl overflow-hidden shadow-md">
                   <Image
                     src={page.data.image.url}
-                    alt={page.data.image.alt || page.data.heading || ""}
+                    alt={getImageAlt(page.data.image, page.data.heading)}
                     width={600}
                     height={400}
                     className="w-full h-56 object-cover"
@@ -96,9 +98,10 @@ export default async function Page({ params }) {
 }
 
 export async function generateMetadata({ params }) {
+  const { locale, uid } = await params;
   const client = createClient();
   const page = await client
-    .getByUID("service_single", params.uid, { lang: params.locale })
+    .getByUID("service_single", uid, { lang: locale })
     .catch(() => notFound());
 
   return {

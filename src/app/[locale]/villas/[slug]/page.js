@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { createClient } from "@/prismicio";
 import { AccommodationSingle } from "@/app/[locale]/accommodation/accommodation-single";
 import { fetchMyRentDays } from "@/lib/myrent";
@@ -10,6 +10,7 @@ import {
   filterAccommodationsWithValidPricing,
   cleanAccommodationPricingData,
 } from "@/lib/validation";
+import { getImageAlt } from "@/lib/image-alt";
 
 // ---------------------------------------------------------------------------
 // Slug → filter configuration
@@ -116,7 +117,8 @@ export async function generateStaticParams() {
   );
 }
 
-export async function generateMetadata({ params: { slug, locale } }) {
+export async function generateMetadata({ params }) {
+  const { slug, locale } = await params;
   const config = VILLA_PAGES[slug];
   if (!config) return {};
   const title = locale === "de" ? config.titleDe : config.title;
@@ -126,8 +128,9 @@ export async function generateMetadata({ params: { slug, locale } }) {
   };
 }
 
-export default async function VillaFilterPage({ params: { slug, locale } }) {
-  unstable_setRequestLocale(locale);
+export default async function VillaFilterPage({ params }) {
+  const { slug, locale } = await params;
+  setRequestLocale(locale);
 
   const config = VILLA_PAGES[slug];
   if (!config) notFound();
@@ -251,7 +254,7 @@ export default async function VillaFilterPage({ params: { slug, locale } }) {
             <Image
               fill
               src={heroImage.url}
-              alt={heroImage.alt || heading}
+              alt={getImageAlt(heroImage, heading)}
               style={{ objectFit: "cover" }}
               sizes="100vw"
               quality={75}

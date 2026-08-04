@@ -7,23 +7,25 @@ import SmallHero from "@/components/SmallHero";
 import { PrismicRichText } from "@prismicio/react";
 import rtfComponents from "@/lib/richText";
 import PhotoGallery from "@/components/Gallery";
-import { unstable_setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
+import { getImageAlt } from "@/lib/image-alt";
 
 export default async function Page({ params }) {
-  unstable_setRequestLocale(params.locale);
+  const { locale, uid } = await params;
+  setRequestLocale(locale);
 
   const client = createClient();
   const page = await client
-    .getByUID("destination", params.uid, { lang: params.locale })
+    .getByUID("destination", uid, { lang: locale })
     .catch(() => notFound());
 
-  const photos = page.data.gallery.map((photo) => {
+  const photos = (page.data.gallery || []).map((photo) => {
     return {
       src: photo.image.url,
-      alt: photo.image.alt,
+      alt: getImageAlt(photo.image, page.data.heading),
       width: Number(photo.image.dimensions?.width),
       height: Number(photo.image.dimensions?.height),
-      description: photo.image.alt,
+      description: getImageAlt(photo.image, page.data.heading),
     };
   });
   return (
@@ -42,17 +44,15 @@ export default async function Page({ params }) {
           </div>
         )}
       </div>
-      {/* {page.data.gallery.length > 0 &&  */}
-
-      {/* } */}
     </>
   );
 }
 
 export async function generateMetadata({ params }) {
+  const { locale, uid } = await params;
   const client = createClient();
   const page = await client
-    .getByUID("destination", params.uid, { lang: params.locale })
+    .getByUID("destination", uid, { lang: locale })
     .catch(() => notFound());
 
   return {
@@ -61,7 +61,7 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export async function generateStaticParams({ params }) {
+export async function generateStaticParams() {
   const client = createClient();
   const pages = await client.getAllByType("destination", {
     lang: "*",
@@ -69,7 +69,12 @@ export async function generateStaticParams({ params }) {
   });
 
   return pages.map((page) => {
-    const locale = page.lang && page.lang.startsWith("en") ? "en-us" : page.lang && page.lang.startsWith("de") ? "de" : page.lang;
+    const locale =
+      page.lang && page.lang.startsWith("en")
+        ? "en-us"
+        : page.lang && page.lang.startsWith("de")
+          ? "de"
+          : page.lang;
     return { uid: page.uid, locale };
   });
 }

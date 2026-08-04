@@ -8,6 +8,7 @@ import {
   LuBath,
   LuBedDouble,
 } from "@/assets/icons/vander";
+import { getImageAlt } from "@/lib/image-alt";
 import { currency } from "@/lib/utils";
 
 const FEATURE_LABELS = {
@@ -63,7 +64,7 @@ export default function Card({
           </div>
           <Image
             src={image}
-            alt={alt}
+            alt={getImageAlt(alt, title)}
             width={0}
             height={0}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

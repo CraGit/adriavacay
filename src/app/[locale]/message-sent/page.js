@@ -1,6 +1,6 @@
 import SmallHeading from "@/components/SmallHeading";
 
-const MessageSentPage = ({ params: { lang } }) => {
+export default function MessageSentPage() {
   return (
     <div className="container flex flex-col justify-center items-center py-48 md:py-72 px-4 md:px-0">
       <SmallHeading heading="Message Sent" />
@@ -9,6 +9,4 @@ const MessageSentPage = ({ params: { lang } }) => {
       </p>
     </div>
   );
-};
-
-export default MessageSentPage;
+}

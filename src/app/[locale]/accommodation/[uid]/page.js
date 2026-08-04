@@ -1,7 +1,7 @@
 import { PrismicRichText, SliceZone } from "@prismicio/react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import {
   FiPhone,
@@ -17,6 +17,7 @@ import PhotoGallery from "@/components/Gallery";
 import PropertyImage from "@/components/PropertyImage";
 import { amenitiesMapping } from "@/data";
 import rtfComponents from "@/lib/richText";
+import { getImageAlt } from "@/lib/image-alt";
 import { occupiedDatesFromIcal, occupiedRangesFromIcal } from "@/lib/utils";
 import { fetchMyRentDays } from "@/lib/myrent";
 import { createClient } from "@/prismicio";
@@ -28,16 +29,17 @@ import PriceDisplay from "./price-display";
 import Reviews from "@/components/Reviews";
 
 export default async function Page({ params }) {
-  unstable_setRequestLocale(params.locale);
+  const { locale, uid } = await params;
+  setRequestLocale(locale);
 
   const client = createClient();
   const page = await client
-    .getByUID("accommodation_single", params.uid, { lang: params.locale })
+    .getByUID("accommodation_single", uid, { lang: locale })
     .catch(() => notFound());
 
   const uidEn =
-    params.locale === "en-us"
-      ? params.uid
+    locale === "en-us"
+      ? uid
       : page.alternate_languages.find((lang) => lang.lang === "en-us")?.uid;
 
   const pageEn = uidEn
@@ -46,40 +48,40 @@ export default async function Page({ params }) {
       })
     : page;
 
-  const cancelationPolicy = await client.getSingle("cancelation_policy", {
-    lang: params.locale,
-  });
-  const paymentDetails = await client.getSingle("payment_details", {
-    lang: params.locale,
-  });
+  const cancelationPolicy = await client
+    .getSingle("cancelation_policy", {
+      lang: locale,
+    })
+    .catch(() => null);
+  const paymentDetails = await client
+    .getSingle("payment_details", {
+      lang: locale,
+    })
+    .catch(() => null);
   const myRentId = pageEn.data.myRentID;
-  console.log("[MyRent] myRentID value:", myRentId, "type:", typeof myRentId);
   let occupiedData = { occupiedDates: [], checkoutDates: [] };
   let occupiedRanges = [];
   let myRentDays;
 
   if (myRentId) {
-    console.log("[MyRent] Fetching days for property:", myRentId);
     try {
       myRentDays = await fetchMyRentDays(myRentId);
-      console.log("[MyRent] Success, days count:", Object.keys(myRentDays).length);
     } catch (error) {
       console.error(`[MyRent] API error for property ${myRentId}:`, error);
       myRentDays = null;
     }
   } else {
-    console.log("[MyRent] No myRentID, falling back to iCal");
     occupiedData = await occupiedDatesFromIcal(pageEn.data.ical);
     occupiedRanges = await occupiedRangesFromIcal(pageEn.data.ical);
   }
 
-  const photos = page.data.gallery.map((photo) => {
+  const photos = (page.data.gallery || []).map((photo) => {
     return {
       src: photo.image.url,
-      alt: photo.image.alt,
+      alt: getImageAlt(photo.image, page.data.heading),
       width: Number(photo.image.dimensions?.width),
       height: Number(photo.image.dimensions?.height),
-      description: photo.image.alt,
+      description: getImageAlt(photo.image, page.data.heading),
     };
   });
 
@@ -183,14 +185,18 @@ export default async function Page({ params }) {
                   <PhotoGallery photos={photos} heading={t("gallery")} />
                 )}
               </div>
-              <PrismicRichText
-                field={paymentDetails.data.content}
-                components={rtfComponents}
-              />
-              <PrismicRichText
-                field={cancelationPolicy.data.content}
-                components={rtfComponents}
-              />
+              {paymentDetails?.data?.content && (
+                <PrismicRichText
+                  field={paymentDetails.data.content}
+                  components={rtfComponents}
+                />
+              )}
+              {cancelationPolicy?.data?.content && (
+                <PrismicRichText
+                  field={cancelationPolicy.data.content}
+                  components={rtfComponents}
+                />
+              )}
             </div>
 
             <div
@@ -205,7 +211,7 @@ export default async function Page({ params }) {
                   myRentDays={myRentDays}
                 />
                 <BookingForm
-                  uid={params.uid}
+                  uid={uid}
                   occupiedDates={occupiedData.occupiedDates}
                   occupiedRanges={occupiedRanges}
                   priceRanges={pageEn.data.pricing}
@@ -294,9 +300,10 @@ export default async function Page({ params }) {
 }
 
 export async function generateMetadata({ params }) {
+  const { locale, uid } = await params;
   const client = createClient();
   const page = await client
-    .getByUID("accommodation_single", params.uid, { lang: params.locale })
+    .getByUID("accommodation_single", uid, { lang: locale })
     .catch(() => notFound());
 
   return {

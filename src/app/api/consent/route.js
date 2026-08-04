@@ -7,11 +7,15 @@ export async function POST(request) {
   // Set cookie server-side so server components/layout can read it
   const maxAge = 60 * 60 * 24 * 365;
   const cookieVal = encodeURIComponent(JSON.stringify({ analytics }));
+  const isHttps =
+    request.headers.get("x-forwarded-proto") === "https" ||
+    request.nextUrl.protocol === "https:";
+  const secureFlag = isHttps ? "; Secure" : "";
 
   const res = NextResponse.json({ success: true, analytics });
   res.headers.set(
     "Set-Cookie",
-    `site_consent=${cookieVal}; Path=/; Max-Age=${maxAge}; SameSite=Lax; Secure`
+    `site_consent=${cookieVal}; Path=/; Max-Age=${maxAge}; SameSite=Lax${secureFlag}`
   );
   return res;
 }

@@ -26,7 +26,7 @@ export default function Error({ error, reset }) {
                 width={200}
                 height={200}
                 className="mx-auto"
-                alt=""
+                alt="AdriaVacay"
               />
               <h1 className="mt-3 mb-6 md:text-4xl text-3xl font-bold">
                 {t("error")}

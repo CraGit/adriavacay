@@ -6,8 +6,9 @@ import { SliceZone } from "@prismicio/react";
 
 import { components } from "../../slices";
 
-export default function SliceSimulatorPage({ searchParams }) {
-  const slices = getSlices(searchParams.state);
+export default async function SliceSimulatorPage({ searchParams }) {
+  const resolvedSearchParams = await searchParams;
+  const slices = getSlices(resolvedSearchParams.state);
 
   return (
     <SliceSimulator>

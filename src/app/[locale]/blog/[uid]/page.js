@@ -6,23 +6,25 @@ import SmallHero from "@/components/SmallHero";
 import { PrismicRichText } from "@prismicio/react";
 import rtfComponents from "@/lib/richText";
 import PhotoGallery from "@/components/Gallery";
-import { unstable_setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
+import { getImageAlt } from "@/lib/image-alt";
 
 export default async function Page({ params }) {
-  unstable_setRequestLocale(params.locale);
+  const { locale, uid } = await params;
+  setRequestLocale(locale);
 
   const client = createClient();
   const page = await client
-    .getByUID("blog_single", params.uid, { lang: params.locale })
+    .getByUID("blog_single", uid, { lang: locale })
     .catch(() => notFound());
 
-  const photos = page.data.gallery.map((photo) => {
+  const photos = (page.data.gallery || []).map((photo) => {
     return {
       src: photo.image.url,
-      alt: photo.image.alt,
+      alt: getImageAlt(photo.image, page.data.heading),
       width: Number(photo.image.dimensions?.width),
       height: Number(photo.image.dimensions?.height),
-      description: photo.image.alt,
+      description: getImageAlt(photo.image, page.data.heading),
     };
   });
 
@@ -47,9 +49,10 @@ export default async function Page({ params }) {
 }
 
 export async function generateMetadata({ params }) {
+  const { locale, uid } = await params;
   const client = createClient();
   const page = await client
-    .getByUID("blog_single", params.uid, { lang: params.locale })
+    .getByUID("blog_single", uid, { lang: locale })
     .catch(() => notFound());
 
   return {
@@ -66,7 +69,12 @@ export async function generateStaticParams() {
   });
 
   return pages.map((page) => {
-    const locale = page.lang && page.lang.startsWith("en") ? "en-us" : page.lang && page.lang.startsWith("de") ? "de" : page.lang;
+    const locale =
+      page.lang && page.lang.startsWith("en")
+        ? "en-us"
+        : page.lang && page.lang.startsWith("de")
+          ? "de"
+          : page.lang;
     return { uid: page.uid, locale };
   });
 }

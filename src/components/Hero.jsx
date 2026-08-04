@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { getImageAlt } from "@/lib/image-alt";
 import SearchForm from "./SearchForm";
 import TextAnimation from "./TextAnimation";
 
@@ -9,6 +10,7 @@ export default function Hero({
   animated,
   end,
   backgroundImage,
+  backgroundImageAlt,
   description,
   buttonText,
   buttonLink,
@@ -39,7 +41,7 @@ export default function Hero({
         <div className="absolute inset-0">
           <Image
             src={backgroundImage}
-            alt="hero"
+            alt={getImageAlt(backgroundImageAlt, start, "Hero image")}
             fill
             style={{ objectFit: "cover" }}
             sizes="100vw"

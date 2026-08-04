@@ -2,11 +2,11 @@ import { SliceZone } from "@prismicio/react";
 
 import { createClient } from "@/prismicio";
 import { components } from "@/slices";
-import { routing } from "@/i18n/routing";
-import { unstable_setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 
-export default async function Page({ params: { locale } }) {
-  unstable_setRequestLocale(locale);
+export default async function Page({ params }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
 
   const client = createClient();
   const page = await client.getSingle("destinations", { lang: locale });
@@ -18,7 +18,8 @@ export default async function Page({ params: { locale } }) {
   );
 }
 
-export async function generateMetadata({ params: { locale } }) {
+export async function generateMetadata({ params }) {
+  const { locale } = await params;
   const client = createClient();
   const page = await client.getSingle("destinations", { lang: locale });
 
@@ -36,7 +37,12 @@ export async function generateStaticParams() {
   });
 
   return pages.map((page) => {
-    const locale = page.lang && page.lang.startsWith("en") ? "en-us" : page.lang && page.lang.startsWith("de") ? "de" : page.lang;
-    return { uid: page.uid, locale };
+    const locale =
+      page.lang && page.lang.startsWith("en")
+        ? "en-us"
+        : page.lang && page.lang.startsWith("de")
+          ? "de"
+          : page.lang;
+    return { locale };
   });
 }

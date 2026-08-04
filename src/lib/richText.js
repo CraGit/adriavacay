@@ -1,4 +1,5 @@
 import { PrismicNextLink } from "@prismicio/next";
+import { getImageAlt } from "@/lib/image-alt";
 
 const rtfComponents = {
   heading1: ({ children }) => (
@@ -44,22 +45,25 @@ const rtfComponents = {
   oList: ({ children }) => (
     <ol className="list-decimal list-outside pl-6 mb-5 space-y-1">{children}</ol>
   ),
-  image: ({ node }) =>
-    node.url ? (
+  image: ({ node }) => {
+    if (!node.url) return null;
+    const alt = getImageAlt(node);
+    return (
       <figure className="my-8">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={node.url}
-          alt={node.alt || ""}
+          alt={alt}
           className="rounded-xl w-full object-cover shadow-sm"
         />
-        {node.alt && (
+        {alt !== "Image" && (
           <figcaption className="text-center text-sm text-slate-400 mt-2">
-            {node.alt}
+            {alt}
           </figcaption>
         )}
       </figure>
-    ) : null,
+    );
+  },
   hyperlink: ({ node, children, key }) => (
     <PrismicNextLink
       key={key}

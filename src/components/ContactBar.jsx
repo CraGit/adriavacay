@@ -56,7 +56,7 @@ export default function ContactBar() {
           >
             <Image
               src="/images/whatsapp.svg"
-              alt="language"
+              alt="WhatsApp"
               height="48"
               width="48"
             />
@@ -69,7 +69,7 @@ export default function ContactBar() {
         >
           <Image
             src="/images/whatsapp.svg"
-            alt="language"
+            alt="WhatsApp"
             height="48"
             width="48"
           />

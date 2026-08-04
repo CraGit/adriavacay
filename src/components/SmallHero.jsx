@@ -1,5 +1,7 @@
 import Image from "next/image";
 
+import { getImageAlt } from "@/lib/image-alt";
+
 export default function SmallHero({ heading, backgroundImage }) {
   return (
     <section className="relative table w-full py-32 lg:py-36">
@@ -8,7 +10,7 @@ export default function SmallHero({ heading, backgroundImage }) {
           <Image
             fill
             src={backgroundImage.url}
-            alt={backgroundImage.alt || ""}
+            alt={getImageAlt(backgroundImage, heading)}
             style={{ objectFit: "cover" }}
             sizes="100vw"
             quality={75}

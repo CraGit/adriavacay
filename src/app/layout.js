@@ -11,6 +11,7 @@ import ConsentProvider from "@/providers/consent-provider";
 import CookieBanner from "@/components/CookieBanner";
 import ConsentGate from "@/components/ConsentGate";
 import { cookies } from "next/headers";
+
 const league_Spartan = League_Spartan({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800", "900"],
@@ -28,18 +29,18 @@ export const metadata = {
     "Choose us for your next vacation home. We offer the best vacation homes in Dalmatia.",
 };
 
-export default function RootLayout({ children }) {
-  const cookieStore = cookies();
+export default async function RootLayout({ children }) {
+  const cookieStore = await cookies();
   const consentCookie = cookieStore.get("site_consent");
   let serverConsent = null;
   try {
-    if (consentCookie) serverConsent = JSON.parse(decodeURIComponent(consentCookie.value));
+    if (consentCookie)
+      serverConsent = JSON.parse(decodeURIComponent(consentCookie.value));
   } catch (e) {
     serverConsent = null;
   }
   return (
     <html lang="en" dir="LTR" className="scroll-smooth">
-      
       <head>
         <meta themecolor={viewport.themeColor} />
       </head>
@@ -51,7 +52,6 @@ export default function RootLayout({ children }) {
             <CookieBanner />
           </NuqsWrapper>
         </ConsentProvider>
-        {/* Render noscript iframe server-side when consent is present */}
         {serverConsent && serverConsent.analytics ? (
           <noscript
             dangerouslySetInnerHTML={{

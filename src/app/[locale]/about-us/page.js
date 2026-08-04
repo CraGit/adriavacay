@@ -5,17 +5,19 @@ import { components } from "@/slices";
 import SmallHero from "@/components/SmallHero";
 import rtfComponents from "@/lib/richText";
 import PhotoGallery from "@/components/Gallery";
+import { getImageAlt } from "@/lib/image-alt";
 
-export default async function Page({ params: { locale } }) {
+export default async function Page({ params }) {
+  const { locale } = await params;
   const client = createClient();
   const page = await client.getSingle("about_us", { lang: locale });
-  const photos = page.data.gallery.map((photo) => {
+  const photos = (page.data.gallery || []).map((photo) => {
     return {
       src: photo.image.url,
-      alt: photo.image.alt,
+      alt: getImageAlt(photo.image, page.data.heading),
       width: Number(photo.image.dimensions?.width),
       height: Number(photo.image.dimensions?.height),
-      description: photo.image.alt,
+      description: getImageAlt(photo.image, page.data.heading),
     };
   });
 
@@ -39,7 +41,8 @@ export default async function Page({ params: { locale } }) {
   );
 }
 
-export async function generateMetadata({ params: { locale } }) {
+export async function generateMetadata({ params }) {
+  const { locale } = await params;
   const client = createClient();
   const page = await client.getSingle("about_us", { lang: locale });
 

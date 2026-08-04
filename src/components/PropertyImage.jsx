@@ -6,6 +6,7 @@ import { useState } from "react";
 import Lightbox from "react-18-image-lightbox";
 
 import { FiCamera } from "@/assets/icons/vander";
+import { getImageAlt } from "@/lib/image-alt";
 
 import "react-18-image-lightbox/style.css";
 
@@ -24,7 +25,7 @@ export default function PropertyImage({ photos }) {
         <div className="group relative overflow-hidden">
           <Image
             src={photos[0].src}
-            alt={photos[0].alt || "property photo"}
+            alt={getImageAlt(photos[0].alt, "Property photo")}
             width={photos[0].width || 800}
             height={photos[0].height || 600}
             sizes="(min-width:1024px) 50vw, 100vw"
@@ -51,7 +52,7 @@ export default function PropertyImage({ photos }) {
             <div className="group relative overflow-hidden">
               <Image
                 src={photos[1]?.src || photos[0].src}
-                alt={photos[1]?.alt || "property photo"}
+                alt={getImageAlt(photos[1]?.alt, "Property photo")}
                 width={photos[1]?.width || 400}
                 height={photos[1]?.height || 300}
                 sizes="(min-width:1024px) 25vw, 50vw"
@@ -75,7 +76,7 @@ export default function PropertyImage({ photos }) {
             <div className="group relative overflow-hidden">
               <Image
                 src={photos[2]?.src || photos[0].src}
-                alt={photos[2]?.alt || "property photo"}
+                alt={getImageAlt(photos[2]?.alt, "Property photo")}
                 width={photos[2]?.width || 400}
                 height={photos[2]?.height || 300}
                 sizes="(min-width:1024px) 25vw, 50vw"
@@ -101,7 +102,7 @@ export default function PropertyImage({ photos }) {
             <div className="group relative overflow-hidden">
               <Image
                 src={photos[3]?.src || photos[0].src}
-                alt={photos[3]?.alt || "property photo"}
+                alt={getImageAlt(photos[3]?.alt, "Property photo")}
                 width={photos[3]?.width || 400}
                 height={photos[3]?.height || 300}
                 sizes="(min-width:1024px) 25vw, 50vw"
@@ -125,7 +126,7 @@ export default function PropertyImage({ photos }) {
             <div className="group relative overflow-hidden">
               <Image
                 src={photos[4]?.src || photos[0].src}
-                alt={photos[4]?.alt || "property photo"}
+                alt={getImageAlt(photos[4]?.alt, "Property photo")}
                 width={photos[4]?.width || 400}
                 height={photos[4]?.height || 300}
                 sizes="(min-width:1024px) 25vw, 50vw"

@@ -3,11 +3,11 @@ import { PrismicRichText } from "@prismicio/react";
 import SmallHero from "@/components/SmallHero";
 import rtfComponents from "@/lib/richText";
 import { createClient } from "@/prismicio";
-import { routing } from "@/i18n/routing";
-import { unstable_setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 
-export default async function Page({ params: { locale } }) {
-  unstable_setRequestLocale(locale);
+export default async function Page({ params }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
 
   const client = createClient();
   const page = await client.getSingle("privacy_policy", { lang: locale });
@@ -26,9 +26,10 @@ export default async function Page({ params: { locale } }) {
   );
 }
 
-export async function generateMetadata({ params: { locale } }) {
+export async function generateMetadata({ params }) {
+  const { locale } = await params;
   const client = createClient();
-  const page = await client.getSingle("terms_and_conditions", { lang: locale });
+  const page = await client.getSingle("privacy_policy", { lang: locale });
 
   return {
     title: page.data.meta_title,
@@ -44,7 +45,12 @@ export async function generateStaticParams() {
   });
 
   return pages.map((page) => {
-    const locale = page.lang && page.lang.startsWith("en") ? "en-us" : page.lang && page.lang.startsWith("de") ? "de" : page.lang;
-    return { uid: page.uid, locale };
+    const locale =
+      page.lang && page.lang.startsWith("en")
+        ? "en-us"
+        : page.lang && page.lang.startsWith("de")
+          ? "de"
+          : page.lang;
+    return { locale };
   });
 }

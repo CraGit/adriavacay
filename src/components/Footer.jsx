@@ -74,7 +74,7 @@ export default async function Footer() {
                     >
                       <Image
                         src="/images/logoslogan.svg"
-                        alt=""
+                        alt="AdriaVacay"
                         width={240}
                         height={28}
                       />

@@ -8,6 +8,7 @@ import {
   LuBath,
   LuBedDouble,
 } from "@/assets/icons/vander";
+import { getImageAlt } from "@/lib/image-alt";
 
 export default function CardForSale({
   uid,
@@ -31,7 +32,7 @@ export default function CardForSale({
         <div className="relative">
           <Image
             src={image}
-            alt={alt}
+            alt={getImageAlt(alt, title)}
             width={0}
             height={0}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

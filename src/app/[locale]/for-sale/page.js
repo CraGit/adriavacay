@@ -2,11 +2,11 @@ import { SliceZone } from "@prismicio/react";
 
 import { createClient } from "@/prismicio";
 import { components } from "@/slices";
-import { routing } from "@/i18n/routing";
-import { unstable_setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 
-export default async function Page({ params: { locale } }) {
-  unstable_setRequestLocale(locale);
+export default async function Page({ params }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
 
   const client = createClient();
   const page = await client.getSingle("for_sale", { lang: locale });
@@ -14,9 +14,10 @@ export default async function Page({ params: { locale } }) {
   return <SliceZone slices={page.data.slices} components={components} />;
 }
 
-export async function generateMetadata() {
+export async function generateMetadata({ params }) {
+  const { locale } = await params;
   const client = createClient();
-  const page = await client.getSingle("for_sale");
+  const page = await client.getSingle("for_sale", { lang: locale });
 
   return {
     title: page.data.meta_title,
@@ -32,7 +33,12 @@ export async function generateStaticParams() {
   });
 
   return pages.map((page) => {
-    const locale = page.lang && page.lang.startsWith("en") ? "en-us" : page.lang && page.lang.startsWith("de") ? "de" : page.lang;
-    return { uid: page.uid, locale };
+    const locale =
+      page.lang && page.lang.startsWith("en")
+        ? "en-us"
+        : page.lang && page.lang.startsWith("de")
+          ? "de"
+          : page.lang;
+    return { locale };
   });
 }

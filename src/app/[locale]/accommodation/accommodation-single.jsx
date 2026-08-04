@@ -116,7 +116,7 @@ const renderWithCalculatedPrices = (accommodations, dateRange) => {
         basePrice={price}
         discountedPrice={discountedPrice}
         image={item.data.gallery[0].image.url}
-        alt={item.data.gallery[0].image.alt}
+        alt={item.data.gallery[0].image}
         sqm={item.data.sqm}
         title={item.data.heading}
         guests={item.data.max_guests}
@@ -166,7 +166,7 @@ const renderAllAccommodations = (accommodations, type) => {
           bedrooms={item.data.bedrooms}
           lowestPrice={lowestPrice}
           image={item.data.gallery[0].image.url}
-          alt={item.data.gallery[0].image.alt}
+          alt={item.data.gallery[0].image}
           sqm={item.data.sqm}
           title={item.data.heading}
           guests={item.data.max_guests}

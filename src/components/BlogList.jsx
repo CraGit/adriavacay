@@ -15,6 +15,7 @@ export default function BlogList({ blogs }) {
               }
               title={item.data.heading}
               image={item.data.image.url}
+              alt={item.data.image}
               key={item.uid}
             />
           ))}

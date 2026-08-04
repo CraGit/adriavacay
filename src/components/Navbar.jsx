@@ -97,14 +97,14 @@ export default function Navbar({ navClass, topnavClass, destinations = [], servi
             <Image
               src={logo}
               className="inline-block dark:hidden"
-              alt=""
+              alt="AdriaVacay"
               width={140}
               height={24}
             />
             <Image
               src={logo}
               className="hidden dark:inline-block"
-              alt=""
+              alt="AdriaVacay"
               width={140}
               height={24}
             />

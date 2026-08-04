@@ -3,10 +3,11 @@ import { SliceZone } from "@prismicio/react";
 
 import { createClient } from "@/prismicio";
 import { components } from "@/slices";
-import { unstable_setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 
-export default async function Page({ params: { locale } }) {
-  unstable_setRequestLocale(locale);
+export default async function Page({ params }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
 
   const client = createClient();
   const page = await client
@@ -16,7 +17,8 @@ export default async function Page({ params: { locale } }) {
   return <SliceZone slices={page.data.slices} components={components} />;
 }
 
-export async function generateMetadata({ params: { locale } }) {
+export async function generateMetadata({ params }) {
+  const { locale } = await params;
   const client = createClient();
   const page = await client
     .getSingle("apartments", { lang: locale })

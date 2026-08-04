@@ -3,7 +3,7 @@ import { PrismicRichText, SliceZone } from "@prismicio/react";
 import Link from "next/link";
 import { createClient } from "@/prismicio";
 import { components } from "@/slices";
-import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import {
   FiPhone,
   GoPeople,
@@ -18,6 +18,7 @@ import PhotoGallery from "@/components/Gallery";
 import PropertyImage from "@/components/PropertyImage";
 import { amenitiesMapping } from "@/data";
 import rtfComponents from "@/lib/richText";
+import { getImageAlt } from "@/lib/image-alt";
 
 import PartialDiv from "@/components/PartialDiv";
 // import BookingForm from "./booking-form";
@@ -25,26 +26,29 @@ import PartialDiv from "@/components/PartialDiv";
 import Reviews from "@/components/Reviews";
 
 export default async function Page({ params }) {
-  unstable_setRequestLocale(params.locale);
+  const { locale, uid } = await params;
+  setRequestLocale(locale);
   const client = createClient();
   const page = await client
-    .getByUID("for_sale_single", params.uid, { lang: params.locale })
+    .getByUID("for_sale_single", uid, { lang: locale })
     .catch(() => notFound());
   const uidEn =
-    params.locale === "en-us"
-      ? params.uid
-      : page.alternate_languages.find((lang) => lang.lang === "en-us").uid;
+    locale === "en-us"
+      ? uid
+      : page.alternate_languages.find((lang) => lang.lang === "en-us")?.uid;
 
-  const pageEn = await client.getByUID("for_sale_single", uidEn, {
-    lang: "en-us",
-  });
-  const photos = page.data.gallery.map((photo) => {
+  const pageEn = uidEn
+    ? await client.getByUID("for_sale_single", uidEn, {
+        lang: "en-us",
+      })
+    : page;
+  const photos = (page.data.gallery || []).map((photo) => {
     return {
       src: photo.image.url,
-      alt: photo.image.alt,
+      alt: getImageAlt(photo.image, page.data.heading),
       width: Number(photo.image.dimensions?.width),
       height: Number(photo.image.dimensions?.height),
-      description: photo.image.alt,
+      description: getImageAlt(photo.image, page.data.heading),
     };
   });
   const t = await getTranslations("for-sale-single");
@@ -139,7 +143,7 @@ export default async function Page({ params }) {
                   deposit={pageEn.data.security_deposit}
                 /> */}
                 {/* <BookingForm
-                  uid={params.uid}
+                  uid={uid}
                   occupiedDates={occupiedDates}
                   occupiedRanges={occupiedRanges}
                   priceRanges={pageEn.data.pricing}
@@ -227,9 +231,10 @@ export default async function Page({ params }) {
 }
 
 export async function generateMetadata({ params }) {
+  const { locale, uid } = await params;
   const client = createClient();
   const page = await client
-    .getByUID("for_sale_single", params.uid, { lang: params.locale })
+    .getByUID("for_sale_single", uid, { lang: locale })
     .catch(() => notFound());
 
   return {
