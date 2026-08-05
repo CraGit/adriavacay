@@ -215,6 +215,7 @@ export default async function Page({ params }) {
                   occupiedDates={occupiedData.occupiedDates}
                   occupiedRanges={occupiedRanges}
                   priceRanges={pageEn.data.pricing}
+                  discounts={pageEn.data.discounts}
                   myRentDays={myRentDays}
                   className="mt-6"
                 />

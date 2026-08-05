@@ -44,6 +44,7 @@
     "react-use": "^17.5.1",
     "sass": "^1.69.7",
     "sharp": "^0.33.5",
+    "stripe": "^22.4.0",
     "tailwind-merge": "^2.5.2",
     "tiny-slider-react": "^0.5.7",
     "yet-another-react-lightbox": "^3.21.3",

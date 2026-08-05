@@ -77,8 +77,26 @@
     "pick": "Pick a date",
     "guests": "Guests",
     "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "message": "Message",
+    "message-placeholder": "Tell us about your stay…",
     "book-now": "Book Now",
-    "check-price": "Check Price"
+    "check-price": "Check Price",
+    "mode-inquiry": "Inquiry",
+    "mode-book": "Book",
+    "send-inquiry": "Send inquiry",
+    "pay-with-stripe": "Pay with card",
+    "confirm-bank": "Confirm bank transfer booking",
+    "payment-method": "Payment method",
+    "pay-stripe": "Card (Stripe)",
+    "pay-bank": "Bank transfer",
+    "stay-total": "Stay total",
+    "amount-due": "Due now ({percent}%)",
+    "deposit-hint-30": "Check-in is 31+ days away — 30% deposit due now.",
+    "deposit-hint-100": "Check-in is within 30 days — full amount due now.",
+    "submitting": "Please wait…",
+    "error-generic": "Something went wrong. Please try again."
   },
   "accommodation-list": {
     "show-all": "Show all"

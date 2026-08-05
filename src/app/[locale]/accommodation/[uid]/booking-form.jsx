@@ -1,66 +1,162 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { differenceInCalendarDays } from "date-fns";
+import { useLocale, useTranslations } from "next-intl";
 
-import { submitBooking } from "@/actions/booking";
-import { DateRangePicker } from "@/components/DateRangePicker";
-import { cn } from "@/lib/utils";
+import {
+  createBankTransferBooking,
+  createStripeCheckoutBooking,
+  submitInquiry,
+} from "@/actions/booking";
+import { calculateDeposit } from "@/lib/deposit";
+import {
+  myRentCalculatePrice,
+  myRentCalculatePriceWithDiscount,
+} from "@/lib/myrent-utils";
+import {
+  calculateTotalPrice,
+  calculateTotalPriceWithDiscount,
+  cn,
+  currency,
+} from "@/lib/utils";
 import { useSearch } from "@/providers/search-provider";
 import CustomDayPicker from "./custom-day-picker";
-import { useTranslations } from "next-intl";
 
 export default function BookingForm({
   uid,
-  occupiedDates,
   occupiedRanges,
   priceRanges,
+  discounts = [],
   myRentDays,
   className,
 }) {
   const { query, updateQuery } = useSearch();
+  const locale = useLocale();
+  const t = useTranslations("booking");
 
+  const canBookOnline = Boolean(myRentDays);
+  const [mode, setMode] = useState("inquiry");
+  const [paymentMethod, setPaymentMethod] = useState("stripe");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
-
-  //const onSubmit = submitBooking.bind(null, uid, query.dateRange, query.guests);
-
+  const [pending, setPending] = useState(false);
   const [errors, setErrors] = useState({});
+
+  const quotePreview = useMemo(() => {
+    const from = query.dateRange?.from;
+    const to = query.dateRange?.to;
+    if (!from || !to) return null;
+
+    let total = 0;
+    if (myRentDays) {
+      total = myRentCalculatePriceWithDiscount(myRentDays, discounts, from, to);
+      if (total <= 0) {
+        total = myRentCalculatePrice(myRentDays, from, to);
+      }
+    } else if (priceRanges?.length) {
+      total = calculateTotalPriceWithDiscount(priceRanges, discounts, from, to);
+      if (total <= 0) {
+        total = calculateTotalPrice(priceRanges, from, to);
+      }
+    }
+
+    if (total <= 0) return null;
+    const deposit = calculateDeposit(total, from);
+    const nights = differenceInCalendarDays(to, from);
+    return { total, ...deposit, nights };
+  }, [query.dateRange, myRentDays, priceRanges, discounts]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const result = await submitBooking(
-      uid,
-      query.dateRange,
-      query.guests,
-      formData
-    );
+    setPending(true);
+    setErrors({});
 
-    if (result?.errors) {
-      setErrors(result.errors);
+    const formData = new FormData(e.currentTarget);
+    formData.set("name", name);
+    formData.set("email", email);
+    formData.set("message", message);
+    formData.set("phone", phone);
+
+    try {
+      let result;
+      if (mode === "inquiry") {
+        result = await submitInquiry(
+          uid,
+          query.dateRange,
+          query.guests,
+          locale,
+          formData
+        );
+      } else if (paymentMethod === "bank") {
+        result = await createBankTransferBooking(
+          uid,
+          query.dateRange,
+          query.guests,
+          locale,
+          formData
+        );
+      } else {
+        result = await createStripeCheckoutBooking(
+          uid,
+          query.dateRange,
+          query.guests,
+          locale,
+          formData
+        );
+      }
+
+      if (result?.errors) {
+        setErrors(result.errors);
+      }
+    } catch (error) {
+      // redirect() throws in Next.js — ignore NEXT_REDIRECT
+      if (error?.digest?.startsWith?.("NEXT_REDIRECT")) {
+        throw error;
+      }
+      setErrors({ _form: [error.message || t("error-generic")] });
+    } finally {
+      setPending(false);
     }
   };
-
-  const t = useTranslations("booking");
 
   return (
     <form onSubmit={handleSubmit}>
       <div className={cn("rounded-md px-4 py-2 shadow", className)}>
-        {/* <h3 className="mb-2 text-lg leading-normal font-medium">Booking Form</h3> */}
+        {canBookOnline ? (
+          <div className="flex gap-2 mb-3 mt-1">
+            <button
+              type="button"
+              className={cn(
+                "flex-1 rounded-md px-3 py-2 text-sm font-medium border",
+                mode === "inquiry"
+                  ? "bg-green-600 text-white border-green-600"
+                  : "bg-white text-slate-700 border-slate-200"
+              )}
+              onClick={() => setMode("inquiry")}
+            >
+              {t("mode-inquiry")}
+            </button>
+            <button
+              type="button"
+              className={cn(
+                "flex-1 rounded-md px-3 py-2 text-sm font-medium border",
+                mode === "book"
+                  ? "bg-green-600 text-white border-green-600"
+                  : "bg-white text-slate-700 border-slate-200"
+              )}
+              onClick={() => setMode("book")}
+            >
+              {t("mode-book")}
+            </button>
+          </div>
+        ) : null}
 
         <div className="grid">
           <div className="lg:col-span-6 mb-1">
             <label className="font-medium text-sm">{t("dates")}</label>
-            {/* <DateRangePicker
-              selected={query.dateRange}
-              onSelect={(range) => updateQuery({ dateRange: range })}
-              className={cn(
-                "mt-2",
-                (errors.dateFrom || errors.dateTo) && "border-red-600"
-              )}
-              disabledDates={occupiedDates}
-            /> */}
             <CustomDayPicker
               className={cn(
                 "mt-2",
@@ -115,7 +211,7 @@ export default function BookingForm({
           </div>
 
           <div className="lg:col-span-6 mb-1">
-            <label className="font-medium text-sm">Email:</label>
+            <label className="font-medium text-sm">{t("email")}</label>
             <input
               name="email"
               type="email"
@@ -123,31 +219,121 @@ export default function BookingForm({
                 "form-input mt-1",
                 errors.email && "!border-red-600"
               )}
-              placeholder="Email"
+              placeholder={t("email")}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
             {errors.email && <span className="text-xs">{errors.email[0]}</span>}
           </div>
 
-          {/* <div>
-            <label className="font-medium text-sm">Your Message</label>
-            <textarea
-              className="form-input mt-2 textarea w-full"
-              placeholder="Message"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-            ></textarea>
-          </div> */}
+          {mode === "book" ? (
+            <div className="lg:col-span-6 mb-1">
+              <label className="font-medium text-sm">{t("phone")}</label>
+              <input
+                name="phone"
+                type="tel"
+                className={cn(
+                  "form-input mt-1",
+                  errors.phone && "!border-red-600"
+                )}
+                placeholder={t("phone")}
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+              {errors.phone && (
+                <span className="text-xs">{errors.phone[0]}</span>
+              )}
+            </div>
+          ) : (
+            <div className="lg:col-span-6 mb-1">
+              <label className="font-medium text-sm">{t("message")}</label>
+              <textarea
+                name="message"
+                className="form-input mt-2 textarea w-full"
+                placeholder={t("message-placeholder")}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                rows={3}
+              />
+            </div>
+          )}
+
+          {mode === "book" && quotePreview ? (
+            <div className="lg:col-span-6 mb-3 mt-2 rounded-md bg-slate-50 p-3 text-sm">
+              <div className="flex justify-between">
+                <span>{t("stay-total")}</span>
+                <span className="font-medium">
+                  {currency(quotePreview.total)}
+                </span>
+              </div>
+              <div className="flex justify-between mt-1">
+                <span>
+                  {t("amount-due", { percent: quotePreview.percent })}
+                </span>
+                <span className="font-medium text-green-700">
+                  {currency(quotePreview.amountDue)}
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 mt-2">
+                {quotePreview.percent === 30
+                  ? t("deposit-hint-30")
+                  : t("deposit-hint-100")}
+              </p>
+            </div>
+          ) : null}
+
+          {mode === "book" ? (
+            <div className="lg:col-span-6 mb-2">
+              <label className="font-medium text-sm">{t("payment-method")}</label>
+              <div className="mt-2 flex flex-col gap-2">
+                <label className="flex items-center gap-2 text-sm cursor-pointer">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="stripe"
+                    checked={paymentMethod === "stripe"}
+                    onChange={() => setPaymentMethod("stripe")}
+                  />
+                  {t("pay-stripe")}
+                </label>
+                <label className="flex items-center gap-2 text-sm cursor-pointer">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="bank"
+                    checked={paymentMethod === "bank"}
+                    onChange={() => setPaymentMethod("bank")}
+                  />
+                  {t("pay-bank")}
+                </label>
+              </div>
+              {errors.paymentMethod && (
+                <span className="text-xs">{errors.paymentMethod[0]}</span>
+              )}
+            </div>
+          ) : null}
+
+          {errors._form ? (
+            <div className="lg:col-span-6 mb-2 text-sm text-red-600">
+              {errors._form[0]}
+            </div>
+          ) : null}
         </div>
       </div>
       <div className="flex mt-6">
         <div className="flex-grow">
           <button
             type="submit"
-            className="btn bg-green-600 hover:bg-green-700 text-white rounded-md w-full"
+            disabled={pending}
+            className="btn bg-green-600 hover:bg-green-700 text-white rounded-md w-full disabled:opacity-60"
           >
-            {t("book-now")}
+            {pending
+              ? t("submitting")
+              : mode === "inquiry"
+                ? t("send-inquiry")
+                : paymentMethod === "bank"
+                  ? t("confirm-bank")
+                  : t("pay-with-stripe")}
           </button>
         </div>
       </div>

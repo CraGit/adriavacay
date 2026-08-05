@@ -77,8 +77,26 @@
     "pick": "Termin aussuchen",
     "guests": "Gäste",
     "name": "Name",
+    "email": "E-Mail",
+    "phone": "Telefon",
+    "message": "Nachricht",
+    "message-placeholder": "Erzählen Sie uns von Ihrem Aufenthalt…",
     "book-now": "Reservieren Sie jetzt",
-    "check-price": "Preis prüfen"
+    "check-price": "Preis prüfen",
+    "mode-inquiry": "Anfrage",
+    "mode-book": "Buchen",
+    "send-inquiry": "Anfrage senden",
+    "pay-with-stripe": "Mit Karte zahlen",
+    "confirm-bank": "Banküberweisung bestätigen",
+    "payment-method": "Zahlungsart",
+    "pay-stripe": "Karte (Stripe)",
+    "pay-bank": "Banküberweisung",
+    "stay-total": "Gesamtpreis",
+    "amount-due": "Jetzt fällig ({percent}%)",
+    "deposit-hint-30": "Check-in in 31+ Tagen — 30 % Anzahlung jetzt fällig.",
+    "deposit-hint-100": "Check-in innerhalb von 30 Tagen — voller Betrag jetzt fällig.",
+    "submitting": "Bitte warten…",
+    "error-generic": "Etwas ist schiefgelaufen. Bitte erneut versuchen."
   },
   "accommodation-list": {
     "show-all": "Alles anzeigen "
