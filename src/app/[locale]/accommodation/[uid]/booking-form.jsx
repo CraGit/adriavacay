@@ -9,7 +9,11 @@ import {
   createStripeCheckoutBooking,
   submitInquiry,
 } from "@/actions/booking";
-import { calculateDeposit } from "@/lib/deposit";
+import {
+  applyBankTransferDiscount,
+  BANK_TRANSFER_DISCOUNT_PERCENT,
+  calculateDeposit,
+} from "@/lib/deposit";
 import {
   myRentCalculatePrice,
   myRentCalculatePriceWithDiscount,
@@ -64,10 +68,23 @@ export default function BookingForm({
     }
 
     if (total <= 0) return null;
-    const deposit = calculateDeposit(total, from);
+    const subtotal = total;
+    const bankDiscountApplied = paymentMethod === "bank";
+    const discountedTotal = bankDiscountApplied
+      ? applyBankTransferDiscount(subtotal)
+      : subtotal;
+    const deposit = calculateDeposit(discountedTotal, from);
     const nights = differenceInCalendarDays(to, from);
-    return { total, ...deposit, nights };
-  }, [query.dateRange, myRentDays, priceRanges, discounts]);
+    return {
+      subtotal,
+      total: discountedTotal,
+      bankDiscountPercent: bankDiscountApplied
+        ? BANK_TRANSFER_DISCOUNT_PERCENT
+        : 0,
+      ...deposit,
+      nights,
+    };
+  }, [query.dateRange, myRentDays, priceRanges, discounts, paymentMethod]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -279,6 +296,11 @@ export default function BookingForm({
                   ? t("deposit-hint-30")
                   : t("deposit-hint-100")}
               </p>
+              {quotePreview.bankDiscountPercent > 0 ? (
+                <p className="text-xs text-slate-500 mt-1">
+                  {t("bank-discount-hint")}
+                </p>
+              ) : null}
             </div>
           ) : null}
 

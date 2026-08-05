@@ -140,6 +140,7 @@ export async function createBankTransferBooking(
       dateFrom: data.dateFrom,
       dateTo: data.dateTo,
       guests: data.guests,
+      paymentMethod: "bank",
     });
     hold = await createUnpaidMyRentHold({
       quote,
@@ -163,6 +164,15 @@ export async function createBankTransferBooking(
     ? `${bank.prefix}${hold.erpId}`
     : hold.erpId;
 
+  const pricingLines =
+    quote.bankDiscountPercent > 0
+      ? `Stay subtotal: EUR ${quote.subtotal}
+Bank transfer discount (${quote.bankDiscountPercent}%): included
+Stay total after discount: EUR ${quote.total}
+Amount due now (${quote.percent}%): EUR ${quote.amountDue}`
+      : `Stay total: EUR ${quote.total}
+Amount due now (${quote.percent}%): EUR ${quote.amountDue}`;
+
   const guestText = `
 Dear ${data.name},
 
@@ -170,8 +180,7 @@ Thank you for booking ${quote.villaName}.
 
 Stay: ${quote.fromDateStr} – ${quote.untilDateStr}
 Guests: ${data.guests}
-Stay total: EUR ${quote.total}
-Amount due now (${quote.percent}%): EUR ${quote.amountDue}
+${pricingLines}
 
 Please transfer the amount due using these bank details:
 
@@ -194,8 +203,7 @@ Email: ${data.email}
 Phone: ${data.phone}
 Dates: ${quote.fromDateStr} – ${quote.untilDateStr}
 Guests: ${data.guests}
-Stay total: EUR ${quote.total}
-Amount due (${quote.percent}%): EUR ${quote.amountDue}
+${pricingLines}
 Payment reference / erp_id: ${paymentRef}
 MyRent rent_guid: ${hold.rentGuid}
 

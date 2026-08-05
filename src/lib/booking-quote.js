@@ -4,7 +4,11 @@
 
 import { format } from "date-fns";
 
-import { calculateDeposit } from "@/lib/deposit";
+import {
+  applyBankTransferDiscount,
+  BANK_TRANSFER_DISCOUNT_PERCENT,
+  calculateDeposit,
+} from "@/lib/deposit";
 import {
   fetchMyRentDays,
   createRent,
@@ -49,17 +53,8 @@ export async function loadAccommodationForBooking(uid, locale = "en-us") {
 
 /**
  * Compute stay total and deposit. Prefers MyRent when myRentID is set.
- *
- * @returns {Promise<{
- *   villaName: string,
- *   myRentId: number|null,
- *   total: number,
- *   amountDue: number,
- *   percent: number,
- *   daysUntilCheckIn: number,
- *   nights: number,
- *   myRentDays: object|null,
- * }>}
+ * When paymentMethod is bank / bank_transfer, applies an extra 2% off the
+ * stay subtotal before calculating the 30%/100% amount due.
  */
 export async function computeBookingQuote({
   uid,
@@ -67,6 +62,7 @@ export async function computeBookingQuote({
   dateFrom,
   dateTo,
   guests,
+  paymentMethod,
 }) {
   const loaded = await loadAccommodationForBooking(uid, locale);
   if (!loaded) {
@@ -78,7 +74,7 @@ export async function computeBookingQuote({
   const myRentIdRaw = pageEn.data.myRentID;
   const myRentId = myRentIdRaw ? Number(myRentIdRaw) : null;
 
-  let total = 0;
+  let subtotal = 0;
   let myRentDays = null;
 
   if (myRentId) {
@@ -86,32 +82,37 @@ export async function computeBookingQuote({
     if (!myRentIsEndDateValid(dateFrom, dateTo, myRentDays)) {
       throw new Error("Selected dates are not available");
     }
-    total = myRentCalculatePriceWithDiscount(
+    subtotal = myRentCalculatePriceWithDiscount(
       myRentDays,
       pageEn.data.discounts || page.data.discounts || [],
       dateFrom,
       dateTo
     );
-    if (total <= 0) {
-      total = myRentCalculatePrice(myRentDays, dateFrom, dateTo);
+    if (subtotal <= 0) {
+      subtotal = myRentCalculatePrice(myRentDays, dateFrom, dateTo);
     }
   } else {
     const pricing = pageEn.data.pricing || page.data.pricing || [];
     const discounts = pageEn.data.discounts || page.data.discounts || [];
-    total = calculateTotalPriceWithDiscount(
+    subtotal = calculateTotalPriceWithDiscount(
       pricing,
       discounts,
       dateFrom,
       dateTo
     );
-    if (total <= 0) {
-      total = calculateTotalPrice(pricing, dateFrom, dateTo);
+    if (subtotal <= 0) {
+      subtotal = calculateTotalPrice(pricing, dateFrom, dateTo);
     }
   }
 
-  if (total <= 0) {
+  if (subtotal <= 0) {
     throw new Error("Unable to calculate price for the selected dates");
   }
+
+  const isBank =
+    paymentMethod === "bank" || paymentMethod === "bank_transfer";
+  const bankDiscountPercent = isBank ? BANK_TRANSFER_DISCOUNT_PERCENT : 0;
+  const total = isBank ? applyBankTransferDiscount(subtotal) : subtotal;
 
   const deposit = calculateDeposit(total, dateFrom);
   const nights = Math.max(
@@ -122,7 +123,9 @@ export async function computeBookingQuote({
   return {
     villaName,
     myRentId: myRentId && Number.isInteger(myRentId) ? myRentId : null,
+    subtotal,
     total,
+    bankDiscountPercent,
     amountDue: deposit.amountDue,
     percent: deposit.percent,
     daysUntilCheckIn: deposit.daysUntilCheckIn,
@@ -153,13 +156,23 @@ export async function createUnpaidMyRentHold({
     );
   }
 
-  const note = [
+  const noteParts = [
     "Source: AdriaVacay website",
     `Payment method: ${paymentMethod}`,
     `Locale: ${locale}`,
-    `Stay total: EUR ${quote.total}`,
-    `Amount due now (${quote.percent}%): EUR ${quote.amountDue}`,
-  ].join(" | ");
+  ];
+  if (quote.bankDiscountPercent > 0) {
+    noteParts.push(
+      `Subtotal: EUR ${quote.subtotal}`,
+      `Bank discount ${quote.bankDiscountPercent}%: EUR ${quote.total}`
+    );
+  } else {
+    noteParts.push(`Stay total: EUR ${quote.total}`);
+  }
+  noteParts.push(
+    `Amount due now (${quote.percent}%): EUR ${quote.amountDue}`
+  );
+  const note = noteParts.join(" | ");
 
   return createRent({
     objectId: quote.myRentId,

@@ -95,6 +95,7 @@
     "amount-due": "Jetzt fällig ({percent}%)",
     "deposit-hint-30": "Check-in in 31+ Tagen — 30 % Anzahlung jetzt fällig.",
     "deposit-hint-100": "Check-in innerhalb von 30 Tagen — voller Betrag jetzt fällig.",
+    "bank-discount-hint": "Inklusive 2 % Rabatt bei Banküberweisung.",
     "submitting": "Bitte warten…",
     "error-generic": "Etwas ist schiefgelaufen. Bitte erneut versuchen."
   },

@@ -95,6 +95,7 @@
     "amount-due": "Due now ({percent}%)",
     "deposit-hint-30": "Check-in is 31+ days away — 30% deposit due now.",
     "deposit-hint-100": "Check-in is within 30 days — full amount due now.",
+    "bank-discount-hint": "Includes 2% bank transfer discount.",
     "submitting": "Please wait…",
     "error-generic": "Something went wrong. Please try again."
   },

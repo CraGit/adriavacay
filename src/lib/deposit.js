@@ -5,6 +5,21 @@
 
 import { differenceInCalendarDays, startOfDay } from "date-fns";
 
+/** Extra % off stay total when guest pays by bank transfer (after Prismic discounts). */
+export const BANK_TRANSFER_DISCOUNT_PERCENT = 2;
+
+/**
+ * Apply bank-transfer discount to stay total (excludes security deposit).
+ * @param {number} totalStayPrice
+ * @returns {number}
+ */
+export function applyBankTransferDiscount(totalStayPrice) {
+  const total = Math.max(0, Math.floor(Number(totalStayPrice) || 0));
+  return Math.floor(
+    (total * (100 - BANK_TRANSFER_DISCOUNT_PERCENT)) / 100
+  );
+}
+
 /**
  * @param {number} totalStayPrice - Full stay total (after discounts)
  * @param {Date} checkInDate
