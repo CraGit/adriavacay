@@ -15,10 +15,9 @@ export default function Navbar({ navClass, topnavClass, destinations = [], servi
   let [isOpen, setIsOpen] = useState(false);
   let [topNavbar, setTopNavBar] = useState(false);
 
-  let [menu, setMenu] = useState("");
-  let [submenu, setSubmenu] = useState("");
-
   let current = useNextPathname();
+  let [menu, setMenu] = useState(current);
+  let [submenu, setSubmenu] = useState(current);
 
   const locale = useLocale();
   const t = useTranslations("menu");
@@ -100,6 +99,7 @@ export default function Navbar({ navClass, topnavClass, destinations = [], servi
               alt="AdriaVacay"
               width={140}
               height={24}
+              style={{ width: "auto", height: "auto" }}
             />
             <Image
               src={logo}
@@ -107,6 +107,7 @@ export default function Navbar({ navClass, topnavClass, destinations = [], servi
               alt="AdriaVacay"
               width={140}
               height={24}
+              style={{ width: "auto", height: "auto" }}
             />
           </Link>
           {/* <!-- End Logo container--> */}

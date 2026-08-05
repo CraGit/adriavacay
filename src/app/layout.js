@@ -40,7 +40,7 @@ export default async function RootLayout({ children }) {
     serverConsent = null;
   }
   return (
-    <html lang="en" dir="LTR" className="scroll-smooth">
+    <html lang="en" dir="LTR" className="scroll-smooth" data-scroll-behavior="smooth">
       <head>
         <meta themecolor={viewport.themeColor} />
       </head>

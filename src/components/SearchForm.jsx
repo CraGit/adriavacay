@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "@/i18n/routing";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Select from "react-select";
 import { useTranslations } from "next-intl";
 import qs from "query-string";
@@ -19,6 +19,12 @@ export default function SearchForm() {
   const [dateRange, setDateRange] = useState(query.dateRange);
   const [guests, setGuests] = useState(query.guests);
   const [type, setType] = useState(query.type);
+  // react-select auto-ids diverge between SSR and client; render after mount.
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const onSubmit = () => {
     updateQuery({
@@ -45,6 +51,11 @@ export default function SearchForm() {
     { label: t("cottage"), value: "Cottage" },
     { label: t("apartment"), value: "Apartment" },
   ];
+
+  const guestsValue = guests
+    ? guestOptions.find((x) => x.value === guests)
+    : guests;
+  const typeValue = type ? typeOptions.find((x) => x.value === type) : type;
 
   return (
     <div>
@@ -77,20 +88,28 @@ export default function SearchForm() {
 
             <div className="filter-search-form relative mt-2">
               <GoPeople className="icons" />
-              <Select
-                value={
-                  guests ? guestOptions.find((x) => x.value === guests) : guests
-                }
-                onChange={(option) => setGuests(option ? option.value : option)}
-                className="form-input filter-input-box bg-gray-50 dark:bg-slate-800 border-0"
-                options={guestOptions}
-              />
+              {mounted ? (
+                <Select
+                  instanceId="search-guests"
+                  inputId="buy-guests"
+                  value={guestsValue}
+                  onChange={(option) =>
+                    setGuests(option ? option.value : option)
+                  }
+                  className="form-input filter-input-box bg-gray-50 dark:bg-slate-800 border-0"
+                  options={guestOptions}
+                />
+              ) : (
+                <div className="form-input filter-input-box bg-gray-50 dark:bg-slate-800 border-0 flex items-center min-h-[42px] px-3 text-slate-700">
+                  {guestsValue?.label ?? ""}
+                </div>
+              )}
             </div>
           </div>
 
           <div>
             <label
-              htmlFor="buy-guests"
+              htmlFor="buy-type"
               className="form-label text-slate-900 dark:text-white font-medium"
             >
               {t("accommodation-type")}
@@ -98,12 +117,20 @@ export default function SearchForm() {
 
             <div className="filter-search-form relative mt-2">
               <GoHome className="icons" />
-              <Select
-                value={type ? typeOptions.find((x) => x.value === type) : type}
-                onChange={(option) => setType(option ? option.value : option)}
-                className="form-input filter-input-box bg-gray-50 dark:bg-slate-800 border-0"
-                options={typeOptions}
-              />
+              {mounted ? (
+                <Select
+                  instanceId="search-type"
+                  inputId="buy-type"
+                  value={typeValue}
+                  onChange={(option) => setType(option ? option.value : option)}
+                  className="form-input filter-input-box bg-gray-50 dark:bg-slate-800 border-0"
+                  options={typeOptions}
+                />
+              ) : (
+                <div className="form-input filter-input-box bg-gray-50 dark:bg-slate-800 border-0 flex items-center min-h-[42px] px-3 text-slate-700">
+                  {typeValue?.label ?? ""}
+                </div>
+              )}
             </div>
           </div>
 

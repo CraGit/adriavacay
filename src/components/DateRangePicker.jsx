@@ -20,7 +20,9 @@ export const DateRangePicker = ({
   const [selectedRange, setSelectedRange] = useState();
   const [count, setCount] = useState(0);
 
-  const isMobile = useMedia("(max-width: 767px)", true);
+  // Default false so SSR and first client paint match desktop (2 months).
+  // After mount, useMedia updates for mobile.
+  const isMobile = useMedia("(max-width: 767px)", false);
 
   const handleSelect = (selectedDay) => {
     let range;

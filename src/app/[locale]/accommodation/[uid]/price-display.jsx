@@ -13,7 +13,7 @@ import {
   hasSufficientPricingData,
   filterValidPriceRanges,
 } from "@/lib/validation";
-import { myRentCalculatePrice } from "@/lib/myrent-utils";
+import { myRentCalculatePrice, myRentCalculatePriceWithDiscount } from "@/lib/myrent-utils";
 import { useSearch } from "@/providers/search-provider";
 
 export default function PriceDisplay({
@@ -45,9 +45,19 @@ export default function PriceDisplay({
     }
 
     const nights = differenceInCalendarDays(query.dateRange.to, query.dateRange.from);
-    const total = myRentCalculatePrice(myRentDays, query.dateRange.from, query.dateRange.to);
+    const basePrice = myRentCalculatePrice(
+      myRentDays,
+      query.dateRange.from,
+      query.dateRange.to
+    );
+    const priceWithDiscount = myRentCalculatePriceWithDiscount(
+      myRentDays,
+      discounts,
+      query.dateRange.from,
+      query.dateRange.to
+    );
 
-    if (total <= 0) {
+    if (basePrice <= 0) {
       return (
         <div className={cn("rounded-md bg-slate-50 shadow", className)}>
           <div className="p-6">
@@ -80,10 +90,39 @@ export default function PriceDisplay({
                 {df(query.dateRange.from, "PP")} - {df(query.dateRange.to, "PP")}
               </span>
             </li>
-            <li className="flex justify-between items-center mt-2">
-              <span className="text-slate-400 text-sm">Total</span>
-              <span className="font-medium text-sm">{currency(total)}</span>
-            </li>
+
+            {basePrice === priceWithDiscount && (
+              <li className="flex justify-between items-center mt-2">
+                <span className="text-slate-400 text-sm">Total</span>
+                <span className="font-medium text-sm">
+                  {currency(priceWithDiscount)}
+                </span>
+              </li>
+            )}
+
+            {basePrice !== priceWithDiscount && (
+              <>
+                <li className="flex justify-between items-center mt-2">
+                  <span className="text-slate-400 text-sm">Base price</span>
+                  <span className="font-medium text-sm">
+                    {currency(basePrice)}
+                  </span>
+                </li>
+                <li className="flex justify-between items-center mt-2">
+                  <span className="text-slate-400 text-sm">Discount</span>
+                  <span className="font-medium text-sm">
+                    {currency(basePrice - priceWithDiscount)}
+                  </span>
+                </li>
+                <li className="flex justify-between items-center mt-2">
+                  <span className="text-slate-400 text-sm">Total</span>
+                  <span className="font-medium text-sm">
+                    {currency(priceWithDiscount)}
+                  </span>
+                </li>
+              </>
+            )}
+
             <li className="flex justify-between items-center mt-2">
               <span className="text-slate-400 text-sm">Safety deposit (refundable)</span>
               <span className="font-medium text-sm">{`+${currency(deposit)}`}</span>

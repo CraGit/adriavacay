@@ -4,7 +4,9 @@
  * Server-side fetching lives in @/lib/myrent.
  */
 
-import { addDays, differenceInCalendarDays, eachDayOfInterval, format, parseISO } from "date-fns";
+import { addDays, differenceInCalendarDays, eachDayOfInterval, format, isAfter, isBefore, parse, parseISO } from "date-fns";
+
+import { filterValidDiscountRanges } from "./validation";
 
 /**
  * Convert raw MyRent day array → plain object keyed by "YYYY-MM-DD".
@@ -28,6 +30,22 @@ export function myRentToDayRecord(days) {
 }
 
 /**
+ * Prismic discount percentage for a calendar day (first matching range wins).
+ * Mirrors the private helper used by calculateTotalPriceWithDiscount in utils.js.
+ */
+function getDiscountForDate(date, discountRanges) {
+  for (const discount of discountRanges) {
+    if (
+      !isBefore(date, parse(discount.date_start, "yyyy-MM-dd", new Date())) &&
+      !isAfter(date, parse(discount.date_end, "yyyy-MM-dd", new Date()))
+    ) {
+      return discount.percentage;
+    }
+  }
+  return 0;
+}
+
+/**
  * Calculate total price for a stay using MyRent per-day prices.
  * Sums `price` for each night in [startDate, endDate) — checkout day is not charged.
  */
@@ -40,6 +58,43 @@ export function myRentCalculatePrice(dayRecord, startDate, endDate) {
     const key = format(day, "yyyy-MM-dd");
     return total + (dayRecord[key]?.price ?? 0);
   }, 0);
+}
+
+/**
+ * Apply Prismic date-range percentage discounts on top of MyRent nightly rates.
+ * Same night window as myRentCalculatePrice: [startDate, endDate).
+ *
+ * @returns {number} Floored total after discount
+ */
+export function myRentCalculatePriceWithDiscount(
+  dayRecord,
+  discountRanges,
+  startDate,
+  endDate
+) {
+  const nights = differenceInCalendarDays(endDate, startDate);
+  if (nights <= 0) return 0;
+
+  const validDiscountRanges = filterValidDiscountRanges(discountRanges);
+  const days = eachDayOfInterval({
+    start: startDate,
+    end: addDays(endDate, -1),
+  });
+
+  let totalPrice = 0;
+  let totalDiscount = 0;
+
+  for (const day of days) {
+    const key = format(day, "yyyy-MM-dd");
+    const price = dayRecord[key]?.price ?? 0;
+    if (price <= 0) continue;
+
+    const percentage = getDiscountForDate(day, validDiscountRanges);
+    totalPrice += price;
+    totalDiscount += (price * percentage) / 100;
+  }
+
+  return Math.floor(totalPrice - totalDiscount);
 }
 
 /**

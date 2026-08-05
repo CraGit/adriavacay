@@ -9,6 +9,7 @@ import {
 } from "@/lib/utils";
 import {
   myRentCalculatePrice,
+  myRentCalculatePriceWithDiscount,
   myRentIsEndDateValid,
 } from "@/lib/myrent-utils";
 import { filterAccommodationsWithValidPricing } from "@/lib/validation";
@@ -99,7 +100,12 @@ const renderWithCalculatedPrices = (accommodations, dateRange) => {
         );
 
     const discountedPrice = item.myRentDays
-      ? price
+      ? myRentCalculatePriceWithDiscount(
+          item.myRentDays,
+          item.discounts,
+          dateRange.from,
+          dateRange.to
+        )
       : calculateTotalPriceWithDiscount(
           item.pricing,
           item.discounts,
