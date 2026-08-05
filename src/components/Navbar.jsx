@@ -99,7 +99,6 @@ export default function Navbar({ navClass, topnavClass, destinations = [], servi
               alt="AdriaVacay"
               width={140}
               height={24}
-              style={{ width: "auto", height: "auto" }}
             />
             <Image
               src={logo}
@@ -107,7 +106,6 @@ export default function Navbar({ navClass, topnavClass, destinations = [], servi
               alt="AdriaVacay"
               width={140}
               height={24}
-              style={{ width: "auto", height: "auto" }}
             />
           </Link>
           {/* <!-- End Logo container--> */}

@@ -77,7 +77,6 @@ export default async function Footer() {
                         alt="AdriaVacay"
                         width={240}
                         height={28}
-                        style={{ width: "auto", height: "auto" }}
                       />
                     </Link>
                     {/* <p className="mt-6 text-gray-300">
