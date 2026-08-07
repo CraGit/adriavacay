@@ -121,10 +121,23 @@ export default function CustomDayPicker({
   className,
   selected,
   placeholder,
+  variant = "input",
 }) {
   const today = startOfToday();
 
   const isMobile = useMedia("(max-width: 767px)", true);
+
+  const label = selected?.from ? (
+    selected.to ? (
+      <>
+        {df(selected.from, "PP")} - {df(selected.to, "PP")}
+      </>
+    ) : (
+      df(selected.from, "PP")
+    )
+  ) : (
+    <span>{placeholder}</span>
+  );
 
   const modifiers = {
     available: (date) => {
@@ -171,21 +184,21 @@ export default function CustomDayPicker({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <div className={cn("form-input", className)}>
-          {selected?.from ? (
-            selected.to ? (
-              <>
-                {df(selected.from, "PP")} - {df(selected.to, "PP")}
-              </>
-            ) : (
-              df(selected.from, "PP")
-            )
-          ) : (
-            <span>{placeholder}</span>
-          )}
-        </div>
+        {variant === "link" ? (
+          <button
+            type="button"
+            className={cn(
+              "text-sm font-medium text-green-600 hover:text-green-700 underline underline-offset-2 text-right",
+              className
+            )}
+          >
+            {label}
+          </button>
+        ) : (
+          <div className={cn("form-input cursor-pointer", className)}>{label}</div>
+        )}
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0 bg-white">
+      <PopoverContent className="w-auto p-0 bg-white" align="end">
         <DayPicker
           locale={enGB}
           mode="range"

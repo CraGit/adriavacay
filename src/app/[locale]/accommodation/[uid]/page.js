@@ -25,7 +25,6 @@ import { components } from "@/slices";
 
 import PartialDiv from "@/components/PartialDiv";
 import BookingForm from "./booking-form";
-import PriceDisplay from "./price-display";
 import Reviews from "@/components/Reviews";
 
 export default async function Page({ params }) {
@@ -204,12 +203,6 @@ export default async function Page({ params }) {
               id="booking-form"
             >
               <div className="sticky top-20">
-                <PriceDisplay
-                  prices={pageEn.data.pricing}
-                  discounts={pageEn.data.discounts}
-                  deposit={pageEn.data.security_deposit}
-                  myRentDays={myRentDays}
-                />
                 <BookingForm
                   uid={uid}
                   occupiedDates={occupiedData.occupiedDates}
@@ -217,7 +210,7 @@ export default async function Page({ params }) {
                   priceRanges={pageEn.data.pricing}
                   discounts={pageEn.data.discounts}
                   myRentDays={myRentDays}
-                  className="mt-6"
+                  deposit={pageEn.data.security_deposit}
                 />
                 {/* <div className="mt-12 rounded-md bg-slate-50 dark:bg-slate-800 shadow dark:shadow-gray-700">
                   <div className="p-6">
