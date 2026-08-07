@@ -43,12 +43,12 @@ const TeamSlice = ({ slice }) => {
               >
                 {/* Fixed-aspect photo */}
                 {member.photo?.url && (
-                  <div className="relative w-full aspect-[4/3] overflow-hidden bg-slate-100 flex-shrink-0">
+                  <div className="relative w-full aspect-[3/4] overflow-hidden bg-slate-100 flex-shrink-0">
                     <PrismicNextImage
                       field={member.photo}
                       fill
                       fallbackAlt={member.name || "Team member"}
-                      style={{ objectFit: "cover" }}
+                      style={{ objectFit: "cover", objectPosition: "top" }}
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       quality={75}
                     />
