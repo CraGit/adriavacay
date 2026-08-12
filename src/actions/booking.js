@@ -1,8 +1,9 @@
 "use server";
 
-import { redirect } from "next/navigation";
+import { redirect as nextRedirect } from "next/navigation";
 
 import { bookingSchema, bookStaySchema } from "@/data/schemas";
+import { redirect, routing } from "@/i18n/routing";
 import {
   computeBookingQuote,
   createUnpaidMyRentHold,
@@ -20,11 +21,22 @@ function parseDateRange(dateRange) {
 }
 
 function siteBaseUrl() {
-  return (
-    process.env.NEXT_PUBLIC_BASE_URL ||
-    process.env.SITE_URL ||
-    "http://localhost:3000"
-  ).replace(/\/$/, "");
+  if (process.env.NEXT_PUBLIC_BASE_URL) {
+    return process.env.NEXT_PUBLIC_BASE_URL.replace(/\/$/, "");
+  }
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL.replace(/\/$/, "")}`;
+  }
+  return (process.env.SITE_URL || "http://localhost:3000").replace(/\/$/, "");
+}
+
+/** Path with correct locale prefix (`as-needed`: no /en-us for default). */
+function localizedPath(locale, pathname) {
+  const path = pathname.startsWith("/") ? pathname : `/${pathname}`;
+  if (!locale || locale === routing.defaultLocale) {
+    return path;
+  }
+  return `/${locale}${path}`;
 }
 
 function bankDetailsBlock() {
@@ -93,7 +105,7 @@ Message: ${data.message || "(none)"}
     return { errors: { _form: ["Failed to send inquiry email"] } };
   }
 
-  redirect(`/${locale}/message-sent`);
+  redirect({ href: "/message-sent", locale });
 }
 
 /** @deprecated Use submitInquiry */
@@ -228,7 +240,10 @@ Cancel unpaid holds in MyRent if payment does not arrive.
     // Hold already created — still redirect guest; owner can follow up
   }
 
-  redirect(`/${locale}/booking/success?method=bank&ref=${encodeURIComponent(paymentRef)}`);
+  redirect({
+    href: `/booking/success?method=bank&ref=${encodeURIComponent(paymentRef)}`,
+    locale,
+  });
 }
 
 /**
@@ -332,8 +347,8 @@ export async function createStripeCheckoutBooking(
         guests: String(data.guests),
         villa_name: quote.villaName,
       },
-      success_url: `${base}/${locale}/booking/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${base}/${locale}/booking/cancel?erp=${encodeURIComponent(hold.erpId)}&rent_guid=${encodeURIComponent(hold.rentGuid)}`,
+      success_url: `${base}${localizedPath(locale, "/booking/success")}?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${base}${localizedPath(locale, "/booking/cancel")}?erp=${encodeURIComponent(hold.erpId)}&rent_guid=${encodeURIComponent(hold.rentGuid)}`,
       expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
     });
 
@@ -341,7 +356,7 @@ export async function createStripeCheckoutBooking(
       throw new Error("Failed to start Stripe Checkout");
     }
 
-    redirect(session.url);
+    nextRedirect(session.url);
   } catch (error) {
     if (
       typeof error?.digest === "string" &&
