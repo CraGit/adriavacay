@@ -189,5 +189,6 @@ export async function createUnpaidMyRentHold({
     contactTel: phone,
     note,
     languageId: locale?.startsWith("de") ? "2" : "1",
+    paymentMethod,
   });
 }

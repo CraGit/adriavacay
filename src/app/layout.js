@@ -1,7 +1,7 @@
 import "./globals.css";
 import "@/assets/css/tailwind.css";
-import "@/assets/css/materialdesignicons.min.css";
-import { League_Spartan } from "next/font/google";
+import "@mdi/font/css/materialdesignicons.min.css";
+import localFont from "next/font/local";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SearchProvider from "@/providers/search-provider";
@@ -12,9 +12,34 @@ import CookieBanner from "@/components/CookieBanner";
 import ConsentGate from "@/components/ConsentGate";
 import { cookies } from "next/headers";
 
-const league_Spartan = League_Spartan({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
+const league_Spartan = localFont({
+  src: [
+    {
+      path: "../../node_modules/@fontsource/league-spartan/files/league-spartan-latin-300-normal.woff2",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "../../node_modules/@fontsource/league-spartan/files/league-spartan-latin-400-normal.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../node_modules/@fontsource/league-spartan/files/league-spartan-latin-500-normal.woff2",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../../node_modules/@fontsource/league-spartan/files/league-spartan-latin-600-normal.woff2",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../../node_modules/@fontsource/league-spartan/files/league-spartan-latin-700-normal.woff2",
+      weight: "700",
+      style: "normal",
+    },
+  ],
   display: "swap",
   variable: "--font-league_Spartan",
 });
@@ -44,7 +69,7 @@ export default async function RootLayout({ children }) {
       <head>
         <meta themecolor={viewport.themeColor} />
       </head>
-      <body className={`${league_Spartan.className}`}>
+      <body className={`${league_Spartan.variable} ${league_Spartan.className}`}>
         <ConsentProvider initialConsent={serverConsent}>
           <NuqsWrapper>
             {children}

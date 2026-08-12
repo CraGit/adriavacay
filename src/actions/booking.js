@@ -207,7 +207,8 @@ ${pricingLines}
 Payment reference / erp_id: ${paymentRef}
 MyRent rent_guid: ${hold.rentGuid}
 
-Cancel unpaid holds manually in MyRent if payment does not arrive.
+Mark this booking as paid (or partially paid) manually in MyRent after the wire transfer arrives.
+Cancel unpaid holds in MyRent if payment does not arrive.
 `.trim();
 
   try {
@@ -332,7 +333,7 @@ export async function createStripeCheckoutBooking(
         villa_name: quote.villaName,
       },
       success_url: `${base}/${locale}/booking/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${base}/${locale}/booking/cancel?erp=${encodeURIComponent(hold.erpId)}`,
+      cancel_url: `${base}/${locale}/booking/cancel?erp=${encodeURIComponent(hold.erpId)}&rent_guid=${encodeURIComponent(hold.rentGuid)}`,
       expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
     });
 

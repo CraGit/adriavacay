@@ -2,12 +2,18 @@
  * MyRent channel manager — SERVER-ONLY module.
  * Contains API fetching and reservation write APIs. Do not import from client components.
  * Client-safe utility functions live in @/lib/myrent-utils.
+ *
+ * Write routes require a token from auth.my-rent.net (≈1h lifetime), sent as the `token` header.
+ * Tokens are cached in-memory with a safety buffer and retried once on 401.
  */
 
 import { myRentToDayRecord } from "./myrent-utils";
 
 const MYRENT_API_BASE = "https://api.my-rent.net";
 const MYRENT_AUTH_URL = "https://auth.my-rent.net/auth/generate";
+
+/** Cache under the 1h token lifetime (refresh at 45 minutes). */
+const TOKEN_TTL_MS = 45 * 60 * 1000;
 
 /** @type {{ token: string, expiresAt: number } | null} */
 let cachedToken = null;
@@ -21,12 +27,17 @@ function getBaseHeaders() {
   };
 }
 
+function invalidateMyRentToken() {
+  cachedToken = null;
+}
+
 /**
  * Generate (and cache ~45min) MyRent API token for write operations.
+ * Auth generate requires user_guid + Authorization headers (see MyRent docs).
  */
-export async function getMyRentToken() {
+export async function getMyRentToken({ force = false } = {}) {
   const now = Date.now();
-  if (cachedToken && cachedToken.expiresAt > now) {
+  if (!force && cachedToken && cachedToken.expiresAt > now) {
     return cachedToken.token;
   }
 
@@ -36,19 +47,18 @@ export async function getMyRentToken() {
   const publicKey = process.env.MYRENT_API_PUBLIC_KEY;
   const authKey = process.env.MYRENT_API_AUTH_KEY;
 
-  if (!userGuid || !userId || !publicKey || !authKey) {
+  if (!userGuid || !userId || !publicKey || !authKey || !authHeader) {
     throw new Error(
-      "MyRent auth is not configured. Set MYRENT_USER_GUID, MYRENT_USER_ID, MYRENT_API_PUBLIC_KEY, MYRENT_API_AUTH_KEY."
+      "MyRent auth is not configured. Set MYRENT_USER_GUID, MYRENT_USER_ID, MYRENT_API_PUBLIC_KEY, MYRENT_API_AUTH_KEY, and MYRENT_API_AUTH (Authorization value for auth/generate)."
     );
   }
 
   const headers = {
     "content-type": "application/json",
+    accept: "application/json",
     user_guid: userGuid,
+    Authorization: authHeader,
   };
-  if (authHeader) {
-    headers.Authorization = authHeader;
-  }
 
   const res = await fetch(MYRENT_AUTH_URL, {
     method: "POST",
@@ -63,7 +73,9 @@ export async function getMyRentToken() {
 
   if (!res.ok) {
     const text = await res.text().catch(() => "");
-    throw new Error(`MyRent auth failed ${res.status}: ${text}`);
+    throw new Error(
+      `MyRent auth failed ${res.status}: ${text || "(empty response)"}. Check MYRENT_USER_GUID, MYRENT_API_AUTH, MYRENT_USER_ID, MYRENT_API_PUBLIC_KEY, and MYRENT_API_AUTH_KEY.`
+    );
   }
 
   const data = await res.json();
@@ -74,17 +86,30 @@ export async function getMyRentToken() {
 
   cachedToken = {
     token,
-    expiresAt: now + 45 * 60 * 1000,
+    expiresAt: now + TOKEN_TTL_MS,
   };
   return token;
 }
 
-async function getWriteHeaders() {
-  const token = await getMyRentToken();
+async function getWriteHeaders({ forceToken = false } = {}) {
+  const token = await getMyRentToken({ force: forceToken });
   return {
     ...getBaseHeaders(),
     token,
   };
+}
+
+/**
+ * Run a MyRent write request; on 401 invalidate token and retry once with a fresh token.
+ * @param {(headers: Record<string, string>) => Promise<Response>} requestFn
+ */
+async function withWriteAuth(requestFn) {
+  let res = await requestFn(await getWriteHeaders());
+  if (res.status === 401) {
+    invalidateMyRentToken();
+    res = await requestFn(await getWriteHeaders({ forceToken: true }));
+  }
+  return res;
 }
 
 function assertPositiveIntId(myRentId) {
@@ -93,6 +118,30 @@ function assertPositiveIntId(myRentId) {
     throw new Error(`Invalid myRentId: ${myRentId}`);
   }
   return id;
+}
+
+/**
+ * Resolve MyRent payment_method_id for stripe vs bank, with fallbacks.
+ * @param {"stripe" | "bank" | "bank_transfer" | string | undefined} paymentMethod
+ */
+export function resolveMyRentPaymentMethodId(paymentMethod) {
+  const isBank =
+    paymentMethod === "bank" || paymentMethod === "bank_transfer";
+  if (isBank) {
+    return (
+      process.env.MYRENT_PAYMENT_METHOD_ID_BANK ||
+      process.env.MYRENT_PAYMENT_METHOD_ID ||
+      null
+    );
+  }
+  if (paymentMethod === "stripe") {
+    return (
+      process.env.MYRENT_PAYMENT_METHOD_ID_STRIPE ||
+      process.env.MYRENT_PAYMENT_METHOD_ID ||
+      null
+    );
+  }
+  return process.env.MYRENT_PAYMENT_METHOD_ID || null;
 }
 
 /**
@@ -117,19 +166,31 @@ export async function fetchMyRentDays(myRentId) {
 
 /**
  * Extract rent guid from various MyRent create-response shapes.
+ * e.g. { rent_guid } or { status: "ok", data: { rent_guid, rent_id } }
  */
 function extractRentGuid(data) {
   if (!data || typeof data !== "object") return null;
-  return (
-    data.rent_guid ||
-    data.rentGuid ||
-    data.guid ||
-    data.id_hash ||
-    data.rent_id ||
-    data.rentId ||
-    data.id ||
-    null
-  );
+
+  const candidates = [data];
+  if (data.data && typeof data.data === "object") {
+    candidates.push(data.data);
+  }
+
+  for (const node of candidates) {
+    const guid =
+      node.rent_guid ||
+      node.rentGuid ||
+      node.guid ||
+      node.id_hash ||
+      node.rent_id ||
+      node.rentId ||
+      node.id;
+    if (guid != null && String(guid).length > 0) {
+      return String(guid);
+    }
+  }
+
+  return null;
 }
 
 /**
@@ -170,18 +231,25 @@ export async function createRent(input) {
   if (process.env.MYRENT_RENT_SOURCE_ID) {
     body.rent_source_id = process.env.MYRENT_RENT_SOURCE_ID;
   }
-  if (process.env.MYRENT_PAYMENT_METHOD_ID) {
-    body.payment_method_id = process.env.MYRENT_PAYMENT_METHOD_ID;
+
+  const paymentMethodId =
+    input.paymentMethodId ||
+    resolveMyRentPaymentMethodId(input.paymentMethod);
+  if (paymentMethodId) {
+    body.payment_method_id = paymentMethodId;
   }
+
   if (input.checkIn) body.check_in = input.checkIn;
   if (input.checkOut) body.check_out = input.checkOut;
 
-  const res = await fetch(`${MYRENT_API_BASE}/user/rent_add`, {
-    method: "POST",
-    headers: await getWriteHeaders(),
-    body: JSON.stringify(body),
-    cache: "no-store",
-  });
+  const res = await withWriteAuth((headers) =>
+    fetch(`${MYRENT_API_BASE}/user/rent_add`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body),
+      cache: "no-store",
+    })
+  );
 
   const raw = await res.json().catch(() => ({}));
   if (!res.ok) {
@@ -221,17 +289,18 @@ export async function updateRent(input) {
   if (input.contactTel) body.contact_tel = input.contactTel;
   if (input.fromDate) body.from_date = input.fromDate;
   if (input.untilDate) body.until_date = input.untilDate;
-  // Paid flags — may be accepted even if not fully documented on rent_save
   if (input.inAdvancePaid) body.in_advance_paid = input.inAdvancePaid;
   if (input.paid) body.paid = input.paid;
   if (input.note) body.note = input.note;
 
-  const res = await fetch(`${MYRENT_API_BASE}/user/rent_save`, {
-    method: "POST",
-    headers: await getWriteHeaders(),
-    body: JSON.stringify(body),
-    cache: "no-store",
-  });
+  const res = await withWriteAuth((headers) =>
+    fetch(`${MYRENT_API_BASE}/user/rent_save`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body),
+      cache: "no-store",
+    })
+  );
 
   const raw = await res.json().catch(() => ({}));
   if (!res.ok) {
@@ -243,6 +312,41 @@ export async function updateRent(input) {
 }
 
 /**
+ * After successful Stripe Checkout: mark advance paid; mark fully paid only at 100%.
+ *
+ * @param {{
+ *   rentGuid: string,
+ *   objectId: string | number,
+ *   percent: string | number,
+ *   amountDue?: string | number,
+ *   total?: string | number,
+ *   sessionId?: string,
+ *   erpId?: string,
+ * }} input
+ */
+export async function markMyRentStripePayment(input) {
+  const percent = Number(input.percent);
+  const isFull = percent === 100;
+  const amountDue = input.amountDue ?? "";
+  const total = input.total ?? "";
+  const note = [
+    `Stripe: EUR ${amountDue}/${total} (${isFull ? "100% full" : `${percent}% partial`})`,
+    input.sessionId ? `session=${input.sessionId}` : null,
+    input.erpId ? `erp=${input.erpId}` : null,
+  ]
+    .filter(Boolean)
+    .join(". ");
+
+  return updateRent({
+    rentGuid: input.rentGuid,
+    objectId: input.objectId,
+    inAdvancePaid: "Y",
+    paid: isFull ? "Y" : "N",
+    note,
+  });
+}
+
+/**
  * Delete a reservation (abandoned Stripe Checkout).
  */
 export async function deleteRent(rentGuid) {
@@ -250,13 +354,15 @@ export async function deleteRent(rentGuid) {
     throw new Error("rentGuid is required");
   }
 
-  const res = await fetch(
-    `${MYRENT_API_BASE}/user/rent_del/${encodeURIComponent(rentGuid)}`,
-    {
-      method: "DELETE",
-      headers: await getWriteHeaders(),
-      cache: "no-store",
-    }
+  const res = await withWriteAuth((headers) =>
+    fetch(
+      `${MYRENT_API_BASE}/user/rent_del/${encodeURIComponent(rentGuid)}`,
+      {
+        method: "DELETE",
+        headers,
+        cache: "no-store",
+      }
+    )
   );
 
   if (!res.ok) {

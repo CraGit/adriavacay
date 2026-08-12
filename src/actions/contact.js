@@ -1,19 +1,9 @@
 "use server";
 
-import nodemailer from "nodemailer";
 import { redirect } from "next/navigation";
 
 import { contactSchema } from "@/data/schemas";
-
-const transporter = nodemailer.createTransport({
-  host: process.env.MAIL_HOST,
-  port: process.env.MAIL_PORT,
-  secure: process.env.MAIL_SECURE === "true",
-  auth: {
-    user: process.env.MAIL_USER,
-    pass: process.env.MAIL_PASSWORD,
-  },
-});
+import { sendMail } from "@/lib/mail";
 
 export async function submit(formData) {
   const validatedFields = contactSchema.safeParse({
@@ -36,17 +26,13 @@ export async function submit(formData) {
     Message: ${validatedFields.data.message}
   `;
 
-  const mailOptions = {
-    from: process.env.MAIL_USER,
-    to: process.env.MAIL_TO,
-    replyTo: validatedFields.data.email,
-    subject: "AdriaVacay - upit s web stranice",
-    text: message,
-    html: message.replace(/\r\n/g, "<br>"),
-  };
-
   try {
-    await transporter.sendMail(mailOptions);
+    await sendMail({
+      to: process.env.MAIL_TO,
+      replyTo: validatedFields.data.email,
+      subject: "AdriaVacay - upit s web stranice",
+      text: message,
+    });
   } catch (error) {
     console.log(error);
     throw new Error("Failed to send email");

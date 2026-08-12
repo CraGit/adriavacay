@@ -1,31 +1,45 @@
 import { NextResponse } from "next/server";
 
 import { sendMail } from "@/lib/mail";
-import { deleteRent, updateRent } from "@/lib/myrent";
+import { deleteRent, markMyRentStripePayment } from "@/lib/myrent";
 import { getStripe } from "@/lib/stripe";
 
 export const runtime = "nodejs";
 
 async function handleCheckoutCompleted(session) {
+  if (session.payment_status !== "paid") {
+    console.warn(
+      "checkout.session.completed ignored — payment_status is not paid:",
+      session.id,
+      session.payment_status
+    );
+    return;
+  }
+
   const meta = session.metadata || {};
   const rentGuid = meta.rent_guid;
   const objectId = meta.object_id;
 
   if (rentGuid && objectId) {
     try {
-      await updateRent({
+      await markMyRentStripePayment({
         rentGuid,
         objectId,
-        inAdvancePaid: "Y",
-        paid: meta.percent === "100" ? "Y" : "N",
-        note: `Stripe paid. Session ${session.id}. erp_id=${meta.erp_id}`,
+        percent: meta.percent,
+        amountDue: meta.amount_due,
+        total: meta.total,
+        sessionId: session.id,
+        erpId: meta.erp_id,
       });
     } catch (error) {
       console.error("MyRent mark-paid failed:", error);
       throw error;
     }
   } else {
-    console.error("checkout.session.completed missing rent_guid/object_id", meta);
+    console.error(
+      "checkout.session.completed missing rent_guid/object_id",
+      meta
+    );
   }
 
   const villa = meta.villa_name || meta.uid || "property";
@@ -121,7 +135,10 @@ export async function POST(request) {
   try {
     event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
   } catch (error) {
-    console.error("Stripe webhook signature verification failed:", error.message);
+    console.error(
+      "Stripe webhook signature verification failed:",
+      error.message
+    );
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 
