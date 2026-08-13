@@ -20,6 +20,8 @@
     "@prismicio/next": "^2.3.0",
     "@prismicio/react": "^3.4.1",
     "@radix-ui/react-popover": "^1.1.1",
+    "@react-email/components": "^1.0.12",
+    "@react-email/render": "^2.1.0",
     "autoprefixer": "10.4.14",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",

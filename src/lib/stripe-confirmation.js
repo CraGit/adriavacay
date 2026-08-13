@@ -1,3 +1,9 @@
+import { createElement } from "react";
+
+import {
+  StripeAgencyNotificationEmail,
+  StripeGuestConfirmationEmail,
+} from "@/emails/stripe-confirmation";
 import { sendMail } from "@/lib/mail";
 import { getStripe } from "@/lib/stripe";
 
@@ -88,6 +94,16 @@ Stripe session: ${session.id}
       to: guestEmail,
       subject: `AdriaVacay — booking confirmed (${villa})`,
       text: guestText,
+      react: createElement(StripeGuestConfirmationEmail, {
+        guestName,
+        villa,
+        fromDate: meta.from_date,
+        untilDate: meta.until_date,
+        guests: meta.guests,
+        total,
+        amountDue,
+        reference: meta.erp_id,
+      }),
     });
   }
 
@@ -97,6 +113,21 @@ Stripe session: ${session.id}
       replyTo: guestEmail || undefined,
       subject: `AdriaVacay — Stripe paid ${meta.erp_id || session.id}`,
       text: ownerText,
+      react: createElement(StripeAgencyNotificationEmail, {
+        villa,
+        guestName,
+        guestEmail,
+        guestPhone: meta.guest_phone,
+        fromDate: meta.from_date,
+        untilDate: meta.until_date,
+        guests: meta.guests,
+        total,
+        amountDue,
+        percent: meta.percent,
+        erpId: meta.erp_id,
+        rentGuid,
+        sessionId: session.id,
+      }),
     });
   }
 

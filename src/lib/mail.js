@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { render } from "@react-email/render";
 
 function isEthereal() {
   return process.env.MAIL_HOST?.includes("ethereal.email");
@@ -64,13 +65,29 @@ function resolveFromAddress() {
   return configured;
 }
 
+function plainTextFallback(text) {
+  if (!text) return undefined;
+  return text.replace(/\r\n/g, "\n").replace(/\n/g, "<br>\n");
+}
+
 export function createMailTransporter() {
   return nodemailer.createTransport(resolveMailTransportOptions());
 }
 
-export async function sendMail({ to, subject, text, replyTo, cc }) {
+/**
+ * @param {{ to: string, subject: string, text?: string, html?: string, react?: import('react').ReactElement, replyTo?: string, cc?: string }} options
+ */
+export async function sendMail({ to, subject, text, html, react, replyTo, cc }) {
   if (!to) {
     throw new Error("Mail recipient (to) is required");
+  }
+
+  let htmlBody = html;
+  if (react) {
+    htmlBody = await render(react);
+  }
+  if (!htmlBody) {
+    htmlBody = plainTextFallback(text);
   }
 
   const transporter = createMailTransporter();
@@ -79,7 +96,7 @@ export async function sendMail({ to, subject, text, replyTo, cc }) {
     to,
     subject,
     text,
-    html: text.replace(/\r\n/g, "<br>"),
+    html: htmlBody,
     replyTo,
     cc,
   };

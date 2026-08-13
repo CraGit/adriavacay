@@ -1,9 +1,15 @@
 "use server";
 
+import { createElement } from "react";
 import { headers } from "next/headers";
 import { redirect as nextRedirect } from "next/navigation";
 
 import { bookingSchema, bookStaySchema } from "@/data/schemas";
+import {
+  BankAgencyNotificationEmail,
+  BankGuestInstructionsEmail,
+} from "@/emails/bank-transfer";
+import { InquiryNotificationEmail } from "@/emails/enquiry";
 import { redirect, routing } from "@/i18n/routing";
 import {
   computeBookingQuote,
@@ -96,12 +102,14 @@ export async function submitInquiry(uid, dateRange, guests, locale, formData) {
     // Still send inquiry even if price/availability lookup fails
   }
 
-  const message = `
+  const dateFromStr = data.dateFrom.toISOString().slice(0, 10);
+  const dateToStr = data.dateTo.toISOString().slice(0, 10);
+  const messageText = `
 Name: ${data.name}
 Email: ${data.email}
 Guests: ${data.guests}
-Date from: ${data.dateFrom.toISOString().slice(0, 10)}
-Date to: ${data.dateTo.toISOString().slice(0, 10)}
+Date from: ${dateFromStr}
+Date to: ${dateToStr}
 Villa: ${villaName}
 Message: ${data.message || "(none)"}
 `.trim();
@@ -111,7 +119,16 @@ Message: ${data.message || "(none)"}
       to: process.env.MAIL_TO,
       replyTo: data.email,
       subject: "AdriaVacay - inquiry / upit za rezervaciju",
-      text: message,
+      text: messageText,
+      react: createElement(InquiryNotificationEmail, {
+        name: data.name,
+        email: data.email,
+        guests: data.guests,
+        dateFrom: dateFromStr,
+        dateTo: dateToStr,
+        villa: villaName,
+        message: data.message || "(none)",
+      }),
     });
   } catch (error) {
     console.error(error);
@@ -189,14 +206,34 @@ export async function createBankTransferBooking(
     ? `${bank.prefix}${hold.erpId}`
     : hold.erpId;
 
-  const pricingLines =
+  const pricingRows =
     quote.bankDiscountPercent > 0
-      ? `Stay subtotal: EUR ${quote.subtotal}
-Bank transfer discount (${quote.bankDiscountPercent}%): included
-Stay total after discount: EUR ${quote.total}
-Amount due now (${quote.percent}%): EUR ${quote.amountDue}`
-      : `Stay total: EUR ${quote.total}
-Amount due now (${quote.percent}%): EUR ${quote.amountDue}`;
+      ? [
+          { label: "Stay subtotal", value: `EUR ${quote.subtotal}` },
+          {
+            label: `Bank transfer discount (${quote.bankDiscountPercent}%)`,
+            value: "included",
+          },
+          {
+            label: "Stay total after discount",
+            value: `EUR ${quote.total}`,
+          },
+          {
+            label: `Amount due now (${quote.percent}%)`,
+            value: `EUR ${quote.amountDue}`,
+          },
+        ]
+      : [
+          { label: "Stay total", value: `EUR ${quote.total}` },
+          {
+            label: `Amount due now (${quote.percent}%)`,
+            value: `EUR ${quote.amountDue}`,
+          },
+        ];
+
+  const pricingLines = pricingRows
+    .map((row) => `${row.label}: ${row.value}`)
+    .join("\n");
 
   const guestText = `
 Dear ${data.name},
@@ -241,12 +278,36 @@ Cancel unpaid holds in MyRent if payment does not arrive.
       to: data.email,
       subject: `AdriaVacay — bank transfer instructions (${quote.villaName})`,
       text: guestText,
+      react: createElement(BankGuestInstructionsEmail, {
+        guestName: data.name,
+        villa: quote.villaName,
+        fromDate: quote.fromDateStr,
+        untilDate: quote.untilDateStr,
+        guests: data.guests,
+        pricingRows,
+        beneficiary: bank.beneficiary,
+        bankName: bank.bankName,
+        iban: bank.iban,
+        paymentRef,
+      }),
     });
     await sendMail({
       to: process.env.MAIL_TO,
       replyTo: data.email,
       subject: `AdriaVacay — unpaid bank booking ${paymentRef}`,
       text: ownerText,
+      react: createElement(BankAgencyNotificationEmail, {
+        villa: quote.villaName,
+        guestName: data.name,
+        guestEmail: data.email,
+        guestPhone: data.phone,
+        fromDate: quote.fromDateStr,
+        untilDate: quote.untilDateStr,
+        guests: data.guests,
+        pricingRows,
+        paymentRef,
+        rentGuid: hold.rentGuid,
+      }),
     });
   } catch (error) {
     console.error(error);
