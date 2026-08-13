@@ -19,13 +19,15 @@ import { amenitiesMapping } from "@/data";
 import rtfComponents from "@/lib/richText";
 import { getImageAlt } from "@/lib/image-alt";
 import { occupiedDatesFromIcal, occupiedRangesFromIcal } from "@/lib/utils";
-import { fetchMyRentDays } from "@/lib/myrent";
+import { fetchMyRentDays, isDynamicServerUsage } from "@/lib/myrent";
 import { createClient } from "@/prismicio";
 import { components } from "@/slices";
 
 import PartialDiv from "@/components/PartialDiv";
 import BookingForm from "./booking-form";
 import Reviews from "@/components/Reviews";
+
+export const dynamic = "force-dynamic";
 
 export default async function Page({ params }) {
   const { locale, uid } = await params;
@@ -66,7 +68,9 @@ export default async function Page({ params }) {
     try {
       myRentDays = await fetchMyRentDays(myRentId);
     } catch (error) {
-      console.error(`[MyRent] API error for property ${myRentId}:`, error);
+      if (!isDynamicServerUsage(error)) {
+        console.error(`[MyRent] API error for property ${myRentId}:`, error);
+      }
       myRentDays = null;
     }
   } else {
@@ -304,17 +308,4 @@ export async function generateMetadata({ params }) {
     title: page.data.meta_title,
     description: page.data.meta_description,
   };
-}
-
-export async function generateStaticParams() {
-  const client = createClient();
-  const pages = await client.getAllByType("accommodation_single", {
-    lang: "*",
-    fetchOptions: { cache: "no-store" },
-  });
-
-  return pages.map((page) => {
-    const locale = page.lang && page.lang.startsWith("en") ? "en-us" : page.lang && page.lang.startsWith("de") ? "de" : page.lang;
-    return { uid: page.uid, locale };
-  });
 }

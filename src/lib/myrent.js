@@ -148,6 +148,10 @@ export function resolveMyRentPaymentMethodId(paymentMethod) {
  * Fetch per-day prices and availability for a property from the MyRent API.
  * Returns a day-keyed record or throws on API/network error.
  */
+export function isDynamicServerUsage(error) {
+  return error?.digest === "DYNAMIC_SERVER_USAGE";
+}
+
 export async function fetchMyRentDays(myRentId) {
   const id = assertPositiveIntId(myRentId);
 

@@ -3,7 +3,7 @@ import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { createClient } from "@/prismicio";
 import { AccommodationSingle } from "@/app/[locale]/accommodation/accommodation-single";
-import { fetchMyRentDays } from "@/lib/myrent";
+import { fetchMyRentDays, isDynamicServerUsage } from "@/lib/myrent";
 import { myRentOccupiedDates } from "@/lib/myrent-utils";
 import { occupiedDatesFromIcal } from "@/lib/utils";
 import {
@@ -100,22 +100,7 @@ const SLUG_TO_HERO_FIELD = {
   "villas-with-pet-friendly": "hero_pet_friendly",
 };
 
-export async function generateStaticParams() {
-  const client = createClient();
-  const villas = await client.getAllByType("accommodation_single", {
-    lang: "*",
-    fetchOptions: { cache: "no-store" },
-  });
-
-  // Only generate paths for locales that have at least one villa
-  const locales = [...new Set(villas.map((v) => v.lang))].map((lang) =>
-    lang.startsWith("en") ? "en-us" : lang.startsWith("de") ? "de" : lang
-  );
-
-  return Object.keys(VILLA_PAGES).flatMap((slug) =>
-    locales.map((locale) => ({ slug, locale }))
-  );
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }) {
   const { slug, locale } = await params;
@@ -226,7 +211,9 @@ export default async function VillaFilterPage({ params }) {
           });
         }
       } catch (err) {
-        console.error("Error enriching villa", villa.uid, err);
+        if (!isDynamicServerUsage(err)) {
+          console.error("Error enriching villa", villa.uid, err);
+        }
         return null;
       }
     })
