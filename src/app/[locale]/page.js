@@ -3,6 +3,8 @@ import { SliceZone } from "@prismicio/react";
 import { createClient } from "@/prismicio";
 import { components } from "@/slices";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page({ params }) {
   const { locale } = await params;
   const client = createClient();

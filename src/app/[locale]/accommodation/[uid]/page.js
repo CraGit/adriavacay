@@ -19,13 +19,15 @@ import { amenitiesMapping } from "@/data";
 import rtfComponents from "@/lib/richText";
 import { getImageAlt } from "@/lib/image-alt";
 import { occupiedDatesFromIcal, occupiedRangesFromIcal } from "@/lib/utils";
-import { fetchMyRentDays } from "@/lib/myrent";
+import { fetchMyRentDays, isDynamicServerUsage, isMyRentPricesError } from "@/lib/myrent";
 import { createClient } from "@/prismicio";
 import { components } from "@/slices";
 
 import PartialDiv from "@/components/PartialDiv";
 import BookingForm from "./booking-form";
 import Reviews from "@/components/Reviews";
+
+export const dynamic = "force-dynamic";
 
 export default async function Page({ params }) {
   const { locale, uid } = await params;
@@ -66,7 +68,9 @@ export default async function Page({ params }) {
     try {
       myRentDays = await fetchMyRentDays(myRentId);
     } catch (error) {
-      console.error(`[MyRent] API error for property ${myRentId}:`, error);
+      if (!isDynamicServerUsage(error) && !isMyRentPricesError(error)) {
+        console.error(`[MyRent] API error for property ${myRentId}:`, error);
+      }
       myRentDays = null;
     }
   } else {

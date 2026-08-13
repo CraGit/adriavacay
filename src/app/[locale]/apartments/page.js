@@ -5,6 +5,8 @@ import { createClient } from "@/prismicio";
 import { components } from "@/slices";
 import { setRequestLocale } from "next-intl/server";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page({ params }) {
   const { locale } = await params;
   setRequestLocale(locale);

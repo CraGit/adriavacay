@@ -7,6 +7,8 @@
  * Tokens are cached in-memory with a safety buffer and retried once on 401.
  */
 
+import { cache } from "react";
+
 import { myRentToDayRecord } from "./myrent-utils";
 
 const MYRENT_API_BASE = "https://api.my-rent.net";
@@ -148,20 +150,118 @@ export function resolveMyRentPaymentMethodId(paymentMethod) {
  * Fetch per-day prices and availability for a property from the MyRent API.
  * Returns a day-keyed record or throws on API/network error.
  */
+export function isDynamicServerUsage(error) {
+  return error?.digest === "DYNAMIC_SERVER_USAGE";
+}
+
+/** Expected when a property is missing from the account or access is denied. */
+export class MyRentPricesError extends Error {
+  constructor(status, propertyId) {
+    super(`MyRent prices unavailable (${status}) for property ${propertyId}`);
+    this.name = "MyRentPricesError";
+    this.status = status;
+    this.propertyId = propertyId;
+  }
+}
+
+export function isMyRentPricesError(error) {
+  return error instanceof MyRentPricesError;
+}
+
+const MYRENT_PRICES_MAX_CONCURRENT = 4;
+let myRentPricesActive = 0;
+/** @type {Array<() => void>} */
+const myRentPricesQueue = [];
+
+/** @type {Map<number, Promise<Record<string, unknown>>>} */
+const myRentPricesInflight = new Map();
+
+function hasMyRentReadCredentials() {
+  return Boolean(process.env.MYRENT_USER_GUID && process.env.MYRENT_B2B_GUID);
+}
+
+function hasMyRentWriteCredentials() {
+  return Boolean(
+    process.env.MYRENT_USER_GUID &&
+      process.env.MYRENT_USER_ID &&
+      process.env.MYRENT_API_PUBLIC_KEY &&
+      process.env.MYRENT_API_AUTH_KEY &&
+      process.env.MYRENT_API_AUTH
+  );
+}
+
+async function withMyRentPricesSlot(fn) {
+  if (myRentPricesActive >= MYRENT_PRICES_MAX_CONCURRENT) {
+    await new Promise((resolve) => {
+      myRentPricesQueue.push(resolve);
+    });
+  }
+
+  myRentPricesActive += 1;
+  try {
+    return await fn();
+  } finally {
+    myRentPricesActive -= 1;
+    myRentPricesQueue.shift()?.();
+  }
+}
+
+async function fetchMyRentPricesResponse(id, headers) {
+  return fetch(`${MYRENT_API_BASE}/user/prices/${id}`, {
+    headers,
+    cache: "no-store",
+  });
+}
+
+async function fetchMyRentDaysUncached(myRentId) {
+  const id = assertPositiveIntId(myRentId);
+
+  if (!hasMyRentReadCredentials()) {
+    throw new MyRentPricesError(403, id);
+  }
+
+  return withMyRentPricesSlot(async () => {
+    let res = await fetchMyRentPricesResponse(id, getBaseHeaders());
+
+    // Some accounts require the write token for prices too; retry once on 401/403.
+    if ((res.status === 401 || res.status === 403) && hasMyRentWriteCredentials()) {
+      try {
+        const authedHeaders = await getWriteHeaders();
+        res = await fetchMyRentPricesResponse(id, authedHeaders);
+      } catch {
+        // Keep the original response if token generation fails.
+      }
+    }
+
+    if (res.status === 403 || res.status === 404) {
+      throw new MyRentPricesError(res.status, id);
+    }
+
+    if (!res.ok) {
+      throw new Error(`MyRent API error ${res.status} for property ${id}`);
+    }
+
+    const rawDays = await res.json();
+    return myRentToDayRecord(rawDays);
+  });
+}
+
+const fetchMyRentDaysCached = cache(fetchMyRentDaysUncached);
+
 export async function fetchMyRentDays(myRentId) {
   const id = assertPositiveIntId(myRentId);
 
-  const res = await fetch(`${MYRENT_API_BASE}/user/prices/${id}`, {
-    headers: getBaseHeaders(),
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error(`MyRent API error ${res.status} for property ${id}`);
+  const inflight = myRentPricesInflight.get(id);
+  if (inflight) {
+    return inflight;
   }
 
-  const rawDays = await res.json();
-  return myRentToDayRecord(rawDays);
+  const request = fetchMyRentDaysCached(id).finally(() => {
+    myRentPricesInflight.delete(id);
+  });
+
+  myRentPricesInflight.set(id, request);
+  return request;
 }
 
 /**

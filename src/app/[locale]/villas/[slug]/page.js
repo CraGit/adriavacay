@@ -3,7 +3,7 @@ import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { createClient } from "@/prismicio";
 import { AccommodationSingle } from "@/app/[locale]/accommodation/accommodation-single";
-import { fetchMyRentDays } from "@/lib/myrent";
+import { fetchMyRentDays, isDynamicServerUsage, isMyRentPricesError } from "@/lib/myrent";
 import { myRentOccupiedDates } from "@/lib/myrent-utils";
 import { occupiedDatesFromIcal } from "@/lib/utils";
 import {
@@ -99,6 +99,8 @@ const SLUG_TO_HERO_FIELD = {
   "villas-with-garden": "hero_garden",
   "villas-with-pet-friendly": "hero_pet_friendly",
 };
+
+export const dynamic = "force-dynamic";
 
 export async function generateStaticParams() {
   const client = createClient();
@@ -226,7 +228,9 @@ export default async function VillaFilterPage({ params }) {
           });
         }
       } catch (err) {
-        console.error("Error enriching villa", villa.uid, err);
+        if (!isDynamicServerUsage(err) && !isMyRentPricesError(err)) {
+          console.error("Error enriching villa", villa.uid, err);
+        }
         return null;
       }
     })
