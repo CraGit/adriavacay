@@ -1,11 +1,25 @@
 import SmallHeading from "@/components/SmallHeading";
+import { sendStripeBookingConfirmationEmails } from "@/lib/stripe-confirmation";
+import { getStripe } from "@/lib/stripe";
 
 export default async function BookingSuccessPage({ searchParams }) {
   const params = await searchParams;
   const method = params?.method;
   const ref = params?.ref;
+  const sessionId = params?.session_id;
 
   const isBank = method === "bank";
+
+  // Stripe: send confirmation emails here (once). Webhook only updates MyRent.
+  if (!isBank && sessionId) {
+    try {
+      const stripe = getStripe();
+      const session = await stripe.checkout.sessions.retrieve(sessionId);
+      await sendStripeBookingConfirmationEmails(session);
+    } catch (error) {
+      console.error("Success-page Stripe confirmation email failed:", error);
+    }
+  }
 
   return (
     <div className="container flex flex-col justify-center items-center py-48 md:py-72 px-4 md:px-0">

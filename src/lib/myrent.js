@@ -153,7 +153,7 @@ export async function fetchMyRentDays(myRentId) {
 
   const res = await fetch(`${MYRENT_API_BASE}/user/prices/${id}`, {
     headers: getBaseHeaders(),
-    next: { revalidate: 3600 },
+    cache: "no-store",
   });
 
   if (!res.ok) {

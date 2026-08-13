@@ -1,5 +1,6 @@
 "use server";
 
+import { headers } from "next/headers";
 import { redirect as nextRedirect } from "next/navigation";
 
 import { bookingSchema, bookStaySchema } from "@/data/schemas";
@@ -20,14 +21,26 @@ function parseDateRange(dateRange) {
   };
 }
 
-function siteBaseUrl() {
-  if (process.env.NEXT_PUBLIC_BASE_URL) {
-    return process.env.NEXT_PUBLIC_BASE_URL.replace(/\/$/, "");
+/** Prefer the request host so local/preview Stripe redirects stay on the current site. */
+async function siteBaseUrl() {
+  const h = await headers();
+  const host = h.get("x-forwarded-host") || h.get("host");
+  if (host) {
+    const proto =
+      h.get("x-forwarded-proto") ||
+      (host.includes("localhost") || host.startsWith("127.") ? "http" : "https");
+    return `${proto}://${host}`.replace(/\/$/, "");
   }
+
   if (process.env.VERCEL_URL) {
     return `https://${process.env.VERCEL_URL.replace(/\/$/, "")}`;
   }
-  return (process.env.SITE_URL || "http://localhost:3000").replace(/\/$/, "");
+
+  return (
+    process.env.NEXT_PUBLIC_BASE_URL ||
+    process.env.SITE_URL ||
+    "http://localhost:3000"
+  ).replace(/\/$/, "");
 }
 
 /** Path with correct locale prefix (`as-needed`: no /en-us for default). */
@@ -303,7 +316,7 @@ export async function createStripeCheckoutBooking(
     };
   }
 
-  const base = siteBaseUrl();
+  const base = await siteBaseUrl();
   const productName = `${quote.villaName}: ${quote.fromDateStr} – ${quote.untilDateStr}`;
   const unitAmount = toStripeCents(quote.amountDue);
 

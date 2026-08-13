@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 
-import { sendMail } from "@/lib/mail";
 import { deleteRent, markMyRentStripePayment } from "@/lib/myrent";
 import { getStripe } from "@/lib/stripe";
 
@@ -20,6 +19,8 @@ async function handleCheckoutCompleted(session) {
   const rentGuid = meta.rent_guid;
   const objectId = meta.object_id;
 
+  // Confirmation emails are sent from /booking/success (not here) to avoid
+  // duplicate guest/agency mail when webhook and success page both run.
   if (rentGuid && objectId) {
     try {
       await markMyRentStripePayment({
@@ -40,64 +41,6 @@ async function handleCheckoutCompleted(session) {
       "checkout.session.completed missing rent_guid/object_id",
       meta
     );
-  }
-
-  const villa = meta.villa_name || meta.uid || "property";
-  const amountDue = meta.amount_due || "";
-  const total = meta.total || "";
-  const guestEmail = meta.guest_email || session.customer_email;
-  const guestName = meta.guest_name || "Guest";
-
-  const guestText = `
-Dear ${guestName},
-
-Thank you — your payment for ${villa} was received.
-
-Stay: ${meta.from_date} – ${meta.until_date}
-Guests: ${meta.guests}
-Stay total: EUR ${total}
-Paid now: EUR ${amountDue}
-Reference: ${meta.erp_id}
-
-We look forward to hosting you.
-
-AdriaVacay
-`.trim();
-
-  const ownerText = `
-Stripe booking paid
-
-Villa: ${villa}
-Guest: ${guestName}
-Email: ${guestEmail}
-Phone: ${meta.guest_phone}
-Dates: ${meta.from_date} – ${meta.until_date}
-Guests: ${meta.guests}
-Stay total: EUR ${total}
-Paid now (${meta.percent}%): EUR ${amountDue}
-erp_id: ${meta.erp_id}
-rent_guid: ${rentGuid}
-Stripe session: ${session.id}
-`.trim();
-
-  try {
-    if (guestEmail) {
-      await sendMail({
-        to: guestEmail,
-        subject: `AdriaVacay — booking confirmed (${villa})`,
-        text: guestText,
-      });
-    }
-    if (process.env.MAIL_TO) {
-      await sendMail({
-        to: process.env.MAIL_TO,
-        replyTo: guestEmail,
-        subject: `AdriaVacay — Stripe paid ${meta.erp_id}`,
-        text: ownerText,
-      });
-    }
-  } catch (error) {
-    console.error("Post-payment email failed:", error);
   }
 }
 
