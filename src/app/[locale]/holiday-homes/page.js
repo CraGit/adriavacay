@@ -5,8 +5,6 @@ import { createClient } from "@/prismicio";
 import { components } from "@/slices";
 import { setRequestLocale } from "next-intl/server";
 
-export const dynamic = "force-dynamic";
-
 export default async function Page({ params }) {
   const { locale } = await params;
   setRequestLocale(locale);
@@ -30,4 +28,22 @@ export async function generateMetadata({ params }) {
     title: page?.data?.meta_title,
     description: page?.data?.meta_description,
   };
+}
+
+export async function generateStaticParams() {
+  const client = createClient();
+  const pages = await client.getAllByType("holiday_homes", {
+    lang: "*",
+    fetchOptions: { cache: "no-store" },
+  });
+
+  return pages.map((page) => {
+    const locale =
+      page.lang && page.lang.startsWith("en")
+        ? "en-us"
+        : page.lang && page.lang.startsWith("de")
+          ? "de"
+          : page.lang;
+    return { locale };
+  });
 }

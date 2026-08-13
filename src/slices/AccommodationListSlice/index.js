@@ -4,7 +4,7 @@ import { AccommodationSingle } from "@/app/[locale]/accommodation/accommodation-
 import Filter from "@/components/Filter";
 import SectionHeading from "@/components/SectionHeading";
 import { Link } from "@/i18n/routing";
-import { fetchMyRentDays, isDynamicServerUsage } from "@/lib/myrent";
+import { fetchMyRentDays } from "@/lib/myrent";
 import { myRentOccupiedDates } from "@/lib/myrent-utils";
 import { occupiedDatesFromIcal } from "@/lib/utils";
 import {
@@ -126,9 +126,7 @@ const AccommodationListSlice = async ({ slice }) => {
           return cleanAccommodationPricingData(accommodation);
         }
       } catch (err) {
-        if (!isDynamicServerUsage(err)) {
-          console.error("Error processing accommodation", a, err);
-        }
+        console.error("Error processing accommodation", a, err);
         return null;
       }
     })
