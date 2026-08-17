@@ -55,6 +55,7 @@ Email: ${guestEmail}
 Phone: ${meta.guest_phone}
 Dates: ${meta.from_date} – ${meta.until_date}
 Guests: ${meta.guests}
+Payment method: Card (Stripe)
 Stay total: EUR ${total}
 Paid now (${meta.percent}%): EUR ${amountDue}
 erp_id: ${meta.erp_id}

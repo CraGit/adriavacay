@@ -82,6 +82,7 @@ export function BankAgencyNotificationEmail({
           { label: "Phone", value: guestPhone },
           { label: "Dates", value: `${fromDate} – ${untilDate}` },
           { label: "Guests", value: guests },
+          { label: "Payment method", value: "Bank transfer" },
           ...pricingRows,
           { label: "Payment reference / erp_id", value: paymentRef },
           { label: "MyRent rent_guid", value: rentGuid },

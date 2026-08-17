@@ -265,6 +265,7 @@ Email: ${data.email}
 Phone: ${data.phone}
 Dates: ${quote.fromDateStr} – ${quote.untilDateStr}
 Guests: ${data.guests}
+Payment method: Bank transfer
 ${pricingLines}
 Payment reference / erp_id: ${paymentRef}
 MyRent rent_guid: ${hold.rentGuid}

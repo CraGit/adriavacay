@@ -68,6 +68,7 @@ export function StripeAgencyNotificationEmail({
           { label: "Phone", value: guestPhone },
           { label: "Dates", value: `${fromDate} – ${untilDate}` },
           { label: "Guests", value: guests },
+          { label: "Payment method", value: "Card (Stripe)" },
           { label: "Stay total", value: `EUR ${total}` },
           {
             label: `Paid now (${percent}%)`,
