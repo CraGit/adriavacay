@@ -2,12 +2,27 @@ import Link from "next/link";
 
 import SmallHeading from "@/components/SmallHeading";
 import { deleteRent } from "@/lib/myrent";
+import { sendStripeAbandonedPaymentEmail } from "@/lib/stripe-confirmation";
+import { getStripe } from "@/lib/stripe";
 
 export default async function BookingCancelPage({ params, searchParams }) {
   const { locale } = await params;
   const query = await searchParams;
-  const rentGuid =
+  const sessionId =
+    typeof query?.session_id === "string" ? query.session_id : null;
+  let rentGuid =
     typeof query?.rent_guid === "string" ? query.rent_guid : null;
+
+  if (sessionId) {
+    try {
+      const stripe = getStripe();
+      const session = await stripe.checkout.sessions.retrieve(sessionId);
+      rentGuid = rentGuid || session.metadata?.rent_guid || null;
+      await sendStripeAbandonedPaymentEmail(session, "Cancelled checkout");
+    } catch (error) {
+      console.error("Cancel page abandoned-payment email failed:", error);
+    }
+  }
 
   if (rentGuid) {
     try {

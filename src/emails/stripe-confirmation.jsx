@@ -82,3 +82,58 @@ export function StripeAgencyNotificationEmail({
     </EmailLayout>
   );
 }
+
+export function StripeAbandonedPaymentEmail({
+  villa,
+  guestName,
+  guestEmail,
+  guestPhone,
+  fromDate,
+  untilDate,
+  guests,
+  total,
+  amountDue,
+  percent,
+  erpId,
+  rentGuid,
+  sessionId,
+  reason,
+}) {
+  return (
+    <EmailLayout
+      preview={`Abandoned Stripe payment — ${villa}`}
+      title="Abandoned Stripe payment"
+      footerNote="The guest started card payment but did not complete it. You may contact them to follow up."
+    >
+      <EmailIntro>
+        Abandoned Stripe payment — a guest started card checkout but did not
+        complete payment.
+      </EmailIntro>
+      <EmailIntro>
+        You may contact the guest using the details below if you want to follow
+        up on this booking.
+      </EmailIntro>
+      <DetailTable
+        rows={[
+          { label: "Status", value: "Abandoned Stripe payment" },
+          { label: "Reason", value: reason },
+          { label: "Villa", value: villa },
+          { label: "Guest", value: guestName },
+          { label: "Email", value: guestEmail },
+          { label: "Phone", value: guestPhone },
+          { label: "Dates", value: `${fromDate} – ${untilDate}` },
+          { label: "Guests", value: guests },
+          { label: "Payment method", value: "Card (Stripe) — not completed" },
+          { label: "Stay total", value: total ? `EUR ${total}` : "" },
+          {
+            label: percent ? `Amount due (${percent}%)` : "Amount due",
+            value: amountDue ? `EUR ${amountDue}` : "",
+          },
+          { label: "erp_id", value: erpId },
+          { label: "rent_guid", value: rentGuid },
+          { label: "Stripe session", value: sessionId },
+        ]}
+      />
+    </EmailLayout>
+  );
+}

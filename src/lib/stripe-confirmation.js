@@ -1,6 +1,7 @@
 import { createElement } from "react";
 
 import {
+  StripeAbandonedPaymentEmail,
   StripeAgencyNotificationEmail,
   StripeGuestConfirmationEmail,
 } from "@/emails/stripe-confirmation";
@@ -8,6 +9,7 @@ import { sendMail } from "@/lib/mail";
 import { getStripe } from "@/lib/stripe";
 
 const EMAIL_SENT_KEY = "confirmation_email_sent";
+const ABANDONED_EMAIL_SENT_KEY = "abandoned_payment_email_sent";
 
 /**
  * Send guest + agency confirmation emails after a paid Stripe Checkout session.
@@ -135,6 +137,107 @@ Stripe session: ${session.id}
   if (!guestEmail && !process.env.MAIL_TO) {
     return { sent: false, reason: "no_recipients" };
   }
+
+  return { sent: true };
+}
+
+/**
+ * Notify MAIL_TO that a Stripe Checkout was abandoned (cancel or expiry).
+ * Idempotent via Checkout Session metadata so cancel page + expired webhook
+ * do not send twice.
+ *
+ * @param {import("stripe").Stripe.Checkout.Session} session
+ * @param {string} reason — e.g. "Cancelled checkout" or "Session expired without payment"
+ */
+export async function sendStripeAbandonedPaymentEmail(session, reason) {
+  if (!session) {
+    return { sent: false, reason: "no_session" };
+  }
+
+  if (session.payment_status === "paid") {
+    return { sent: false, reason: "paid" };
+  }
+
+  const meta = session.metadata || {};
+  if (meta[EMAIL_SENT_KEY] === "true") {
+    return { sent: false, reason: "already_confirmed" };
+  }
+  if (meta[ABANDONED_EMAIL_SENT_KEY] === "true") {
+    return { sent: false, reason: "already_sent" };
+  }
+
+  if (!process.env.MAIL_TO) {
+    console.error("[stripe-abandoned] MAIL_TO is not configured");
+    return { sent: false, reason: "no_recipients" };
+  }
+
+  const villa = meta.villa_name || meta.uid || "property";
+  const guestEmail = meta.guest_email || session.customer_email || "";
+  const guestName = meta.guest_name || "Guest";
+  const amountDue = meta.amount_due || "";
+  const total = meta.total || "";
+  const rentGuid = meta.rent_guid || "";
+  const abandonReason = reason || "Abandoned Stripe payment";
+
+  const ownerText = `
+Abandoned Stripe payment
+
+Status: Abandoned Stripe payment
+Reason: ${abandonReason}
+
+Villa: ${villa}
+Guest: ${guestName}
+Email: ${guestEmail}
+Phone: ${meta.guest_phone || ""}
+Dates: ${meta.from_date || ""} – ${meta.until_date || ""}
+Guests: ${meta.guests || ""}
+Payment method: Card (Stripe) — not completed
+Stay total: EUR ${total}
+Amount due (${meta.percent || ""}%): EUR ${amountDue}
+erp_id: ${meta.erp_id || ""}
+rent_guid: ${rentGuid}
+Stripe session: ${session.id}
+
+The guest started card payment but did not complete it. You may contact them to follow up.
+`.trim();
+
+  try {
+    const stripe = getStripe();
+    await stripe.checkout.sessions.update(session.id, {
+      metadata: {
+        ...meta,
+        [ABANDONED_EMAIL_SENT_KEY]: "true",
+      },
+    });
+  } catch (error) {
+    console.error(
+      "[stripe-abandoned] Failed to claim abandoned_payment_email_sent:",
+      error
+    );
+  }
+
+  await sendMail({
+    to: process.env.MAIL_TO,
+    replyTo: guestEmail || undefined,
+    subject: `AdriaVacay — abandoned Stripe payment (${villa})`,
+    text: ownerText,
+    react: createElement(StripeAbandonedPaymentEmail, {
+      villa,
+      guestName,
+      guestEmail,
+      guestPhone: meta.guest_phone,
+      fromDate: meta.from_date,
+      untilDate: meta.until_date,
+      guests: meta.guests,
+      total,
+      amountDue,
+      percent: meta.percent,
+      erpId: meta.erp_id,
+      rentGuid,
+      sessionId: session.id,
+      reason: abandonReason,
+    }),
+  });
 
   return { sent: true };
 }

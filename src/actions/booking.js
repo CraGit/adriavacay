@@ -423,7 +423,7 @@ export async function createStripeCheckoutBooking(
         villa_name: quote.villaName,
       },
       success_url: `${base}${localizedPath(locale, "/booking/success")}?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${base}${localizedPath(locale, "/booking/cancel")}?erp=${encodeURIComponent(hold.erpId)}&rent_guid=${encodeURIComponent(hold.rentGuid)}`,
+      cancel_url: `${base}${localizedPath(locale, "/booking/cancel")}?session_id={CHECKOUT_SESSION_ID}&erp=${encodeURIComponent(hold.erpId)}&rent_guid=${encodeURIComponent(hold.rentGuid)}`,
       expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
     });
 

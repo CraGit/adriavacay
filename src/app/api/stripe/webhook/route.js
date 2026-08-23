@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { deleteRent, markMyRentStripePayment } from "@/lib/myrent";
+import { sendStripeAbandonedPaymentEmail } from "@/lib/stripe-confirmation";
 import { getStripe } from "@/lib/stripe";
 
 export const runtime = "nodejs";
@@ -48,12 +49,21 @@ async function handleCheckoutExpired(session) {
   const rentGuid = session.metadata?.rent_guid;
   if (!rentGuid) {
     console.warn("checkout.session.expired without rent_guid", session.id);
-    return;
+  } else {
+    try {
+      await deleteRent(rentGuid);
+    } catch (error) {
+      console.error("Failed to delete MyRent hold on session expire:", error);
+    }
   }
+
   try {
-    await deleteRent(rentGuid);
+    await sendStripeAbandonedPaymentEmail(
+      session,
+      "Session expired without payment"
+    );
   } catch (error) {
-    console.error("Failed to delete MyRent hold on session expire:", error);
+    console.error("Abandoned-payment email on session expire failed:", error);
   }
 }
 
