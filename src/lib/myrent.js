@@ -265,6 +265,110 @@ export async function fetchMyRentDays(myRentId) {
 }
 
 /**
+ * Search free/bookable properties for a stay via MyRent POST /user/free.
+ * Optionally enriches each hit with stay total from /user/prices_fast/{id}.
+ *
+ * @param {{ from: string, to: string, guests?: number }} input — yyyy-MM-dd dates
+ * @returns {Promise<Array<{ objectId: number, name: string, price: number, minStay: number|null, raw: object }>>}
+ */
+export async function fetchMyRentFreeProperties({ from, to, guests }) {
+  if (!from || !to) {
+    throw new Error("from and to dates are required");
+  }
+
+  const userId = Number(process.env.MYRENT_USER_ID);
+  if (!Number.isInteger(userId) || userId <= 0) {
+    throw new Error("MYRENT_USER_ID must be a positive integer");
+  }
+
+  if (!hasMyRentReadCredentials() || !hasMyRentWriteCredentials()) {
+    throw new Error("MyRent credentials are not configured");
+  }
+
+  const headers = {
+    ...getBaseHeaders(),
+    "content-type": "application/json",
+    token: await getMyRentToken(),
+  };
+
+  let res = await fetch(`${MYRENT_API_BASE}/user/free`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ user_id: userId, from, to }),
+    cache: "no-store",
+  });
+
+  if (res.status === 401) {
+    invalidateMyRentToken();
+    headers.token = await getMyRentToken({ force: true });
+    res = await fetch(`${MYRENT_API_BASE}/user/free`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ user_id: userId, from, to }),
+      cache: "no-store",
+    });
+  }
+
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(
+      `MyRent free search failed ${res.status}: ${text || "(empty)"}`
+    );
+  }
+
+  const rawList = await res.json();
+  if (!Array.isArray(rawList)) {
+    return [];
+  }
+
+  return rawList
+    .map((item) => {
+      const objectId = Number(item.object_id ?? item.id);
+      let price =
+        Number(item.price_total) ||
+        Number(item.object_period_price) ||
+        Number(item.object_price) ||
+        0;
+
+      if (!(price > 0)) {
+        const avg = Number(item.object_price_avg) || 0;
+        if (avg > 0) {
+          const nights = Number(item.days);
+          if (nights > 0) {
+            price = Math.round(avg * nights);
+          } else {
+            const fromDate = new Date(`${from}T12:00:00Z`);
+            const toDate = new Date(`${to}T12:00:00Z`);
+            const n = Math.max(
+              0,
+              Math.round((toDate - fromDate) / (1000 * 60 * 60 * 24))
+            );
+            price = Math.round(avg * n);
+          }
+        }
+      }
+
+      return {
+        objectId,
+        name:
+          item.object_name_web ||
+          item.objects_realestates_name ||
+          item.name ||
+          "",
+        price,
+        minStay:
+          item.min_stay != null
+            ? Number(item.min_stay)
+            : item.objects_realestates_min_stay != null
+              ? Number(item.objects_realestates_min_stay)
+              : null,
+        raw: item,
+      };
+    })
+    .filter((row) => Number.isInteger(row.objectId) && row.objectId > 0);
+}
+
+/**
  * Extract rent guid from various MyRent create-response shapes.
  * e.g. { rent_guid } or { status: "ok", data: { rent_guid, rent_id } }
  */

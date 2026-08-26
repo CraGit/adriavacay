@@ -1,126 +1,139 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useQueryState } from "nuqs";
+
 import Card from "@/components/Card";
-import {
-  calculateTotalPrice,
-  calculateTotalPriceWithDiscount,
-  filterByChangeoverDayAndMinimumStay,
-  hasOverlap,
-} from "@/lib/utils";
-import {
-  myRentCalculatePrice,
-  myRentCalculatePriceWithDiscount,
-  myRentIsEndDateValid,
-} from "@/lib/myrent-utils";
+import { formatStayDateISO } from "@/lib/stay-dates";
 import { filterAccommodationsWithValidPricing } from "@/lib/validation";
 import { useSearch } from "@/providers/search-provider";
-import { useQueryState } from "nuqs";
-import { useEffect } from "react";
+
+function getMyRentId(item) {
+  const raw = item.myRentId ?? item.data?.myRentID;
+  const id = Number(raw);
+  return Number.isInteger(id) && id > 0 ? id : null;
+}
 
 export const AccommodationSingle = ({ accommodations, showAll }) => {
   const [type, setType] = useQueryState("type", {
     defaultValue: "All",
   });
-  const { query, updateQuery } = useSearch();
+  const { query } = useSearch();
+
+  const from = query?.dateRange?.from ?? null;
+  const to = query?.dateRange?.to ?? null;
+  const hasDates = from != null && to != null;
+
+  const [freeByObjectId, setFreeByObjectId] = useState(null);
+  const [freeStatus, setFreeStatus] = useState(hasDates ? "loading" : "idle");
 
   useEffect(() => {
     query.type !== type && query.type !== "All" && setType(query.type);
   }, []);
 
-  // If showAll flag is explicitly set, show all accommodations
+  useEffect(() => {
+    if (!hasDates) {
+      setFreeByObjectId(null);
+      setFreeStatus("idle");
+      return;
+    }
+
+    const fromIso = formatStayDateISO(from);
+    const toIso = formatStayDateISO(to);
+    if (!fromIso || !toIso) {
+      setFreeByObjectId(null);
+      setFreeStatus("error");
+      return;
+    }
+
+    const controller = new AbortController();
+    setFreeStatus("loading");
+    setFreeByObjectId(null);
+
+    const params = new URLSearchParams({ from: fromIso, to: toIso });
+    if (query.guests) params.set("guests", String(query.guests));
+
+    fetch(`/api/myrent/free?${params}`, { signal: controller.signal })
+      .then(async (res) => {
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({}));
+          throw new Error(body.error || `Free search failed (${res.status})`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        const map = new Map();
+        for (const row of data.properties || []) {
+          map.set(Number(row.objectId), row);
+        }
+        setFreeByObjectId(map);
+        setFreeStatus("ready");
+      })
+      .catch((err) => {
+        if (err.name === "AbortError") return;
+        console.error("[AccommodationSingle] free search", err);
+        setFreeByObjectId(null);
+        setFreeStatus("error");
+      });
+
+    return () => controller.abort();
+  }, [hasDates, from, to, query.guests]);
+
   if (showAll) {
     return renderAllAccommodations(accommodations, type);
   }
 
-  // Initialize with all accommodations filtered by type and valid pricing
   let filtered = accommodations.filter((item) =>
     type === "All" ? true : item.data.type === type
   );
 
-  // Filter out accommodations with invalid pricing data
   filtered = filterAccommodationsWithValidPricing(filtered);
 
-  // Apply optional guest filter if provided
-  if (query && query.guests) {
+  if (query?.guests) {
     filtered = filtered.filter((item) => item.data.max_guests >= query.guests);
   }
 
-  // Apply optional date filter if both from and to dates are provided
-  if (
-    query &&
-    query.dateRange &&
-    query.dateRange.from !== null &&
-    query.dateRange.to !== null
-  ) {
-    const beforeOverlapFilter = filtered.length;
-    filtered = filtered.filter((item) => {
-      const hasOverlapResult = hasOverlap(query.dateRange, item.occupiedDates);
-      return !hasOverlapResult;
-    });
-
-    // Apply changeover day filter only if dates are provided
-    const beforeChangeoverFilter = filtered.length;
-    filtered = filtered.filter((item) => {
-      if (item.myRentDays) {
-        return myRentIsEndDateValid(
-          query.dateRange.from,
-          query.dateRange.to,
-          item.myRentDays
-        );
-      }
-      const changeoverResult = filterByChangeoverDayAndMinimumStay(
-        item.pricing,
-        query.dateRange.from,
-        query.dateRange.to
+  if (hasDates) {
+    if (freeStatus === "loading" || freeStatus === "idle") {
+      return <p className="text-slate-500">Searching availability…</p>;
+    }
+    if (freeStatus === "error" || !freeByObjectId) {
+      return (
+        <p className="text-slate-500">
+          Unable to search availability right now. Please try again.
+        </p>
       );
-      return changeoverResult;
+    }
+
+    filtered = filtered.filter((item) => {
+      const id = getMyRentId(item);
+      return id != null && freeByObjectId.has(id);
     });
 
-    // If we have dates, render with calculated prices
-    return renderWithCalculatedPrices(filtered, query.dateRange);
+    return renderFreeSearchResults(filtered, freeByObjectId);
   }
 
-  // If no dates provided, render with lowest prices
   return renderAllAccommodations(filtered, type);
 };
 
-// Helper function to render accommodations with calculated prices based on date range
-const renderWithCalculatedPrices = (accommodations, dateRange) => {
+function renderFreeSearchResults(accommodations, freeByObjectId) {
   if (accommodations.length === 0) {
     return <p>No results found</p>;
   }
 
   return accommodations.map((item) => {
-    const price = item.myRentDays
-      ? myRentCalculatePrice(item.myRentDays, dateRange.from, dateRange.to)
-      : calculateTotalPrice(
-          item.pricing,
-          dateRange.from,
-          dateRange.to
-        );
+    const id = getMyRentId(item);
+    const free = freeByObjectId.get(id);
+    const price = free?.price > 0 ? free.price : 0;
 
-    const discountedPrice = item.myRentDays
-      ? myRentCalculatePriceWithDiscount(
-          item.myRentDays,
-          item.discounts,
-          dateRange.from,
-          dateRange.to
-        )
-      : calculateTotalPriceWithDiscount(
-          item.pricing,
-          item.discounts,
-          dateRange.from,
-          dateRange.to
-        );
-
-    return price && price !== 0 ? (
+    return (
       <Card
         key={item.id}
         uid={item.uid}
         baths={item.data.bathrooms}
         bedrooms={item.data.bedrooms}
-        basePrice={price}
-        discountedPrice={discountedPrice}
+        basePrice={price || undefined}
+        discountedPrice={price || undefined}
         image={item.data.gallery[0].image.url}
         alt={item.data.gallery[0].image}
         sqm={item.data.sqm}
@@ -130,18 +143,15 @@ const renderWithCalculatedPrices = (accommodations, dateRange) => {
         type={item.data.type}
         features={item.data.features}
       />
-    ) : null;
+    );
   });
-};
+}
 
-// Helper function to render all accommodations with lowest price
-const renderAllAccommodations = (accommodations, type) => {
-  // Filter by type and valid pricing
+function renderAllAccommodations(accommodations, type) {
   let filtered = accommodations.filter((item) =>
     type === "All" ? true : item.data.type === type
   );
 
-  // Filter out accommodations with invalid pricing data
   filtered = filterAccommodationsWithValidPricing(filtered);
 
   return filtered
@@ -152,16 +162,39 @@ const renderAllAccommodations = (accommodations, type) => {
         const prices = Object.values(item.myRentDays)
           .filter((d) => d.available && d.price > 0)
           .map((d) => d.price);
-        if (prices.length === 0) return null;
-        lowestPrice = Math.floor(Math.min(...prices));
-      } else {
-        const validPrices = item.data.pricing.filter(
-          (p) => p.price && p.price > 0
-        );
-        if (validPrices.length === 0) return null;
-        lowestPrice = Math.floor(
-          Math.min(...validPrices.map((p) => p.price))
-        );
+        if (prices.length === 0) {
+          // Fall through to Prismic pricing
+        } else {
+          lowestPrice = Math.floor(Math.min(...prices));
+        }
+      }
+
+      if (lowestPrice == null) {
+        const pricing = item.pricing || item.data?.pricing || [];
+        const validPrices = pricing.filter((p) => p.price && p.price > 0);
+        if (validPrices.length === 0) {
+          // MyRent property without day cache: still show the card
+          if (getMyRentId(item)) {
+            return (
+              <Card
+                key={item.id}
+                uid={item.uid}
+                baths={item.data.bathrooms}
+                bedrooms={item.data.bedrooms}
+                image={item.data.gallery[0].image.url}
+                alt={item.data.gallery[0].image}
+                sqm={item.data.sqm}
+                title={item.data.heading}
+                guests={item.data.max_guests}
+                guestsPrikaz={item.data.guestsPrikaz}
+                type={item.data.type}
+                features={item.data.features}
+              />
+            );
+          }
+          return null;
+        }
+        lowestPrice = Math.floor(Math.min(...validPrices.map((p) => p.price)));
       }
 
       return (
@@ -182,5 +215,5 @@ const renderAllAccommodations = (accommodations, type) => {
         />
       );
     })
-    .filter(Boolean); // Remove null entries
-};
+    .filter(Boolean);
+}

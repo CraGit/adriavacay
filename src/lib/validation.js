@@ -71,8 +71,10 @@ export const filterValidDiscountRanges = (discountRanges) => {
 export const isAccommodationPricingValid = (accommodation) => {
   if (!accommodation || !accommodation.data) return false;
 
-  // MyRent-managed properties are valid even without Prismic pricing
+  // MyRent-managed properties are valid even without cached day prices
   if (accommodation.myRentDays) return true;
+  if (accommodation.myRentId) return true;
+  if (accommodation.data?.myRentID) return true;
 
   const pricing = accommodation.data.pricing || accommodation.pricing;
 

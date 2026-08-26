@@ -3,13 +3,9 @@ import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { createClient } from "@/prismicio";
 import { AccommodationSingle } from "@/app/[locale]/accommodation/accommodation-single";
-import { fetchMyRentDays, isDynamicServerUsage, isMyRentPricesError } from "@/lib/myrent";
-import { myRentOccupiedDates } from "@/lib/myrent-utils";
-import { occupiedDatesFromIcal } from "@/lib/utils";
-import {
-  filterAccommodationsWithValidPricing,
-  cleanAccommodationPricingData,
-} from "@/lib/validation";
+import { withMyRentCalendar } from "@/lib/accommodation-myrent";
+import { isDynamicServerUsage } from "@/lib/myrent";
+import { filterAccommodationsWithValidPricing } from "@/lib/validation";
 import { getImageAlt } from "@/lib/image-alt";
 
 // ---------------------------------------------------------------------------
@@ -159,76 +155,45 @@ export default async function VillaFilterPage({ params }) {
             alternates.find((alt) => alt.lang?.startsWith("en")) ||
             alternates[0] ||
             null;
+
+          let enData = null;
           if (englishAlt?.id) {
-            const enData = await client.getByID(englishAlt.id);
-            if (enData?.data) {
-              const myRentId = enData.data.myRentID;
-              if (myRentId) {
-                const myRentDays = await fetchMyRentDays(myRentId);
-                return {
-                  ...villa,
-                  pricing: enData.data.pricing || [],
-                  discounts: enData.data.discounts || [],
-                  myRentDays,
-                  occupiedDates: myRentOccupiedDates(myRentDays),
-                  checkoutDates: [],
-                };
-              }
-              const occupiedData = await occupiedDatesFromIcal(enData.data.ical);
-              return cleanAccommodationPricingData({
-                ...villa,
-                pricing: enData.data.pricing,
-                discounts: enData.data.discounts,
-                occupiedDates: occupiedData.occupiedDates,
-                checkoutDates: occupiedData.checkoutDates,
-              });
+            try {
+              enData = await client.getByID(englishAlt.id);
+            } catch (e) {
+              console.warn(
+                "Failed to fetch alternate language for villa",
+                englishAlt,
+                e
+              );
             }
           }
-          // Fallback to current document
-          const myRentIdFallback = villa.data?.myRentID;
-          if (myRentIdFallback) {
-            const myRentDays = await fetchMyRentDays(myRentIdFallback);
-            return {
-              ...villa,
-              pricing: villa.data?.pricing || [],
-              discounts: villa.data?.discounts || [],
-              myRentDays,
-              occupiedDates: myRentOccupiedDates(myRentDays),
-              checkoutDates: [],
-            };
+
+          if (enData?.data) {
+            return withMyRentCalendar(villa, {
+              pricing: enData.data.pricing || [],
+              discounts: enData.data.discounts || [],
+              myRentId: enData.data.myRentID,
+              icalUrl: enData.data.ical,
+            });
           }
-          const occupiedData = await occupiedDatesFromIcal(villa.data?.ical ?? "");
-          return cleanAccommodationPricingData({
-            ...villa,
-            pricing: villa.data?.pricing,
-            discounts: villa.data?.discounts,
-            occupiedDates: occupiedData.occupiedDates,
-            checkoutDates: occupiedData.checkoutDates,
-          });
-        } else {
-          const myRentId = villa.data.myRentID;
-          if (myRentId) {
-            const myRentDays = await fetchMyRentDays(myRentId);
-            return {
-              ...villa,
-              pricing: villa.data.pricing || [],
-              discounts: villa.data.discounts || [],
-              myRentDays,
-              occupiedDates: myRentOccupiedDates(myRentDays),
-              checkoutDates: [],
-            };
-          }
-          const occupiedData = await occupiedDatesFromIcal(villa.data.ical);
-          return cleanAccommodationPricingData({
-            ...villa,
-            pricing: villa.data.pricing,
-            discounts: villa.data.discounts,
-            occupiedDates: occupiedData.occupiedDates,
-            checkoutDates: occupiedData.checkoutDates,
+
+          return withMyRentCalendar(villa, {
+            pricing: villa.data?.pricing || [],
+            discounts: villa.data?.discounts || [],
+            myRentId: villa.data?.myRentID,
+            icalUrl: villa.data?.ical,
           });
         }
+
+        return withMyRentCalendar(villa, {
+          pricing: villa.data.pricing || [],
+          discounts: villa.data.discounts || [],
+          myRentId: villa.data.myRentID,
+          icalUrl: villa.data.ical,
+        });
       } catch (err) {
-        if (!isDynamicServerUsage(err) && !isMyRentPricesError(err)) {
+        if (!isDynamicServerUsage(err)) {
           console.error("Error enriching villa", villa.uid, err);
         }
         return null;

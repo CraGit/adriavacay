@@ -6,6 +6,7 @@ import {
   StripeGuestConfirmationEmail,
 } from "@/emails/stripe-confirmation";
 import { sendMail } from "@/lib/mail";
+import { formatStayDate } from "@/lib/stay-dates";
 import { getStripe } from "@/lib/stripe";
 
 const EMAIL_SENT_KEY = "confirmation_email_sent";
@@ -31,13 +32,15 @@ export async function sendStripeBookingConfirmationEmails(session) {
   const guestEmail = meta.guest_email || session.customer_email;
   const guestName = meta.guest_name || "Guest";
   const rentGuid = meta.rent_guid;
+  const fromDisplay = formatStayDate(meta.from_date);
+  const untilDisplay = formatStayDate(meta.until_date);
 
   const guestText = `
 Dear ${guestName},
 
 Thank you — your payment for ${villa} was received.
 
-Stay: ${meta.from_date} – ${meta.until_date}
+Stay: ${fromDisplay} – ${untilDisplay}
 Guests: ${meta.guests}
 Stay total: EUR ${total}
 Paid now: EUR ${amountDue}
@@ -55,7 +58,7 @@ Villa: ${villa}
 Guest: ${guestName}
 Email: ${guestEmail}
 Phone: ${meta.guest_phone}
-Dates: ${meta.from_date} – ${meta.until_date}
+Dates: ${fromDisplay} – ${untilDisplay}
 Guests: ${meta.guests}
 Payment method: Card (Stripe)
 Stay total: EUR ${total}
@@ -100,8 +103,8 @@ Stripe session: ${session.id}
       react: createElement(StripeGuestConfirmationEmail, {
         guestName,
         villa,
-        fromDate: meta.from_date,
-        untilDate: meta.until_date,
+        fromDate: fromDisplay,
+        untilDate: untilDisplay,
         guests: meta.guests,
         total,
         amountDue,
@@ -121,8 +124,8 @@ Stripe session: ${session.id}
         guestName,
         guestEmail,
         guestPhone: meta.guest_phone,
-        fromDate: meta.from_date,
-        untilDate: meta.until_date,
+        fromDate: fromDisplay,
+        untilDate: untilDisplay,
         guests: meta.guests,
         total,
         amountDue,
@@ -178,6 +181,8 @@ export async function sendStripeAbandonedPaymentEmail(session, reason) {
   const total = meta.total || "";
   const rentGuid = meta.rent_guid || "";
   const abandonReason = reason || "Abandoned Stripe payment";
+  const fromDisplay = formatStayDate(meta.from_date);
+  const untilDisplay = formatStayDate(meta.until_date);
 
   const ownerText = `
 Abandoned Stripe payment
@@ -189,7 +194,7 @@ Villa: ${villa}
 Guest: ${guestName}
 Email: ${guestEmail}
 Phone: ${meta.guest_phone || ""}
-Dates: ${meta.from_date || ""} – ${meta.until_date || ""}
+Dates: ${fromDisplay} – ${untilDisplay}
 Guests: ${meta.guests || ""}
 Payment method: Card (Stripe) — not completed
 Stay total: EUR ${total}
@@ -226,8 +231,8 @@ The guest started card payment but did not complete it. You may contact them to 
       guestName,
       guestEmail,
       guestPhone: meta.guest_phone,
-      fromDate: meta.from_date,
-      untilDate: meta.until_date,
+      fromDate: fromDisplay,
+      untilDate: untilDisplay,
       guests: meta.guests,
       total,
       amountDue,

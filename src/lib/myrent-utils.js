@@ -119,11 +119,13 @@ export function myRentIsValidCheckOut(date, dayRecord) {
 
 /**
  * Validate a complete stay from startDate to endDate:
+ *  - startDate is a valid check-in (available=Y AND check_in=Y)
  *  - endDate has check_out=Y
  *  - Number of nights >= minStay of the check-in day
  *  - Every night in [startDate, endDate) has available=Y
  */
 export function myRentIsEndDateValid(startDate, endDate, dayRecord) {
+  if (!myRentIsValidCheckIn(startDate, dayRecord)) return false;
   if (!myRentIsValidCheckOut(endDate, dayRecord)) return false;
 
   const nights = differenceInCalendarDays(endDate, startDate);

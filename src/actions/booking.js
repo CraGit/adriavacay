@@ -18,6 +18,7 @@ import {
 import { toStripeCents } from "@/lib/deposit";
 import { sendMail } from "@/lib/mail";
 import { deleteRent } from "@/lib/myrent";
+import { formatStayDate } from "@/lib/stay-dates";
 import { getStripe } from "@/lib/stripe";
 
 function parseDateRange(dateRange) {
@@ -98,12 +99,18 @@ export async function submitInquiry(uid, dateRange, guests, locale, formData) {
       guests: data.guests,
     });
     villaName = quote.villaName;
-  } catch {
-    // Still send inquiry even if price/availability lookup fails
+  } catch (error) {
+    return {
+      errors: {
+        dateFrom: [
+          error.message || "Selected dates are not available for this property",
+        ],
+      },
+    };
   }
 
-  const dateFromStr = data.dateFrom.toISOString().slice(0, 10);
-  const dateToStr = data.dateTo.toISOString().slice(0, 10);
+  const dateFromStr = formatStayDate(data.dateFrom);
+  const dateToStr = formatStayDate(data.dateTo);
   const messageText = `
 Name: ${data.name}
 Email: ${data.email}
@@ -235,12 +242,15 @@ export async function createBankTransferBooking(
     .map((row) => `${row.label}: ${row.value}`)
     .join("\n");
 
+  const fromDisplay = formatStayDate(data.dateFrom);
+  const untilDisplay = formatStayDate(data.dateTo);
+
   const guestText = `
 Dear ${data.name},
 
 Thank you for booking ${quote.villaName}.
 
-Stay: ${quote.fromDateStr} – ${quote.untilDateStr}
+Stay: ${fromDisplay} – ${untilDisplay}
 Guests: ${data.guests}
 ${pricingLines}
 
@@ -263,7 +273,7 @@ Villa: ${quote.villaName}
 Guest: ${data.name}
 Email: ${data.email}
 Phone: ${data.phone}
-Dates: ${quote.fromDateStr} – ${quote.untilDateStr}
+Dates: ${fromDisplay} – ${untilDisplay}
 Guests: ${data.guests}
 Payment method: Bank transfer
 ${pricingLines}
@@ -282,8 +292,8 @@ Cancel unpaid holds in MyRent if payment does not arrive.
       react: createElement(BankGuestInstructionsEmail, {
         guestName: data.name,
         villa: quote.villaName,
-        fromDate: quote.fromDateStr,
-        untilDate: quote.untilDateStr,
+        fromDate: fromDisplay,
+        untilDate: untilDisplay,
         guests: data.guests,
         pricingRows,
         beneficiary: bank.beneficiary,
@@ -302,8 +312,8 @@ Cancel unpaid holds in MyRent if payment does not arrive.
         guestName: data.name,
         guestEmail: data.email,
         guestPhone: data.phone,
-        fromDate: quote.fromDateStr,
-        untilDate: quote.untilDateStr,
+        fromDate: fromDisplay,
+        untilDate: untilDisplay,
         guests: data.guests,
         pricingRows,
         paymentRef,
@@ -379,7 +389,9 @@ export async function createStripeCheckoutBooking(
   }
 
   const base = await siteBaseUrl();
-  const productName = `${quote.villaName}: ${quote.fromDateStr} – ${quote.untilDateStr}`;
+  const fromDisplay = formatStayDate(data.dateFrom);
+  const untilDisplay = formatStayDate(data.dateTo);
+  const productName = `${quote.villaName}: ${fromDisplay} – ${untilDisplay}`;
   const unitAmount = toStripeCents(quote.amountDue);
 
   try {

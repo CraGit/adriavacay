@@ -2,8 +2,6 @@
  * Server-only booking quote helpers.
  */
 
-import { format } from "date-fns";
-
 import {
   applyBankTransferDiscount,
   BANK_TRANSFER_DISCOUNT_PERCENT,
@@ -18,6 +16,7 @@ import {
   myRentCalculatePriceWithDiscount,
   myRentIsEndDateValid,
 } from "@/lib/myrent-utils";
+import { formatStayDateISO } from "@/lib/stay-dates";
 import {
   calculateTotalPrice,
   calculateTotalPriceWithDiscount,
@@ -134,8 +133,8 @@ export async function computeBookingQuote({
     page,
     pageEn,
     guests: Number(guests) || 1,
-    fromDateStr: format(dateFrom, "yyyy-MM-dd"),
-    untilDateStr: format(dateTo, "yyyy-MM-dd"),
+    fromDateStr: formatStayDateISO(dateFrom),
+    untilDateStr: formatStayDateISO(dateTo),
   };
 }
 
