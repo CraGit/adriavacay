@@ -15,7 +15,18 @@ export async function POST(request) {
     authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null;
   const querySecret = request.nextUrl.searchParams.get("secret");
 
-  if (bearer !== secret && querySecret !== secret) {
+  // Prismic sends the configured webhook secret in the JSON body.
+  let bodySecret = null;
+  try {
+    const body = await request.json();
+    if (typeof body?.secret === "string") {
+      bodySecret = body.secret;
+    }
+  } catch {
+    // Non-JSON bodies (manual curls, etc.) are fine — other auth paths still apply.
+  }
+
+  if (bearer !== secret && querySecret !== secret && bodySecret !== secret) {
     return NextResponse.json({ message: "Invalid secret" }, { status: 401 });
   }
 
