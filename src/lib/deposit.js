@@ -3,7 +3,7 @@
  * 30% if check-in is 31+ calendar days from today; otherwise 100%.
  */
 
-import { differenceInCalendarDays, startOfDay } from "date-fns";
+import { stayDaysUntilCheckIn } from "@/lib/stay-dates";
 
 /** Extra % off stay total when guest pays by bank transfer (after Prismic discounts). */
 export const BANK_TRANSFER_DISCOUNT_PERCENT = 2;
@@ -22,16 +22,13 @@ export function applyBankTransferDiscount(totalStayPrice) {
 
 /**
  * @param {number} totalStayPrice - Full stay total (after discounts)
- * @param {Date} checkInDate
+ * @param {Date | string} checkInDate
  * @param {Date} [today=new Date()]
  * @returns {{ amountDue: number, percent: 30 | 100, daysUntilCheckIn: number }}
  */
 export function calculateDeposit(totalStayPrice, checkInDate, today = new Date()) {
   const total = Math.max(0, Math.floor(Number(totalStayPrice) || 0));
-  const daysUntilCheckIn = differenceInCalendarDays(
-    startOfDay(checkInDate),
-    startOfDay(today)
-  );
+  const daysUntilCheckIn = stayDaysUntilCheckIn(checkInDate, today);
   const percent = daysUntilCheckIn >= 31 ? 30 : 100;
   const amountDue =
     percent === 100 ? total : Math.max(1, Math.round((total * percent) / 100));

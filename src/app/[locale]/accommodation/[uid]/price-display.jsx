@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo } from "react";
-import { differenceInCalendarDays } from "date-fns";
 import { useTranslations } from "next-intl";
 
 import { calculateDeposit } from "@/lib/deposit";
@@ -9,6 +8,7 @@ import {
   myRentCalculatePrice,
   myRentCalculatePriceWithDiscount,
 } from "@/lib/myrent-utils";
+import { stayNightsCount } from "@/lib/stay-dates";
 import {
   calculateTotalPrice,
   calculateTotalPriceWithDiscount,
@@ -54,7 +54,7 @@ function computeStayTotals({
   if (priceWithDiscount <= 0) priceWithDiscount = basePrice;
   if (basePrice <= 0) return { invalid: true };
 
-  const nights = differenceInCalendarDays(to, from);
+  const nights = stayNightsCount(from, to);
   const depositInfo = calculateDeposit(priceWithDiscount, from);
 
   return {

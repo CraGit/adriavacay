@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
-import { differenceInCalendarDays } from "date-fns";
 import { useLocale, useTranslations } from "next-intl";
 
 import {
@@ -18,6 +17,7 @@ import {
   myRentCalculatePrice,
   myRentCalculatePriceWithDiscount,
 } from "@/lib/myrent-utils";
+import { stayNightsCount } from "@/lib/stay-dates";
 import {
   calculateTotalPrice,
   calculateTotalPriceWithDiscount,
@@ -84,7 +84,7 @@ export default function BookingForm({
       ? applyBankTransferDiscount(subtotal)
       : subtotal;
     const depositCalc = calculateDeposit(discountedTotal, from);
-    const nights = differenceInCalendarDays(to, from);
+    const nights = stayNightsCount(from, to);
 
     return {
       subtotalBeforeDiscount,

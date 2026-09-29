@@ -16,7 +16,7 @@ import {
   myRentCalculatePriceWithDiscount,
   myRentIsEndDateValid,
 } from "@/lib/myrent-utils";
-import { formatStayDateISO } from "@/lib/stay-dates";
+import { stayNightsCount, toStayDateISO } from "@/lib/stay-dates";
 import {
   calculateTotalPrice,
   calculateTotalPriceWithDiscount,
@@ -114,10 +114,7 @@ export async function computeBookingQuote({
   const total = isBank ? applyBankTransferDiscount(subtotal) : subtotal;
 
   const deposit = calculateDeposit(total, dateFrom);
-  const nights = Math.max(
-    0,
-    Math.round((dateTo - dateFrom) / (1000 * 60 * 60 * 24))
-  );
+  const nights = stayNightsCount(dateFrom, dateTo);
 
   return {
     villaName,
@@ -133,8 +130,8 @@ export async function computeBookingQuote({
     page,
     pageEn,
     guests: Number(guests) || 1,
-    fromDateStr: formatStayDateISO(dateFrom),
-    untilDateStr: formatStayDateISO(dateTo),
+    fromDateStr: toStayDateISO(dateFrom),
+    untilDateStr: toStayDateISO(dateTo),
   };
 }
 

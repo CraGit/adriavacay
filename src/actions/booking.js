@@ -18,14 +18,17 @@ import {
 import { toStripeCents } from "@/lib/deposit";
 import { sendMail } from "@/lib/mail";
 import { deleteRent } from "@/lib/myrent";
-import { formatStayDate } from "@/lib/stay-dates";
+import { formatStayDate, stayDateToUtcNoon, toStayDateISO } from "@/lib/stay-dates";
 import { getStripe } from "@/lib/stripe";
 
 function parseDateRange(dateRange) {
-  return {
-    dateFrom: dateRange?.from ? new Date(dateRange.from) : null,
-    dateTo: dateRange?.to ? new Date(dateRange.to) : null,
-  };
+  const dateFrom = dateRange?.from
+    ? stayDateToUtcNoon(toStayDateISO(dateRange.from))
+    : null;
+  const dateTo = dateRange?.to
+    ? stayDateToUtcNoon(toStayDateISO(dateRange.to))
+    : null;
+  return { dateFrom, dateTo };
 }
 
 /** Prefer the request host so local/preview Stripe redirects stay on the current site. */

@@ -23,6 +23,11 @@ import {
   filterValidDiscountRanges,
   hasSufficientPricingData,
 } from "./validation";
+import {
+  eachStayNightISO,
+  stayDateToUtcNoon,
+  stayNightsCount,
+} from "./stay-dates";
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
@@ -158,21 +163,20 @@ export const calculateTotalPrice = (priceRanges, fromDate, toDate) => {
   const validPriceRanges = filterValidPriceRanges(priceRanges);
   if (!hasSufficientPricingData(validPriceRanges)) return 0;
 
-  const days = eachDayOfInterval({ start: fromDate, end: addDays(toDate, -1) }); // skidamo jedan dan jer ne racunamo zadnji dan
+  const nights = eachStayNightISO(fromDate, toDate);
 
-  const totalPrice = days.reduce((total, date) => {
-    return total + getPriceForDate(date, validPriceRanges);
+  const totalPrice = nights.reduce((total, iso) => {
+    return total + getPriceForDate(stayDateToUtcNoon(iso), validPriceRanges);
   }, 0);
 
   return Math.floor(totalPrice);
 };
 
-const getDiscountForDate = (date, discountRanges) => {
+const getDiscountForDateISO = (dayIso, discountRanges) => {
   for (const discount of discountRanges) {
-    if (
-      !isBefore(date, parse(discount.date_start, "yyyy-MM-dd", new Date())) &&
-      !isAfter(date, parse(discount.date_end, "yyyy-MM-dd", new Date()))
-    ) {
+    const start = discount.date_start?.slice?.(0, 10) || discount.date_start;
+    const end = discount.date_end?.slice?.(0, 10) || discount.date_end;
+    if (start && end && dayIso >= start && dayIso <= end) {
       return discount.percentage;
     }
   }
@@ -197,20 +201,15 @@ export const calculateTotalPriceWithDiscount = (
   let totalPrice = 0;
   let totalDiscount = 0;
 
-  let currentDate = fromDate;
-
-  while (currentDate < toDate) {
-    // strogo manje jer ne racunamo zadnji dan
-    const price = getPriceForDate(currentDate, validPriceRanges);
-    const discount = getDiscountForDate(currentDate, validDiscountRanges);
+  for (const iso of eachStayNightISO(fromDate, toDate)) {
+    const price = getPriceForDate(stayDateToUtcNoon(iso), validPriceRanges);
+    const discount = getDiscountForDateISO(iso, validDiscountRanges);
 
     if (price !== null && price > 0) {
       const discountAmount = (price * discount) / 100;
       totalPrice += price;
       totalDiscount += discountAmount;
     }
-
-    currentDate = addDays(currentDate, 1);
   }
 
   return Math.floor(totalPrice - totalDiscount);
@@ -243,7 +242,7 @@ export const filterByChangeoverDayAndMinimumStay = (
   let endRangeValid = false;
   let minimumStayValid = false;
 
-  const totalStay = differenceInCalendarDays(toDate, fromDate);
+  const totalStay = stayNightsCount(fromDate, toDate);
 
   for (const range of validPriceRanges) {
     // Parse dates once to avoid repeated parsing

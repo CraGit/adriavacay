@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useQueryState } from "nuqs";
 
 import Card from "@/components/Card";
-import { formatStayDateISO } from "@/lib/stay-dates";
+import { toStayDateISO } from "@/lib/stay-dates";
 import { filterAccommodationsWithValidPricing } from "@/lib/validation";
 import { useSearch } from "@/providers/search-provider";
 
@@ -38,8 +38,8 @@ export const AccommodationSingle = ({ accommodations, showAll }) => {
       return;
     }
 
-    const fromIso = formatStayDateISO(from);
-    const toIso = formatStayDateISO(to);
+    const fromIso = toStayDateISO(from);
+    const toIso = toStayDateISO(to);
     if (!fromIso || !toIso) {
       setFreeByObjectId(null);
       setFreeStatus("error");

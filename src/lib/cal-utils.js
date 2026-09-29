@@ -1,13 +1,18 @@
 import {
   addDays,
-  differenceInCalendarDays,
-  eachDayOfInterval,
   format,
   isAfter,
   isBefore,
   isWithinInterval,
 } from "date-fns";
 import { filterValidPriceRanges } from "./validation";
+import {
+  addStayDaysISO,
+  eachStayNightISO,
+  stayDateToUtcNoon,
+  stayNightsCount,
+  toStayDateISO,
+} from "./stay-dates";
 
 export const isDateInOccupiedRanges = (date, occupiedRanges) => {
   return occupiedRanges.some(({ startDate, endDate }) =>
@@ -87,7 +92,7 @@ export const isEndDateValid = (
   priceRanges,
   unavailableRanges
 ) => {
-  const totalNights = differenceInCalendarDays(endDate, startDate);
+  const totalNights = stayNightsCount(startDate, endDate);
   const range = getApplicablePriceRange(endDate, priceRanges);
 
   if (!range) return false;
@@ -98,15 +103,14 @@ export const isEndDateValid = (
   }
 
   // Check all dates in the stay period (excluding checkout date)
-  const stayDates = eachDayOfInterval({
-    start: startDate,
-    end: addDays(endDate, -1), // Exclude checkout date
-  });
+  const stayDates = eachStayNightISO(startDate, endDate);
 
   return (
     isChangeoverDayValid(endDate, range.changeover_day) &&
     (!range.minimum_stay || totalNights >= range.minimum_stay) &&
-    !stayDates.some((date) => isDateInOccupiedRanges(date, unavailableRanges))
+    !stayDates.some((iso) =>
+      isDateInOccupiedRanges(stayDateToUtcNoon(iso), unavailableRanges)
+    )
   );
 };
 
@@ -117,9 +121,9 @@ export const getAvailableEndDates = (
   unavailableRanges
 ) => {
   const validEndDates = [];
+  const startIso = toStayDateISO(startDate);
   for (let days = 1; days <= 30; days++) {
-    // Checking for next 30 days (adjust as necessary)
-    const potentialEndDate = addDays(startDate, days);
+    const potentialEndDate = stayDateToUtcNoon(addStayDaysISO(startIso, days));
     if (
       isEndDateValid(
         startDate,
